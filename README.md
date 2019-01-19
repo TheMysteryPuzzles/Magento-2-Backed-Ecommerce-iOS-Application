@@ -141,4 +141,8 @@ DELETE /V1/guest-carts/{cartId}/coupons
 GET /V1/guest-carts/{cartId}/coupons
 PUT /V1/guest-carts/{cartId}/coupons/{couponCode}
 
+# (19) quoteGuestPaymentMethodManagementV1
+POST /V1/guest-carts/{cartId}/estimate-shipping-methods
 
+# (20) quoteGuestShipmentEstimationV1
+POST /V1/guest-carts/{cartId}/estimate-shipping-methods
