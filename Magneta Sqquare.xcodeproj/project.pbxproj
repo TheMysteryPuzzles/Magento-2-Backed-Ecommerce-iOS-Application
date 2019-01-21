@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		960DD14421DBF2850067BE5E /* AddToCartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960DD14321DBF2850067BE5E /* AddToCartView.swift */; };
+		96211FB121F600C400A94438 /* CustomerDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96211FAE21F600C300A94438 /* CustomerDetails.swift */; };
+		96211FB221F600C400A94438 /* JSONParses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96211FAF21F600C300A94438 /* JSONParses.swift */; };
+		96211FB321F600C400A94438 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96211FB021F600C400A94438 /* CreateAccountView.swift */; };
+		96211FB521F600C900A94438 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96211FB421F600C900A94438 /* ViewController.swift */; };
 		962B1D9921F073A400FD5C58 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962B1D9821F073A400FD5C58 /* MainMenuView.swift */; };
 		96382C3621EDCA510061E49E /* TextAlignmentsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96382C3521EDCA510061E49E /* TextAlignmentsHelpers.swift */; };
 		96382C3821EDF9550061E49E /* DynamicTextFontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96382C3721EDF9550061E49E /* DynamicTextFontSize.swift */; };
@@ -39,6 +43,10 @@
 
 /* Begin PBXFileReference section */
 		960DD14321DBF2850067BE5E /* AddToCartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToCartView.swift; sourceTree = "<group>"; };
+		96211FAE21F600C300A94438 /* CustomerDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerDetails.swift; sourceTree = "<group>"; };
+		96211FAF21F600C300A94438 /* JSONParses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParses.swift; sourceTree = "<group>"; };
+		96211FB021F600C400A94438 /* CreateAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
+		96211FB421F600C900A94438 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		962B1D9821F073A400FD5C58 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		96382C3521EDCA510061E49E /* TextAlignmentsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAlignmentsHelpers.swift; sourceTree = "<group>"; };
 		96382C3721EDF9550061E49E /* DynamicTextFontSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTextFontSize.swift; sourceTree = "<group>"; };
@@ -82,6 +90,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		96211FB621F600D000A94438 /* IN PROGRESS */ = {
+			isa = PBXGroup;
+			children = (
+				96211FB021F600C400A94438 /* CreateAccountView.swift */,
+				96211FAE21F600C300A94438 /* CustomerDetails.swift */,
+				96211FB421F600C900A94438 /* ViewController.swift */,
+				96211FAF21F600C300A94438 /* JSONParses.swift */,
+			);
+			name = "IN PROGRESS";
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		96382C4521EE13760061E49E /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				967BE57621DB8162000B28E1 /* Main.storyboard */,
+				96211FB621F600D000A94438 /* IN PROGRESS */,
 				96382C4721EE13AA0061E49E /* Model */,
 				96382C4521EE13760061E49E /* View */,
 				96382C4621EE13860061E49E /* Controller */,
@@ -280,13 +301,17 @@
 				967BE59721DB879C000B28E1 /* D3ListViewFlowLayout.swift in Sources */,
 				960DD14421DBF2850067BE5E /* AddToCartView.swift in Sources */,
 				967BE59921DB879C000B28E1 /* D3ListDelegate.swift in Sources */,
+				96211FB321F600C400A94438 /* CreateAccountView.swift in Sources */,
 				962B1D9921F073A400FD5C58 /* MainMenuView.swift in Sources */,
+				96211FB221F600C400A94438 /* JSONParses.swift in Sources */,
 				967BE59221DB879C000B28E1 /* SubCollectionViewFlowLayout.swift in Sources */,
 				967BE59B21DB879C000B28E1 /* D3ListDatasource.swift in Sources */,
 				96382C4421EE11C80061E49E /* ExtensionProductViewController.swift in Sources */,
 				96382C3821EDF9550061E49E /* DynamicTextFontSize.swift in Sources */,
 				967BE59121DB879C000B28E1 /* D3ListView.swift in Sources */,
+				96211FB121F600C400A94438 /* CustomerDetails.swift in Sources */,
 				967BE59621DB879C000B28E1 /* D3ListViewCell.swift in Sources */,
+				96211FB521F600C900A94438 /* ViewController.swift in Sources */,
 				967BE59D21DB9E0E000B28E1 /* Helpers.swift in Sources */,
 				96382C3E21EE08E20061E49E /* ProductGalleryCell.swift in Sources */,
 				967BE59F21DBA959000B28E1 /* MagentaModel.swift in Sources */,

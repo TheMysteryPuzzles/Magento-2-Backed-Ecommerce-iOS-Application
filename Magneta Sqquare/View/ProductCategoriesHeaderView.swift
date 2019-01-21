@@ -49,7 +49,6 @@ class ProductCategoriesHeaderView: UIView {
             ])
     }
     
-    
     var foldingDoorsCategory: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
@@ -77,7 +76,7 @@ class ProductCategoriesHeaderView: UIView {
             foldingDoorsCategoryLabel.trailingAnchor.constraint(equalTo: self.foldingDoorsCategory.trailingAnchor, constant: 13),
             foldingDoorsCategoryLabel.heightAnchor.constraint(equalTo: self.topView.heightAnchor, multiplier: 0.36)
             ])
-    }
+       }
     
     
     private func setupFoldingDoorsCategoryConstraints(){
