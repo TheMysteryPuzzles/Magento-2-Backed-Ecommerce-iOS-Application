@@ -81,7 +81,7 @@ class MagentoApisViewController: UIViewController {
         request.httpMethod = "POST"
         request.httpBody = try! JSONSerialization.data(withJSONObject: params, options: [])
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer"+admintoken!, forHTTPHeaderField: "Authorization")
+       // request.addValue("Bearer"+admintoken!, forHTTPHeaderField: "Authorization")
         
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
@@ -137,7 +137,6 @@ private func getCustomerAccessToken(){
                 print("JSON Serialization error")
             }
         }).resume()
-        
     }
     
     private func getCountryInformation(){
@@ -160,6 +159,4 @@ private func getCustomerAccessToken(){
         }).resume()
         
     }
-
-
 }

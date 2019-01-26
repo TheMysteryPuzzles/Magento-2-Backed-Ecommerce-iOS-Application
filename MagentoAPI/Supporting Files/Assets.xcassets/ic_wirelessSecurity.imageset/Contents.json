@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "FortressSecurityStoreTMS02-AWirelessHomeandBusinessSecurityAlarmSystemDIYKitwithAutoDialMotionDetectorsPanicButtonandMoreforCompleteSecurity-5953dee23df78c1d425a0970.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}
