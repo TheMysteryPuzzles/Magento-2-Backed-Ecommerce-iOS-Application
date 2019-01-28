@@ -123,9 +123,15 @@ class ShopOnlineViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let item = UIBarButtonItem(title: "SignUp | Login", style: .plain, target: self, action: #selector(handleLoginRegister))
+        self.navigationItem.setRightBarButton(item, animated: true)
       self.view.addSubview(productsView)
         self.view.backgroundColor = UIColor.black
         getAllMagentoStoreCategories()
+    }
+    
+    @objc private func handleLoginRegister(){
+        self.navigationController?.pushViewController(LoginViewController(), animated: true)
     }
     
     @objc func addToCart(){

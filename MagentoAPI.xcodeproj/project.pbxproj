@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96C6215421FF061800981AA8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C6215321FF061800981AA8 /* LoginViewController.swift */; };
 		96DF140D21DCC23000FE8D57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DF140C21DCC23000FE8D57 /* AppDelegate.swift */; };
 		96DF141221DCC23000FE8D57 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96DF141021DCC23000FE8D57 /* Main.storyboard */; };
 		96DF141421DCC23200FE8D57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96DF141321DCC23200FE8D57 /* Assets.xcassets */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96C6215321FF061800981AA8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		96DF140921DCC23000FE8D57 /* MagentoAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagentoAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DF140C21DCC23000FE8D57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96DF141121DCC23000FE8D57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				96F07E5E21FCF2B30061622F /* ProductDetailViewController.swift */,
+				96C6215321FF061800981AA8 /* LoginViewController.swift */,
 				96F07E5F21FCF2B30061622F /* MainMenuViewController.swift */,
 				96F07E6021FCF2B30061622F /* ProdutsViewController.swift */,
 				96F07E6121FCF2B30061622F /* ShopOnlineViewController.swift */,
@@ -356,6 +359,7 @@
 				96F07E7A21FCF2B40061622F /* D3ListView.swift in Sources */,
 				96F07E9121FCF2B40061622F /* CurrencyInformationModel.swift in Sources */,
 				96F07E8C21FCF2B40061622F /* MainMenuViewController.swift in Sources */,
+				96C6215421FF061800981AA8 /* LoginViewController.swift in Sources */,
 				96F07E8B21FCF2B40061622F /* ProductDetailViewController.swift in Sources */,
 				96F07E8D21FCF2B40061622F /* ProdutsViewController.swift in Sources */,
 				96F07E9C21FCF2B40061622F /* DynamicTextFontSize.swift in Sources */,

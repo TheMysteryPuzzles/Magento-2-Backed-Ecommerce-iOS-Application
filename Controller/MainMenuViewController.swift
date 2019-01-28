@@ -10,9 +10,7 @@ import UIKit
 
 class MainMenuViewController: UIViewController {
 
-    
-    
-    
+ 
     override func viewWillAppear(_ animated: Bool) {
          self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
@@ -40,10 +38,20 @@ class MainMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let item = UIBarButtonItem(title: "Create Account", style: .done, target: self, action: #selector(handleLoginRegister))
+     self.navigationItem.setRightBarButton(item, animated: false)
+        
+        
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(mainMenuView)
+        
     }
     
+    
+    @objc private func handleLoginRegister(){
+        
+    }
 
     override var prefersStatusBarHidden: Bool {
         return true
