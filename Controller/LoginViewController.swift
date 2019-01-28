@@ -10,7 +10,6 @@ import UIKit
 var customerToken = ""
 var customerId: Int?
 
-
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var activityIndicator: UIActivityIndicatorView!
@@ -95,7 +94,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     print("\(error)")
                 }
             })
-            
             task.resume()
         }
     
@@ -133,7 +131,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 
                 let jsonDecoder = JSONDecoder()
                 let responseModel = try jsonDecoder.decode(CustomerDetails.self, from: data!)
-                // print("\(responseModel.id)")
                 print("CustomerID :"+"\(responseModel.id)")
                 customerId = responseModel.id
                 self.dismiss(animated: true, completion: nil)

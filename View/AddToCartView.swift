@@ -10,40 +10,36 @@ import UIKit
 
 class AddToCartView: UIView {
     
-    lazy var addToCartView: UIImageView = {
-        let view = UIImageView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.image = UIImage(named: "add_img")
-        view.alpha = 0.8
-        view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissAddToCart)))
-        return view
+    var addToCartViewController: AddToCartViewController?
+    
+    var emptyCartLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = #colorLiteral(red: 0.8917110295, green: 1, blue: 0.9274043922, alpha: 1)
+        label.font = UIFont.boldSystemFont(ofSize: 28)
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = " You have no items in your shopping cart. "
+        return label
     }()
+
     
-    @objc private func dismissAddToCart(){
-        self.addToCartView.isHidden = true
-    }
-    
-    private func setupAddToCartViewConstraints(){
+    private func setupEmptyCartLabelConstraints(){
         NSLayoutConstraint.activate([
-            addToCartView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            addToCartView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 30),
-            addToCartView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5),
-            addToCartView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+            emptyCartLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            emptyCartLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            emptyCartLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.1),
+            emptyCartLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.95)
             ])
     }
     
     
     
-    func addToCart(){
-        self.addToCartView.isHidden = false
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(addToCartView)
-        setupAddToCartViewConstraints()
-        addToCartView.isHidden = true
+        self.backgroundColor = UIColor.white
+        self.addSubview(emptyCartLabel)
+        setupEmptyCartLabelConstraints()
+   
     }
     
     required init?(coder aDecoder: NSCoder) {

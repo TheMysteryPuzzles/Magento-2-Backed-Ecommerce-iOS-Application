@@ -118,20 +118,43 @@ class ShopOnlineViewController: UIViewController {
     }
         
     }
-    
-   
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let item = UIBarButtonItem(title: "SignUp | Login", style: .plain, target: self, action: #selector(handleLoginRegister))
-        self.navigationItem.setRightBarButton(item, animated: true)
-      self.view.addSubview(productsView)
+        self.navigationItem.leftBarButtonItem = nil
+        let button = UIButton(type: .custom)
+        button.setTitle("SignUp|Login", for: .normal)
+        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
+        button.frame = CGRect(x: 0.0, y: 0.0, width: 35.0, height: 35.0)
+        
+        let item1 = UIBarButtonItem(customView: button)
+        
+        let button2 = UIButton(type: .custom)
+        button2.setImage(UIImage (named: "ic_cart"), for: .normal)
+        button2.imageView?.contentMode = .scaleAspectFit
+        button2.addTarget(self, action: #selector(handleCartButton), for: .touchUpInside)
+        button2.frame = CGRect(x: 0.0, y: 0.0, width: 35.0, height: 35.0)
+
+        let item2 = UIBarButtonItem(customView: button2)
+      
+        self.navigationItem.setRightBarButtonItems([item2,item1], animated: true)
+        self.view.addSubview(productsView)
         self.view.backgroundColor = UIColor.black
         getAllMagentoStoreCategories()
     }
     
+    
+    @objc private func handleCartButton(){
+       
+        DispatchQueue.main.async {
+     self.navigationController?.pushViewController(AddToCartViewController(), animated: true)
+        }
+    }
+    
     @objc private func handleLoginRegister(){
-        self.navigationController?.pushViewController(LoginViewController(), animated: true)
+        DispatchQueue.main.async {
+            self.navigationController?.pushViewController(LoginViewController(), animated: true)
+        }
     }
     
     @objc func addToCart(){
