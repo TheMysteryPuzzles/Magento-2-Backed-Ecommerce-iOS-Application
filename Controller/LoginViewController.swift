@@ -7,6 +7,9 @@
 //
 
 import UIKit
+var customerToken = ""
+var customerId: Int?
+
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -45,13 +48,101 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
        // self.activityIndicator.startAnimating()
         
         if(loginResgisterSegmentedControl.selectedSegmentIndex == 0){
-            //loginUser()
+            loginUser()
         }else{
-           // registerUser()
+            registerUser()
         }
     }
     
-
+    
+    private func loginUser(){
+        getCustomerAccessToken()
+    }
+    
+    
+    private func registerUser(){
+        let fullName = self.fullName.text!
+        var components = fullName.components(separatedBy: " ")
+        var firstName: String?
+        var lastName : String?
+        if(components.count > 0)
+        {
+            firstName = components.removeFirst()
+            lastName = components.joined(separator: " ")
+        }
+            let params = [
+                "customer":[
+                    "email":emailTextField.text!,
+                    "firstname":firstName!,
+                    "lastname":lastName!
+                ],
+                "password": passwordTextField.text!
+                ] as [String : Any]
+            
+            var request = URLRequest(url: URL(string: hostName+"/rest/all/V1/customers")!)
+            request.httpMethod = "POST"
+            request.httpBody = try! JSONSerialization.data(withJSONObject: params, options: [])
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            // request.addValue("Bearer"+admintoken!, forHTTPHeaderField: "Authorization")
+            
+            let session = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+                print(response!)
+                do {
+                    _ = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! Dictionary<String, AnyObject>
+                    self.getCustomerAccessToken()
+                } catch {
+                    print("\(error)")
+                }
+            })
+            
+            task.resume()
+        }
+    
+    private func getCustomerAccessToken(){
+        let params = ["username":emailTextField.text!, "password":passwordTextField.text!] as Dictionary<String, String>
+        
+        var request = URLRequest(url: URL(string: hostName+"/index.php/rest/V1/integration/customer/token")!)
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! String
+                print("CustomerToken: "+json)
+                customerToken = json
+                self.getCustomerDetails()
+            } catch {
+                print("\(error)")
+            }
+        })
+        
+        task.resume()
+    }
+ 
+    private func getCustomerDetails(){
+        var request = URLRequest(url: URL(string: hostName+"/index.php/rest/V1/customers/me")!)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer "+customerToken, forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            do {
+                
+                let jsonDecoder = JSONDecoder()
+                let responseModel = try jsonDecoder.decode(CustomerDetails.self, from: data!)
+                // print("\(responseModel.id)")
+                print("CustomerID :"+"\(responseModel.id)")
+                customerId = responseModel.id
+                self.dismiss(animated: true, completion: nil)
+            } catch {
+                print("JSON Serialization error")
+            }
+        }).resume()
+    }
+    
     @objc func enumerateLoginRegitersSegmentedViews(){
        let title = self.loginResgisterSegmentedControl.titleForSegment(at: self.loginResgisterSegmentedControl.selectedSegmentIndex)
         UIView.transition(with: loginRegisterButton.titleLabel!, duration: 0.5, options: .transitionFlipFromBottom, animations: {
@@ -63,7 +154,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         // Mark -> changing height for Name TextField according to segmented control
         nameTextFieldHeightAnchorConstraint?.isActive = false
-        nameTextFieldHeightAnchorConstraint = nameTextField.heightAnchor.constraint(equalToConstant: loginResgisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 50)
+        nameTextFieldHeightAnchorConstraint = fullName.heightAnchor.constraint(equalToConstant: loginResgisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 50)
        
         nameTextFieldHeightAnchorConstraint?.isActive = true
         
@@ -81,11 +172,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     
     
-    let nameTextField: UITextField = {
+    let fullName: UITextField = {
         let textField = TextField()
         textField.backgroundColor = UIColor.clear
          textField.textColor = UIColor.white
-        textField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: [
+        textField.attributedPlaceholder = NSAttributedString(string: "Fullname", attributes: [
             .foregroundColor: UIColor.white,
             .font: UIFont.boldSystemFont(ofSize: 20.0)
             ])
@@ -98,6 +189,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
+    
+   
     let emailTextField: UITextField = {
         let textField = TextField()
          textField.font = .boldSystemFont(ofSize: 20.0)
@@ -176,7 +269,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupLoginView()
-        self.nameTextField.delegate = self
+        self.fullName.delegate = self
         self.passwordTextField.delegate = self
         self.emailTextField.delegate = self
     }
@@ -203,11 +296,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         //MARK-> NAME TEXTFIELD
         // Define x,y,width,height for Name textfield
-        loginConatinerView.addSubview(nameTextField)
-        nameTextField.leftAnchor.constraint(equalTo: loginConatinerView.leftAnchor).isActive = true
-        nameTextField.topAnchor.constraint(equalTo: loginConatinerView.topAnchor).isActive = true
-        nameTextField.widthAnchor.constraint(equalTo: loginConatinerView.widthAnchor).isActive = true
-        nameTextFieldHeightAnchorConstraint = nameTextField.heightAnchor.constraint(equalToConstant: 50)
+        loginConatinerView.addSubview(fullName)
+        fullName.leftAnchor.constraint(equalTo: loginConatinerView.leftAnchor).isActive = true
+        fullName.topAnchor.constraint(equalTo: loginConatinerView.topAnchor).isActive = true
+        fullName.widthAnchor.constraint(equalTo: loginConatinerView.widthAnchor).isActive = true
+        nameTextFieldHeightAnchorConstraint = fullName.heightAnchor.constraint(equalToConstant: 50)
         nameTextFieldHeightAnchorConstraint?.isActive = true
         
         
@@ -223,7 +316,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // Define x,y,width,height for EMAIL Textfield
         
         loginConatinerView.addSubview(emailTextField)
-        emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: fullName.bottomAnchor, constant: 5).isActive = true
         emailTextField.leftAnchor.constraint(equalTo: loginConatinerView.leftAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalTo: loginConatinerView.widthAnchor).isActive = true
         emailTextFieldHeightAnchorConstraint = emailTextField.heightAnchor.constraint(equalToConstant: 50)

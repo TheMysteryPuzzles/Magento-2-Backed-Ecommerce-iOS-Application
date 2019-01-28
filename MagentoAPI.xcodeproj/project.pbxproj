@@ -205,7 +205,6 @@
 			isa = PBXGroup;
 			children = (
 				96F07E6421FCF2B30061622F /* CartGrandTotalModel.swift */,
-				96F07E6521FCF2B30061622F /* MagentoAPI */,
 				96F07E6621FCF2B30061622F /* CurrencyInformationModel.swift */,
 				96F07E6721FCF2B30061622F /* ProductDetailsModel.swift */,
 				96F07E6821FCF2B30061622F /* CategoriesModel.swift */,
@@ -215,13 +214,6 @@
 				96F07E6E21FCF2B30061622F /* CountryInformationModel.swift */,
 			);
 			path = Magento_JSONModel;
-			sourceTree = "<group>";
-		};
-		96F07E6521FCF2B30061622F /* MagentoAPI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MagentoAPI;
 			sourceTree = "<group>";
 		};
 		96F07E6F21FCF2B30061622F /* Model */ = {
