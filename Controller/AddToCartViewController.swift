@@ -6,13 +6,28 @@
 //  Copyright © 2019 TheMysteryPuzzles. All rights reserved.
 //
 
+
+// Remove product label
+//dynamic categories
+// catalog
+//
+
+
 import UIKit
 
 class AddToCartViewController: UIViewController {
 
     var selectedItem: Item?
-    var cartId: Int?
+    var selectedAttributes: CustomAttributes!
+    
+    var cartId: Int?{
+        didSet{
+            let defaults = UserDefaults.standard
+            defaults.set("\(cartId!)", forKey: "cartId")
+        }
+    }
     var quantity = 3
+    var cartInformation: CartInformationJSONModel?
     
     private func createACartForLoggedInCustomer(){
         var request = URLRequest(url: URL(string: hostName+"/rest/default/V1/carts/mine")!)
@@ -28,7 +43,7 @@ class AddToCartViewController: UIViewController {
                 print("New Cart Created")
                 print("Cart ID: \(json)")
                 self.cartId = json
-                self.addItemToTheCart()
+               // self.addItemToTheCart()
             } catch {
                 print("\(error)")
             }
@@ -39,6 +54,7 @@ class AddToCartViewController: UIViewController {
     
     
     private func addItemToTheCart(){
+
         let params = ["cartItem": ["sku": selectedItem!.sku!,"qty": quantity,"quote_id": cartId!]]
         
         var request = URLRequest(url: URL(string: hostName+"/rest/default/V1/carts/mine/items")!)
@@ -53,18 +69,73 @@ class AddToCartViewController: UIViewController {
             do {
                 
                 let jsonDecoder = JSONDecoder()
-                let responseModel = try jsonDecoder.decode(AddItemToCartModel.self, from: data!)
+                let responseModel = try jsonDecoder.decode(AddItemToCartJSONModel.self, from: data!)
                 print("Details Of Products Added To Cart")
                 print(responseModel.productType!)
                 print(responseModel.name!)
-                self.getCartTotalCost()
+                //self.getCartTotalCost()
+                self.setShippingInformation()
+                
             } catch {
                 print("\(error)")
             }
         })
         task.resume()
     }
+
     
+    private func getSelectedItemInformation(){
+        var request = URLRequest(url: URL(string: hostName+"/rest/V1/carts/mine/")!)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer "+customerToken, forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            print(response!)
+            do {
+                let jsonDecoder = JSONDecoder()
+                let responseModel = try jsonDecoder.decode(CartInformationJSONModel.self, from: data!)
+                self.cartInformation = responseModel
+                
+                if self.cartInformation?.itemsCount != nil{
+                    self.addToCartView.emptyCartLabel.isHidden = true
+                }
+                self.addItemToTheCart()
+                
+                //   self.setShippingInformation()
+                
+            } catch {
+                print("JSON Serialization error")
+            }
+        }).resume()
+    }
+    
+    private func getLoggedInCustomerCartInformation(){
+        var request = URLRequest(url: URL(string: hostName+"/rest/V1/carts/mine/")!)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer "+customerToken, forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            print(response!)
+            do {
+                let jsonDecoder = JSONDecoder()
+                let responseModel = try jsonDecoder.decode(CartInformationJSONModel.self, from: data!)
+                self.cartInformation = responseModel
+             
+                if self.cartInformation?.itemsCount != nil{
+                  self.addToCartView.emptyCartLabel.isHidden = true
+                }
+                self.addItemToTheCart()
+                
+             //   self.setShippingInformation()
+                
+            } catch {
+                print("JSON Serialization error")
+            }
+        }).resume()
+    }
+
     
     private func getCartTotalCost(){
         var request = URLRequest(url: URL(string: hostName+"/rest/V1/carts/mine/totals")!)
@@ -75,7 +146,7 @@ class AddToCartViewController: UIViewController {
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
             do {
                 let jsonDecoder = JSONDecoder()
-                let responseModel = try jsonDecoder.decode(CartGrandTotalModel.self, from: data!)
+                let responseModel = try jsonDecoder.decode(CartGrandTotalJSONModel.self, from: data!)
                 
                 print("GrandTotal :"+"\(responseModel.grandTotal)")
                 self.setShippingInformation()
@@ -85,7 +156,6 @@ class AddToCartViewController: UIViewController {
             }
         }).resume()
     }
-    
     
     private func setShippingInformation(){
         let params = [
@@ -123,14 +193,13 @@ class AddToCartViewController: UIViewController {
                 let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! String
                 print("Shipping Adress ID: "+json)
                 
-                self.setPaymentInformationAndPlaceNewOrder()
+              //  self.setPaymentInformationAndPlaceNewOrder()
             } catch {
                 print("\(error)")
             }
         })
         task.resume()
     }
-    
     
     private func setPaymentInformationAndPlaceNewOrder(){
         let params =  [
@@ -180,94 +249,96 @@ class AddToCartViewController: UIViewController {
         })
         task.resume()
     }
-    
-    
-    
-    /*private func getShipingMethods(){
-     let params = ["cartId": cartId!]
-     var request = URLRequest(url: URL(string: hostName+"/rest/V1/carts/mine/shipping-methods")!)
-     request.httpMethod = "GET"
-     request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-     request.addValue("Bearer "+customerToken!, forHTTPHeaderField: "Authorization")
-     
-     URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-     print(response!)
-     do {
-     
-     let jsonDecoder = JSONDecoder()
-     let responseModel = try jsonDecoder.decode(ShipingMethodsModel.self, from: data!)
-     for response in responseModel {
-     print(response.carrierCode)
-     }
-     
-     } catch {
-     print("JSON Serialization error")
-     }
-     }).resume()
-     }
-     */
-    /*
-     private func estimateShippingCost(){
-     let params = [  "address": [
-     "region": "New York",
-     "region_id": 43,
-     "region_code": "NY",
-     "country_id": "US",
-     "street": [
-     "123 Oak Ave"
-     ],
-     "postcode": "10577",
-     "city": "Purchase",
-     "firstname": "Jane",
-     "lastname": "Doe",
-     "customer_id": 4,
-     "email": "jdoe@example.com",
-     "telephone": "(512) 555-1111",
-     "same_as_billing": false
-     ]
-     ]
-     
-     var request = URLRequest(url: URL(string: hostName+"/rest/default/V1/carts/mine/estimate-shipping-methods")!)
-     request.httpMethod = "POST"
-     request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-     request.addValue("Bearer "+customerToken!, forHTTPHeaderField: "Authorization")
-     
-     let session = URLSession.shared
-     let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
-     // print(response!)
-     do {
-     
-     let jsonDecoder = JSONDecoder()
-     let responseModel = try jsonDecoder.decode(AddItemToCartModel.self, from: data!)
-     print(responseModel.productType!)
-     print(responseModel.name!)
-     
-     
-     } catch {
-     print("\(error)")
-     }
-     })
-     task.resume()
-     }*/
-    
-    
-    
-    
-    
-    
+
    lazy var addToCartView: AddToCartView = {
        let view = AddToCartView(frame: self.view.bounds)
        view.addToCartViewController = self
        return view
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-       self.view.addSubview(addToCartView)
-     
-    }
-    
 
+    override func viewDidLoad() {
+      super.viewDidLoad()
+      let defaults = UserDefaults.standard
+     print(selectedItem?.sku)
+     /* self.view.addSubview(addToCartView)
+         self.addToCartView.emptyCartLabel.isHidden = true
+      let cartId = defaults.string(forKey: "cartId")
+      if cartId == nil{
+         self.addToCartView.emptyCartLabel.isHidden = false
+         createACartForLoggedInCustomer()
+      }else{
+         getLoggedInCustomerCartInformation()
+       }*/
+    }
 }
+
+
+/*private func getShipingMethods(){
+ let params = ["cartId": cartId!]
+ var request = URLRequest(url: URL(string: hostName+"/rest/V1/carts/mine/shipping-methods")!)
+ request.httpMethod = "GET"
+ request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+ request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+ request.addValue("Bearer "+customerToken!, forHTTPHeaderField: "Authorization")
+ 
+ URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+ print(response!)
+ do {
+ 
+ let jsonDecoder = JSONDecoder()
+ let responseModel = try jsonDecoder.decode(ShipingMethodsModel.self, from: data!)
+ for response in responseModel {
+ print(response.carrierCode)
+ }
+ 
+ } catch {
+ print("JSON Serialization error")
+ }
+ }).resume()
+ }
+ */
+/*
+ private func estimateShippingCost(){
+ let params = [  "address": [
+ "region": "New York",
+ "region_id": 43,
+ "region_code": "NY",
+ "country_id": "US",
+ "street": [
+ "123 Oak Ave"
+ ],
+ "postcode": "10577",
+ "city": "Purchase",
+ "firstname": "Jane",
+ "lastname": "Doe",
+ "customer_id": 4,
+ "email": "jdoe@example.com",
+ "telephone": "(512) 555-1111",
+ "same_as_billing": false
+ ]
+ ]
+ 
+ var request = URLRequest(url: URL(string: hostName+"/rest/default/V1/carts/mine/estimate-shipping-methods")!)
+ request.httpMethod = "POST"
+ request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+ request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+ request.addValue("Bearer "+customerToken!, forHTTPHeaderField: "Authorization")
+ 
+ let session = URLSession.shared
+ let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+ // print(response!)
+ do {
+ 
+ let jsonDecoder = JSONDecoder()
+ let responseModel = try jsonDecoder.decode(AddItemToCartModel.self, from: data!)
+ print(responseModel.productType!)
+ print(responseModel.name!)
+ 
+ 
+ } catch {
+ print("\(error)")
+ }
+ })
+ task.resume()
+ }*/

@@ -11,10 +11,10 @@ import UIKit
 extension ShopOnlineViewController: SubCollectionViewDataSource, SubCollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProductDetailViewController") as! ProductDetailViewController
+       
+        let viewController = ProductDetailViewController()
         print("Item: \(indexPath.item)")
-        viewController.selectedItem = self.windowCoveringsItems[collectionView.tag]
-        
+        viewController.selectedItem = self.windowCoveringsItems[indexPath.item]
         self.navigationController?.pushViewController(viewController, animated: true)
        
     }
@@ -49,7 +49,7 @@ extension ShopOnlineViewController: SubCollectionViewDataSource, SubCollectionVi
 extension ShopOnlineViewController: D3ListDelegate, D3ListDatasource {
     
     func d3ListView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProductDetailViewController") as! ProductDetailViewController
+        let viewController = ProductDetailViewController()
         print("Item: \(indexPath.item)")
         viewController.selectedItem = self.windowCoveringsItems[indexPath.item]
         

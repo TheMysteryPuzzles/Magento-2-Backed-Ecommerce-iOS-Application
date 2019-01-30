@@ -12,6 +12,9 @@ var customerId: Int?
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
+    var userName: String?
+    var password: String?
+    
     var activityIndicator: UIActivityIndicatorView!
     
     lazy var loginConatinerView: UIView = {
@@ -60,6 +63,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     
     private func registerUser(){
+        self.userName = emailTextField.text!
+        self.password = passwordTextField.text!
         let fullName = self.fullName.text!
         var components = fullName.components(separatedBy: " ")
         var firstName: String?
@@ -98,9 +103,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     
     private func getCustomerAccessToken(){
-        let params = ["username":emailTextField.text!, "password":passwordTextField.text!] as Dictionary<String, String>
+       self.userName = self.emailTextField.text!
+       self.password = self.passwordTextField.text!
+       let params = ["username":userName!, "password":password!] as Dictionary<String, String>
         
-        var request = URLRequest(url: URL(string: hostName+"/index.php/rest/V1/integration/customer/token")!)
+       var request = URLRequest(url: URL(string: hostName+"/index.php/rest/V1/integration/customer/token")!)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -133,7 +140,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 let responseModel = try jsonDecoder.decode(CustomerDetails.self, from: data!)
                 print("CustomerID :"+"\(responseModel.id)")
                 customerId = responseModel.id
-                self.dismiss(animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                }
             } catch {
                 print("JSON Serialization error")
             }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias ShipingMethodsModel = [ShipingMethodsModelElement]
+typealias ShipingMethodsJSONModel = [ShipingMethodsModelElement]
 
 struct ShipingMethodsModelElement: Codable {
     let carrierCode, methodCode, carrierTitle, methodTitle: String

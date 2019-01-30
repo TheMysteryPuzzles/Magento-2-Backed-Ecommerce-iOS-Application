@@ -9,7 +9,7 @@
 import Foundation
 
 
-typealias CountryInformationModel = [CountryInformationModelElement]
+typealias CountryInformationJSONModel = [CountryInformationModelElement]
 
 class CountryInformationModelElement: Codable {
     let id, twoLetterAbbreviation, threeLetterAbbreviation, fullNameLocale: String?

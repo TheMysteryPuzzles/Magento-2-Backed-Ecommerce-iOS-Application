@@ -9,7 +9,7 @@
 import Foundation
 
 
-class ProductDetailsModel: Codable {
+class ProductDetailsJSONModel: Codable {
     let items: [Item]?
     let searchCriteria: SearchCriteria?
     let totalCount: Int?

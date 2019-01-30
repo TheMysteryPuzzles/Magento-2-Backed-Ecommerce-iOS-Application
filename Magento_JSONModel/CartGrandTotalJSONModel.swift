@@ -9,7 +9,7 @@
 
 import Foundation
 
-struct CartGrandTotalModel: Codable {
+struct CartGrandTotalJSONModel: Codable {
     let grandTotal, baseGrandTotal, subtotal, baseSubtotal: Int
     let discountAmount, baseDiscountAmount, subtotalWithDiscount, baseSubtotalWithDiscount: Int
     let shippingAmount, baseShippingAmount, shippingDiscountAmount, baseShippingDiscountAmount: Int

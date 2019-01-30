@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AddItemToCartModel: Codable {
+class AddItemToCartJSONModel: Codable {
     let itemID: Int?
     let sku: String?
     let qty: Int?

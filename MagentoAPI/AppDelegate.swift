@@ -9,20 +9,23 @@
 import UIKit
 var hostName: String = "http://co2.techrecto.com"
 var adminToken: String?
+var navBarHeight: CGFloat?
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         GetAdminAccessToken()
         
+        let rootVc = UINavigationController(rootViewController: MainMenuViewController())
         
-        
+        navBarHeight = rootVc.navigationBar.frame.height
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: MainMenuViewController())
+        window?.rootViewController = rootVc
         return true
     }
 

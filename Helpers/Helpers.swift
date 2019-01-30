@@ -11,7 +11,6 @@ import UIKit
 
 let statusBarHeight = UIApplication.shared.statusBarFrame.height
 
-
 extension UIView {
     func hexStringToUIColor (hex:String) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()

@@ -1,5 +1,5 @@
 //
-//  CurrencyInformationModel.swift
+//  CurrencyInformationJSONModel.swift
 //  MagentoAPI
 //
 //  Created by Work on 1/22/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CurrencyInformationModel: Codable {
+class CurrencyInformationJSONModel: Codable {
     let baseCurrencyCode: String?
     let baseCurrencySymbol: JSONNull?
     let defaultDisplayCurrencyCode: String?

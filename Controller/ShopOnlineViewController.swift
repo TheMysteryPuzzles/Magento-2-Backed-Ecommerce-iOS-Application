@@ -38,7 +38,7 @@ class ShopOnlineViewController: UIViewController {
     }()
     
     var categoriesResponse: Categories?
-    var completeCatalog = [Int:ProductDetailsModel]()
+    var completeCatalog = [Int:ProductDetailsJSONModel]()
     var windowCoveringsItems =  [Item]()
     
     private func getAllMagentoStoreCategories(){
@@ -69,7 +69,6 @@ class ShopOnlineViewController: UIViewController {
         }
     }
     
-    
     private func getAllProdcutsUnderCategory(withProductId id: Int){
         var request = URLRequest(url: URL(string: hostName+"//rest/V1/products/?searchCriteria[filter_groups][0][filters][0][field]=type_id&searchCriteria[filter_groups][0][filters][0][value]=configurable+&searchCriteria[filter_groups][0][filters][0][condition_type]=eq")!)
         request.httpMethod = "GET"
@@ -81,7 +80,7 @@ class ShopOnlineViewController: UIViewController {
             do {
                 
                 let jsonDecoder = JSONDecoder()
-                let responseModel = try jsonDecoder.decode(ProductDetailsModel.self, from: data!)
+                let responseModel = try jsonDecoder.decode(ProductDetailsJSONModel.self, from: data!)
                 print("Category ID: \(id)")
                 
                 self.completeCatalog[id] = responseModel
@@ -115,9 +114,8 @@ class ShopOnlineViewController: UIViewController {
         DispatchQueue.main.async {
             self.productsView.productsList.reloadData()
         }
-    }
-        
-    }
+     }
+  }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,15 +143,14 @@ class ShopOnlineViewController: UIViewController {
     
     
     @objc private func handleCartButton(){
-       
         DispatchQueue.main.async {
-     self.navigationController?.pushViewController(AddToCartViewController(), animated: true)
+        self.navigationController?.pushViewController(CartViewController(), animated: true)
         }
     }
     
     @objc private func handleLoginRegister(){
         DispatchQueue.main.async {
-            self.navigationController?.pushViewController(LoginViewController(), animated: true)
+        self.navigationController?.pushViewController(LoginViewController(), animated: true)
         }
     }
     
@@ -163,10 +160,7 @@ class ShopOnlineViewController: UIViewController {
        // vc.selectedItem = items!.first!
         present(vc, animated: true, completion: nil)
         //  print("Adding To Cart")
-    }
-
-    
-    
+    }     
 }
 
 
