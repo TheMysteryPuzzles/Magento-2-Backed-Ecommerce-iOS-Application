@@ -10,29 +10,6 @@ import UIKit
 
 class ProductView: UIView {
     
-    var windowCoverings =  [ "Aluminium 1'",
-                             "Aluminium 2'",
-                             "Dark Roller",
-                             "Exterior Rollerup",
-                             "Fabric",
-                             "Honeycomb",
-                             "Insect Screen",
-                             "Motorization",
-                             "Motorized Curtains",
-                             "Panel Blinds",
-                             "Pleated Blinds",
-                             "Printed Roller",
-                             "Roman Blinds",
-                             "Screen Roller",
-                             "Shangrilla Blinds",
-                             "Silhoutte Blinds",
-                             "Specialized Blinds",
-                             "Textured Roller ",
-                             "Wood Vertical",
-                             "Wood Horizontal",
-                             "Zebra Blinds"]
-    
-
     var foldingDoors = ["Laminated Doors", "Shower Folding Doors"]
     var wirelessSecurity = ["Sensors", "Magnets", "Alarms"]
     
@@ -40,50 +17,69 @@ class ProductView: UIView {
     lazy var windowCoveringsCollectionViewFlowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 2, bottom: 5, right: 2)
-        layout.itemSize = CGSize(width: 120, height: 20)
+        //layout.minimumLineSpacing = 4
+        layout.minimumInteritemSpacing = 5
+        layout.sectionInset = UIEdgeInsets(top: 2, left: 2, bottom: 0, right: 2)
+        let width = (self.frame.width/3) - 5
+        let height = (((self.frame.height * 0.4))-((self.frame.height * 0.4)*0.2))/2
+        layout.itemSize = CGSize(width: width, height: height)
         return layout
     }()
     
     lazy var windowCoveringsCollectionView: UICollectionView = {
         let cView = UICollectionView(frame: .zero, collectionViewLayout: windowCoveringsCollectionViewFlowLayout)
         cView.translatesAutoresizingMaskIntoConstraints = false
-        cView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        cView.backgroundColor = UIColor.clear
         cView.tag = 1
         cView.register(ProdcustNameCell.self, forCellWithReuseIdentifier: "ProductNameCell")
-        cView.dataSource = self
         return cView
     }()
     
     private func setupWindowCoveringsCollectionViewConstraints(){
         NSLayoutConstraint.activate([
-            windowCoveringsCollectionView.topAnchor.constraint(equalTo: self.windowCoveringsLabel.bottomAnchor),
+            windowCoveringsCollectionView.topAnchor.constraint(equalTo: self.windowCoveringsLabelBaground.bottomAnchor),
             windowCoveringsCollectionView.leadingAnchor.constraint(equalTo: self.windowCoveringsContainerView.leadingAnchor),
             windowCoveringsCollectionView.trailingAnchor.constraint(equalTo: self.windowCoveringsContainerView.trailingAnchor),
-            windowCoveringsCollectionView.bottomAnchor.constraint(equalTo: self.windowCoveringsContainerView.bottomAnchor)
+            windowCoveringsCollectionView.bottomAnchor.constraint(equalTo: self.windowCoveringsContainerView.bottomAnchor, constant: -5)
             
             ])
     }
     
+    lazy var windowCoveringsLabelBaground: UIView = {
+        let view = UIView()
+         view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupWindowCoveringsLabelBagroundConstraints(){
+        NSLayoutConstraint.activate([
+            windowCoveringsLabelBaground.topAnchor.constraint(equalTo: self.windowCoveringsContainerView.topAnchor, constant: 5),
+            windowCoveringsLabelBaground.leadingAnchor.constraint(equalTo: self.windowCoveringsContainerView.leadingAnchor, constant: 20),
+            windowCoveringsLabelBaground.trailingAnchor.constraint(equalTo: self.windowCoveringsContainerView.trailingAnchor, constant: -20),
+            windowCoveringsLabelBaground.heightAnchor.constraint(equalTo: self.windowCoveringsContainerView.heightAnchor, multiplier: 0.12)
+            ])
+    }
     
     lazy var windowCoveringsLabel: UILabel = {
-       let label = UILabel()
-       label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor.white
-        label.text = "Window Coverings"
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.backgroundColor = UIColor.clear
+        label.text = "Hello"
+        label.layer.masksToBounds = true
         label.textAlignment = .center
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         label.textColor = UIColor.white
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont(name: "Amaranth", size: 24)
         return label
     }()
     
-    private func setupWindowCoveringsLabelConstraints(){
+    public func setupWindowCoveringsLabelConstraints(){
         NSLayoutConstraint.activate([
-            windowCoveringsLabel.topAnchor.constraint(equalTo: self.windowCoveringsContainerView.topAnchor),
-            windowCoveringsLabel.leadingAnchor.constraint(equalTo: self.windowCoveringsContainerView.leadingAnchor),
-            windowCoveringsLabel.trailingAnchor.constraint(equalTo: self.windowCoveringsContainerView.trailingAnchor),
-            windowCoveringsLabel.heightAnchor.constraint(equalTo: self.windowCoveringsContainerView.heightAnchor, multiplier: 0.2)
+            windowCoveringsLabel.topAnchor.constraint(equalTo: self.windowCoveringsLabelBaground.topAnchor),
+            windowCoveringsLabel.leadingAnchor.constraint(equalTo: self.windowCoveringsLabelBaground.leadingAnchor),
+            windowCoveringsLabel.trailingAnchor.constraint(equalTo: self.windowCoveringsLabelBaground.trailingAnchor),
+            windowCoveringsLabel.bottomAnchor.constraint(equalTo: self.windowCoveringsLabelBaground.bottomAnchor)
             ])
     }
     
@@ -92,7 +88,7 @@ class ProductView: UIView {
     
     lazy var windowCoveringsContainerView: UIView = {
        let view = UIView()
-        view.backgroundColor = UIColor.green
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
        return view
     }()
@@ -112,7 +108,9 @@ class ProductView: UIView {
     lazy var foldingDoorsCollectionViewFlowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 2, bottom: 5, right: 2)
+        layout.minimumInteritemSpacing = 3
+        layout.minimumLineSpacing = 5
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         layout.itemSize = CGSize(width: 180, height: 40)
         return layout
     }()
@@ -120,8 +118,9 @@ class ProductView: UIView {
     lazy var foldingDoorsCollectionView: UICollectionView = {
         let cView = UICollectionView(frame: .zero, collectionViewLayout: foldingDoorsCollectionViewFlowLayout)
         cView.translatesAutoresizingMaskIntoConstraints = false
-        cView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        cView.backgroundColor = UIColor.clear
         cView.tag = 2
+        cView.delegate = self
         cView.register(ProdcustNameCell.self, forCellWithReuseIdentifier: "ProductNameCell")
         cView.dataSource = self
         return cView
@@ -129,7 +128,7 @@ class ProductView: UIView {
     
     private func setupFoldingDoorsCollectionViewConstraints(){
         NSLayoutConstraint.activate([
-            foldingDoorsCollectionView.topAnchor.constraint(equalTo: self.foldingDoorsLabel.bottomAnchor),
+            foldingDoorsCollectionView.topAnchor.constraint(equalTo: self.foldingDoorsLabelBagroundView.bottomAnchor),
             foldingDoorsCollectionView.leadingAnchor.constraint(equalTo: self.foldingDoorsContainerView.leadingAnchor),
             foldingDoorsCollectionView.trailingAnchor.constraint(equalTo: self.foldingDoorsContainerView.trailingAnchor),
             foldingDoorsCollectionView.bottomAnchor.constraint(equalTo: self.foldingDoorsContainerView.bottomAnchor)
@@ -137,24 +136,40 @@ class ProductView: UIView {
             ])
     }
     
+    lazy var foldingDoorsLabelBagroundView: UIView = {
+        let view = UILabel()
+        view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupFoldingDoorsLabelBagroundViewConstraints(){
+        NSLayoutConstraint.activate([
+            foldingDoorsLabelBagroundView.topAnchor.constraint(equalTo: self.foldingDoorsContainerView.topAnchor),
+            foldingDoorsLabelBagroundView.leadingAnchor.constraint(equalTo: self.foldingDoorsContainerView.leadingAnchor, constant: 25),
+            foldingDoorsLabelBagroundView.trailingAnchor.constraint(equalTo: self.foldingDoorsContainerView.trailingAnchor, constant: -25),
+            foldingDoorsLabelBagroundView.heightAnchor.constraint(equalTo: self.foldingDoorsContainerView.heightAnchor, multiplier: 0.15)
+            ])
+    }
+    
     lazy var foldingDoorsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor.white
-        label.text = "Folding Doors"
+        label.backgroundColor = UIColor.clear
+        label.text = ""
         label.textAlignment = .center
         label.textColor = UIColor.white
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont(name: "Amaranth", size: 24)
         return label
     }()
     
     private func setupFoldingDoorsLabelConstraints(){
         NSLayoutConstraint.activate([
-            foldingDoorsLabel.topAnchor.constraint(equalTo: self.foldingDoorsContainerView.topAnchor),
-            foldingDoorsLabel.leadingAnchor.constraint(equalTo: self.foldingDoorsContainerView.leadingAnchor),
-            foldingDoorsLabel.trailingAnchor.constraint(equalTo: self.foldingDoorsContainerView.trailingAnchor),
-            foldingDoorsLabel.heightAnchor.constraint(equalTo: self.foldingDoorsContainerView.heightAnchor, multiplier: 0.2)
+            foldingDoorsLabel.topAnchor.constraint(equalTo: self.foldingDoorsLabelBagroundView.topAnchor),
+            foldingDoorsLabel.leadingAnchor.constraint(equalTo: self.foldingDoorsLabelBagroundView.leadingAnchor),
+            foldingDoorsLabel.trailingAnchor.constraint(equalTo: self.foldingDoorsLabelBagroundView.trailingAnchor),
+            foldingDoorsLabel.heightAnchor.constraint(equalTo: self.foldingDoorsLabelBagroundView.heightAnchor)
             ])
     }
     
@@ -162,7 +177,7 @@ class ProductView: UIView {
     
     lazy var foldingDoorsContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -172,7 +187,7 @@ class ProductView: UIView {
             foldingDoorsContainerView.topAnchor.constraint(equalTo: self.windowCoveringsContainerView.bottomAnchor),
             foldingDoorsContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             foldingDoorsContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            foldingDoorsContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15)
+            foldingDoorsContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.25)
             ])
     }
 
@@ -188,8 +203,9 @@ class ProductView: UIView {
     lazy var wirelessSecurityCollectionView: UICollectionView = {
         let cView = UICollectionView(frame: .zero, collectionViewLayout: wirelessSecurityCollectionViewFlowLayout)
         cView.translatesAutoresizingMaskIntoConstraints = false
-        cView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        cView.backgroundColor = UIColor.clear
         cView.tag = 3
+        cView.delegate = self
         cView.register(ProdcustNameCell.self, forCellWithReuseIdentifier: "ProductNameCell")
         cView.dataSource = self
         return cView
@@ -197,7 +213,7 @@ class ProductView: UIView {
     
     private func setupWirelessSecurityCollectionViewConstraints(){
         NSLayoutConstraint.activate([
-            wirelessSecurityCollectionView.topAnchor.constraint(equalTo: self.wirelessSecurityLabel.bottomAnchor),
+            wirelessSecurityCollectionView.topAnchor.constraint(equalTo: self.wirelessSecurityLabelBagroundView.bottomAnchor),
             wirelessSecurityCollectionView.leadingAnchor.constraint(equalTo: self.wirelessSecurityContainerView.leadingAnchor),
             wirelessSecurityCollectionView.trailingAnchor.constraint(equalTo: self.wirelessSecurityContainerView.trailingAnchor),
             wirelessSecurityCollectionView.bottomAnchor.constraint(equalTo: self.wirelessSecurityContainerView.bottomAnchor)
@@ -205,27 +221,41 @@ class ProductView: UIView {
             ])
     }
     
+    lazy var wirelessSecurityLabelBagroundView: UIView = {
+        let view = UILabel()
+        view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
+    private func setupWirelessSecurityLabelBagroundViewConstraints(){
+        NSLayoutConstraint.activate([
+            wirelessSecurityLabelBagroundView.topAnchor.constraint(equalTo: self.wirelessSecurityContainerView.topAnchor),
+            wirelessSecurityLabelBagroundView.leadingAnchor.constraint(equalTo: self.wirelessSecurityContainerView.leadingAnchor, constant: 30),
+            wirelessSecurityLabelBagroundView.trailingAnchor.constraint(equalTo: self.wirelessSecurityContainerView.trailingAnchor, constant: -30),
+            wirelessSecurityLabelBagroundView.heightAnchor.constraint(equalTo: self.wirelessSecurityContainerView.heightAnchor, multiplier: 0.2)
+            ])
+    }
     
     
     lazy var wirelessSecurityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor.white
+        label.backgroundColor = UIColor.clear
         label.textColor = UIColor.white
-        label.text = "Wireless Security"
+        label.text = ""
         label.textAlignment = .center
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont(name: "Amaranth", size: 24)
         return label
     }()
     
     private func setupWirelessSecurityLabelConstraints(){
         NSLayoutConstraint.activate([
-            wirelessSecurityLabel.topAnchor.constraint(equalTo: self.wirelessSecurityContainerView.topAnchor),
-            wirelessSecurityLabel.leadingAnchor.constraint(equalTo: self.wirelessSecurityContainerView.leadingAnchor),
-            wirelessSecurityLabel.trailingAnchor.constraint(equalTo: self.wirelessSecurityContainerView.trailingAnchor),
-            wirelessSecurityLabel.heightAnchor.constraint(equalTo: self.wirelessSecurityContainerView.heightAnchor, multiplier: 0.2)
+            wirelessSecurityLabel.topAnchor.constraint(equalTo: self.wirelessSecurityLabelBagroundView.topAnchor),
+            wirelessSecurityLabel.leadingAnchor.constraint(equalTo: self.wirelessSecurityLabelBagroundView.leadingAnchor),
+            wirelessSecurityLabel.trailingAnchor.constraint(equalTo: self.wirelessSecurityLabelBagroundView.trailingAnchor),
+            wirelessSecurityLabel.heightAnchor.constraint(equalTo: self.wirelessSecurityLabelBagroundView.heightAnchor)
             ])
     }
     
@@ -233,7 +263,7 @@ class ProductView: UIView {
     
     lazy var wirelessSecurityContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.purple
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -250,14 +280,32 @@ class ProductView: UIView {
     }
     
     
+    public func setupProductView(){
+        
+        self.windowCoveringsLabelBaground.applyCategoryLabelsTheme()
+        self.foldingDoorsLabelBagroundView.applyCategoryLabelsTheme()
+        self.wirelessSecurityLabelBagroundView.applyCategoryLabelsTheme()
+       
+        self.windowCoveringsLabelBaground.addSubview(windowCoveringsLabel)
+        setupWindowCoveringsLabelConstraints()
+        
+        self.foldingDoorsLabelBagroundView.addSubview(foldingDoorsLabel)
+        setupFoldingDoorsLabelConstraints()
+        
+        self.wirelessSecurityLabelBagroundView.addSubview(wirelessSecurityLabel)
+        setupWirelessSecurityLabelConstraints()
+    }
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(windowCoveringsContainerView)
         setupWindowCoveringsContainerViewConstraints()
         
-        self.windowCoveringsContainerView.addSubview(windowCoveringsLabel)
-        setupWindowCoveringsLabelConstraints()
+        self.self.windowCoveringsContainerView.addSubview(windowCoveringsLabelBaground)
+        setupWindowCoveringsLabelBagroundConstraints()
+        
+       
         
         self.windowCoveringsContainerView.addSubview(windowCoveringsCollectionView)
         setupWindowCoveringsCollectionViewConstraints()
@@ -265,8 +313,8 @@ class ProductView: UIView {
         self.addSubview(foldingDoorsContainerView)
         setupFoldingDoorsContainerViewConstraints()
         
-        self.foldingDoorsContainerView.addSubview(foldingDoorsLabel)
-        setupFoldingDoorsLabelConstraints()
+        self.foldingDoorsContainerView.addSubview(foldingDoorsLabelBagroundView)
+        setupFoldingDoorsLabelBagroundViewConstraints()
         
         self.foldingDoorsContainerView.addSubview(foldingDoorsCollectionView)
         setupFoldingDoorsCollectionViewConstraints()
@@ -274,8 +322,8 @@ class ProductView: UIView {
         self.addSubview(wirelessSecurityContainerView)
         setupWirelessSecurityContainerViewConstraints()
         
-        self.wirelessSecurityContainerView.addSubview(wirelessSecurityLabel)
-        setupWirelessSecurityLabelConstraints()
+        self.wirelessSecurityContainerView.addSubview(wirelessSecurityLabelBagroundView)
+        setupWirelessSecurityLabelBagroundViewConstraints()
         
         self.wirelessSecurityContainerView.addSubview(wirelessSecurityCollectionView)
         setupWirelessSecurityCollectionViewConstraints()
@@ -287,13 +335,25 @@ class ProductView: UIView {
     }
 }
 
-extension ProductView: UICollectionViewDataSource {
+extension ProductView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+  
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView.tag == 2{
+            let width = (collectionView.frame.width / 2) - 10
+            let height = (collectionView.frame.height) * 0.9
+            return CGSize(width: width, height: height)
+        }else{
+            let width = (collectionView.frame.width / 2) - 10
+            let height = (collectionView.frame.height) * 0.9
+            return CGSize(width: width, height: height)
+        }
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView.tag == 1{
-            return windowCoverings.count
-        }
-        else if collectionView.tag == 2{
+        
+        if collectionView.tag == 2{
             return foldingDoors.count
         }else {
             return wirelessSecurity.count
@@ -303,40 +363,26 @@ extension ProductView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductNameCell", for: indexPath) as! ProdcustNameCell
-        cell.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
-        if collectionView.tag == 1{
-            cell.nameLabel.text = windowCoverings[indexPath.item]
-        }
-        else if collectionView.tag == 2{
+      cell.backgroundColor = #colorLiteral(red: 0.1514958441, green: 0.726865232, blue: 0.9147748351, alpha: 1)
+        if collectionView.tag == 2 {
              cell.nameLabel.text = foldingDoors[indexPath.item]
+            if indexPath.item == 0 {
+                cell.productImageView.image = UIImage(named: "ic_laminatedFoldingDoor")
+            }else{
+                 cell.productImageView.image = UIImage(named: "shower_FoldingDoor")
+            }
         }else {
             cell.nameLabel.text = wirelessSecurity[indexPath.item]
+            if indexPath.item == 0 {
+                cell.productImageView.image = UIImage(named: "ic_sensors")
+            }else if indexPath.item == 1{
+                cell.productImageView.image = UIImage(named: "ic_magnets")
+            }else{
+                cell.productImageView.image = UIImage(named: "ic_alarms")
+            }
         }
         return cell
     }
     
-    
 }
 
-
-class ProdcustNameCell : UICollectionViewCell {
-    
-    lazy var nameLabel: UILabel = {
-       let label = UILabel(frame: self.bounds)
-        label.adjustsFontSizeToFitWidth = true
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.backgroundColor = #colorLiteral(red: 0.9998916984, green: 1, blue: 0.9998809695, alpha: 1)
-       return label
-    }()
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.addSubview(nameLabel)
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}

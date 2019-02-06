@@ -14,7 +14,7 @@ extension ProductDetailViewController: ProductDetailDelegate {
         
         self.model = ProductDetailModel(width: attributes.width, height: attributes.height, cordOperation: attributes.cordOperation, controlOperation: attributes.controlOperation, mountDetails: attributes.mountDetails, selectedColor: attributes.selectedColor)
         
-        var controller = AddToCartViewController()
+        let controller = AddToCartViewController()
         controller.selectedItem = self.selectedItem!
         controller.selectedAttributes = CustomAttributes(width: model!.height, height: model!.width, cordOperation: model!.cordOperation, controlOperation: model!.controlOperation, mountDetails: model!.mountDetails, selectedColor: model!.selectedColor)
        

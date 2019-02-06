@@ -35,6 +35,23 @@ extension UIView {
         }
     }
     
+    var safeCenterXAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return self.safeAreaLayoutGuide.centerXAnchor
+        } else {
+            return self.centerXAnchor
+        }
+    }
+    
+    var safeCenterYAnchor: NSLayoutYAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return self.safeAreaLayoutGuide.centerYAnchor
+        } else {
+            return self.centerYAnchor
+        }
+    }
+    
+    
     var safeTopAnchor: NSLayoutYAxisAnchor {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide.topAnchor

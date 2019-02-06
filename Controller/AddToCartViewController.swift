@@ -259,8 +259,7 @@ class AddToCartViewController: UIViewController {
 
     override func viewDidLoad() {
       super.viewDidLoad()
-      let defaults = UserDefaults.standard
-     print(selectedItem?.sku)
+
      /* self.view.addSubview(addToCartView)
          self.addToCartView.emptyCartLabel.isHidden = true
       let cartId = defaults.string(forKey: "cartId")

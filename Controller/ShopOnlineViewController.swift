@@ -70,7 +70,7 @@ class ShopOnlineViewController: UIViewController {
     }
     
     private func getAllProdcutsUnderCategory(withProductId id: Int){
-        var request = URLRequest(url: URL(string: hostName+"//rest/V1/products/?searchCriteria[filter_groups][0][filters][0][field]=type_id&searchCriteria[filter_groups][0][filters][0][value]=configurable+&searchCriteria[filter_groups][0][filters][0][condition_type]=eq")!)
+        var request = URLRequest(url: URL(string: hostName+"/rest/V1/products/?searchCriteria[filter_groups][0][filters][0][field]=type_id&searchCriteria[filter_groups][0][filters][0][value]=configurable+&searchCriteria[filter_groups][0][filters][0][condition_type]=eq")!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer "+adminToken!, forHTTPHeaderField:

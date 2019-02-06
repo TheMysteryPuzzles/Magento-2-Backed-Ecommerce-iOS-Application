@@ -40,6 +40,26 @@ extension UIView {
         gradientLayer.frame = self.bounds
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
+    
+    func applyCategoryLabelsTheme(){
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [hexStringToCGColor(hex: "#12c2e9"),hexStringToCGColor(hex: "#c471ed"),hexStringToCGColor(hex: "#f64f59")]
+        gradientLayer.frame = self.bounds
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.layer.insertSublayer(gradientLayer, at: 1)
+    }
+    
+    func applyHomeOptionsTheme(){
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [hexStringToCGColor(hex: "#B066FE"),hexStringToCGColor(hex: "#63E2FF")]
+        gradientLayer.frame = self.bounds
+       // gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+      //  gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.layer.insertSublayer(gradientLayer, at: 1)
+    }
+    
+    
     func applyBottomBarAppTheme(){
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [hexStringToCGColor(hex: "#ef32d9"),hexStringToCGColor(hex: "#89fffd")]
@@ -47,7 +67,7 @@ extension UIView {
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
     
-    func applyD3ListBackgroundTheme(){
+    func applyBackgroundTheme(){
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [hexStringToCGColor(hex: "#0f0c29"),hexStringToCGColor(hex: "#302b63"),hexStringToCGColor(hex: "#24243e")]
         gradientLayer.frame = self.bounds

@@ -16,41 +16,56 @@ class MainMenuView: UIView {
     var logoImageView: UIImageView = {
        let imageView = UIImageView(image: UIImage(named: "ic_logo"))
         imageView.contentMode = .scaleAspectFit
-       imageView.backgroundColor = UIColor.clear
-
-       imageView.translatesAutoresizingMaskIntoConstraints = false
-      return imageView
+        imageView.layer.masksToBounds = true
+        imageView.backgroundColor = UIColor.clear
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
 
     private func setupLogoImageViewConstraints(){
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: self.safeTopAnchor, constant: 5),
             logoImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            logoImageView.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2),
-            logoImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2)
+            logoImageView.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
+            logoImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15)
             
             ])
     }
     
+    lazy var productsLabelView: UIView = {
+       let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+   /* func setupProductsLabelViewConstraints(){
+        NSLayoutConstraint.activate([
+            productsLabelView.to
+            
+            ])
+    }*/
+    
+    
+    
     lazy var productsLabel: UILabel = {
        let label = UILabel()
-        label.text = "Products     ->"
+        label.text = "Our Products"
         label.isUserInteractionEnabled = true
-        label.textColor = UIColor.white
-        label.layer.borderWidth = 1.5
-        label.layer.borderColor = UIColor.white.cgColor
+        label.textColor = hexStringToUIColor(hex: "#333333")
+      //  label.layer.borderWidth = 1.5
+      //  label.layer.borderColor = UIColor.white.cgColor
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 28)
+        label.font = UIFont(name: "BillaBong", size: 32)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
+       // label.backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
         label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(productsLabelTapped)))
       return label
     }()
     
     private func setupProductsLabelConstraints(){
         NSLayoutConstraint.activate([
-            productsLabel.topAnchor.constraint(equalTo: self.logoImageView.bottomAnchor, constant: 5),
+            productsLabel.topAnchor.constraint(equalTo: self.safeTopAnchor, constant: 15),
             productsLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             productsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             productsLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.05)
@@ -58,49 +73,65 @@ class MainMenuView: UIView {
             ])
     }
     
+    var viewAllProductsButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("View All->", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private func setupViewAllProductsButtonConstraints(){
+        NSLayoutConstraint.activate([
+            viewAllProductsButton.topAnchor.constraint(equalTo: self.productsLabel.topAnchor),
+            viewAllProductsButton.rightAnchor.constraint(equalTo: self.productsLabel.rightAnchor, constant: -5),
+            viewAllProductsButton.widthAnchor.constraint(equalTo: self.productsLabel.widthAnchor, multiplier: 0.3),
+            viewAllProductsButton.heightAnchor.constraint(equalTo: self.productsLabel.heightAnchor)
+            
+            ])
+    }
+    
     var productsCategoriesView: UIView = {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = #colorLiteral(red: 0.9489166141, green: 0.9490789771, blue: 0.9489063621, alpha: 1)
       return view
     }()
     
     private func setupProductsCategoriesViewConstraints(){
         NSLayoutConstraint.activate([
             productsCategoriesView.topAnchor.constraint(equalTo: self.productsLabel.bottomAnchor),
-            productsCategoriesView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            productsCategoriesView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            productsCategoriesView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.35)
-            
+            productsCategoriesView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
+            productsCategoriesView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
+            productsCategoriesView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.55)
             ])
     }
     
     var windowCoveringsView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = UIColor.white
-        view.layer.cornerRadius = 8
-        view.image = UIImage(named: "ic_windowCoverings3")
-        view.layer.masksToBounds = true
+        view.image = UIImage(named: "ic_WindowCoverings3")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private func setupWindowCoveringsViewConstraints(){
         NSLayoutConstraint.activate([
-            windowCoveringsView.leftAnchor.constraint(equalTo: self.productsCategoriesView.leftAnchor, constant: 2),
-            windowCoveringsView.centerYAnchor.constraint(equalTo: self.productsCategoriesView.centerYAnchor),
-            windowCoveringsView.widthAnchor.constraint(equalTo: self.productsCategoriesView.widthAnchor, multiplier: 0.49),
-            windowCoveringsView.heightAnchor.constraint(equalTo: self.productsCategoriesView.heightAnchor, multiplier: 0.98)
+            windowCoveringsView.leadingAnchor.constraint(equalTo: self.productsCategoriesView.leadingAnchor),
+            windowCoveringsView.topAnchor.constraint(equalTo: self.productsCategoriesView.topAnchor),
+            windowCoveringsView.trailingAnchor.constraint(equalTo: self.productsCategoriesView.trailingAnchor),
+            windowCoveringsView.heightAnchor.constraint(equalTo: self.productsCategoriesView.heightAnchor, multiplier: 0.49)
             ])
     }
     
-    var windowCoveringsLabel: UILabel = {
+    lazy var windowCoveringsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Window Coverings"
+        label.text = ""
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 22)
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+        label.backgroundColor = hexStringToUIColor(hex: "#B066FE")
+        label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -108,8 +139,8 @@ class MainMenuView: UIView {
     private func setupWindowCoveringsLabelConstraints(){
         NSLayoutConstraint.activate([
             
-            windowCoveringsLabel.centerXAnchor.constraint(equalTo: self.windowCoveringsView.centerXAnchor),
             windowCoveringsLabel.bottomAnchor.constraint(equalTo: self.windowCoveringsView.bottomAnchor),
+            windowCoveringsLabel.heightAnchor.constraint(equalTo: self.windowCoveringsView.heightAnchor, multiplier: 0.15),
             windowCoveringsLabel.leadingAnchor.constraint(equalTo: self.windowCoveringsView.leadingAnchor),
             windowCoveringsLabel.trailingAnchor.constraint(equalTo: self.windowCoveringsView.trailingAnchor)
             ])
@@ -118,9 +149,7 @@ class MainMenuView: UIView {
     
     var foldingDoorsView: UIImageView = {
         let view = UIImageView()
-        view.layer.cornerRadius = 8
         view.image = UIImage(named: "ic_foldingDoors")
-        view.layer.masksToBounds = true
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -128,20 +157,22 @@ class MainMenuView: UIView {
     
     private func setupFoldingDoorsViewConstraints(){
         NSLayoutConstraint.activate([
-            foldingDoorsView.rightAnchor.constraint(equalTo: self.productsCategoriesView.rightAnchor, constant: -2),
-            foldingDoorsView.topAnchor.constraint(equalTo: self.windowCoveringsView.topAnchor),
-            foldingDoorsView.widthAnchor.constraint(equalTo: self.productsCategoriesView.widthAnchor, multiplier: 0.49),
-            foldingDoorsView.heightAnchor.constraint(equalTo: self.productsCategoriesView.heightAnchor, multiplier: 0.48)
+            foldingDoorsView.leftAnchor.constraint(equalTo: self.productsCategoriesView.leftAnchor),
+            foldingDoorsView.topAnchor.constraint(equalTo: self.windowCoveringsView.bottomAnchor),
+            foldingDoorsView.widthAnchor.constraint(equalTo: self.productsCategoriesView.widthAnchor, multiplier: 0.5),
+            foldingDoorsView.bottomAnchor.constraint(equalTo: self.productsCategoriesView.bottomAnchor)
             ])
     }
     
-    var foldingDoorsLabel: UILabel = {
+    lazy var foldingDoorsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Folding Doors"
+        label.text = ""
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+       // label.backgroundColor = hexStringToUIColor(hex: "#63E2FF")
+        label.backgroundColor = hexStringToUIColor(hex: "#B066FE")
+        label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -149,18 +180,16 @@ class MainMenuView: UIView {
     private func setupFoldingDoorsLabelConstraints(){
         NSLayoutConstraint.activate([
             
-            foldingDoorsLabel.centerXAnchor.constraint(equalTo: self.foldingDoorsView.centerXAnchor),
+            foldingDoorsLabel.heightAnchor.constraint(equalTo: self.foldingDoorsView.heightAnchor, multiplier: 0.15),
             foldingDoorsLabel.bottomAnchor.constraint(equalTo: self.foldingDoorsView.bottomAnchor),
             foldingDoorsLabel.leadingAnchor.constraint(equalTo: self.foldingDoorsView.leadingAnchor),
-            foldingDoorsLabel.trailingAnchor.constraint(equalTo: self.foldingDoorsView.trailingAnchor)
+            foldingDoorsLabel.trailingAnchor.constraint(equalTo: self.foldingDoorsView.trailingAnchor, constant: -1)
             ])
     }
     
     var wirelessSecuritysView: UIImageView = {
         let view = UIImageView()
          view.image = UIImage(named: "ic_wirelessSecurity")
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
         view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -168,20 +197,22 @@ class MainMenuView: UIView {
     
     private func setupWirelessSecuritysViewConstraints(){
         NSLayoutConstraint.activate([
-            wirelessSecuritysView.rightAnchor.constraint(equalTo: self.productsCategoriesView.rightAnchor, constant: -2),
-            wirelessSecuritysView.bottomAnchor.constraint(equalTo: self.windowCoveringsView.bottomAnchor),
-            wirelessSecuritysView.widthAnchor.constraint(equalTo: self.productsCategoriesView.widthAnchor, multiplier: 0.49),
-            wirelessSecuritysView.heightAnchor.constraint(equalTo: self.productsCategoriesView.heightAnchor, multiplier: 0.48)
+            wirelessSecuritysView.leftAnchor.constraint(equalTo: self.foldingDoorsView.rightAnchor),
+            wirelessSecuritysView.topAnchor.constraint(equalTo: self.windowCoveringsView.bottomAnchor),
+            wirelessSecuritysView.widthAnchor.constraint(equalTo: self.productsCategoriesView.widthAnchor, multiplier: 0.5),
+            wirelessSecuritysView.bottomAnchor.constraint(equalTo: self.productsCategoriesView.bottomAnchor)
             ])
-    }
+        }
     
-    var wirelessSecurityLabel: UILabel = {
+    lazy var wirelessSecurityLabel: UILabel = {
         let label = UILabel()
-        label.text = "Wireless Security"
+        label.text = ""
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+        label.textColor = UIColor.white
+        label.backgroundColor = hexStringToUIColor(hex: "#B066FE")
+       // label.backgroundColor = hexStringToUIColor(hex: "#63E2FF")
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -189,18 +220,19 @@ class MainMenuView: UIView {
     private func setupWirelessSecurityLabelConstraints(){
         NSLayoutConstraint.activate([
             
-            wirelessSecurityLabel.centerXAnchor.constraint(equalTo: self.wirelessSecuritysView.centerXAnchor),
+            wirelessSecurityLabel.heightAnchor.constraint(equalTo: self.wirelessSecuritysView.heightAnchor, multiplier: 0.15),
             wirelessSecurityLabel.bottomAnchor.constraint(equalTo: self.wirelessSecuritysView.bottomAnchor),
-            wirelessSecurityLabel.leadingAnchor.constraint(equalTo: self.wirelessSecuritysView.leadingAnchor),
+            wirelessSecurityLabel.leadingAnchor.constraint(equalTo: self.wirelessSecuritysView.leadingAnchor, constant: 1),
             wirelessSecurityLabel.trailingAnchor.constraint(equalTo: self.wirelessSecuritysView.trailingAnchor)
             ])
-    }
+      }
     
     
     var otherHomeOptionsContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.05)
+        view.isOpaque = false
         return view
     }()
     
@@ -209,32 +241,101 @@ class MainMenuView: UIView {
             otherHomeOptionsContainerView.topAnchor.constraint(equalTo: self.productsCategoriesView.bottomAnchor, constant: 5),
             otherHomeOptionsContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             otherHomeOptionsContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            otherHomeOptionsContainerView.bottomAnchor.constraint(equalTo: self.safeBottomAnchor)
+            otherHomeOptionsContainerView.bottomAnchor.constraint(equalTo: self.safeBottomAnchor, constant: -5)
             
             ])
-    }
+        }
     
-    var requestFreeSalesVisitImageView: UIImageView = {
-       let imageView = UIImageView()
-        imageView.image = UIImage(named: "ic_salesPerson")
-        imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = UIColor.clear
+    var requestFreeSalesVisitView: UIView = {
+       let view = UIView()
+        view.layer.cornerRadius = 6
+        view.layer.masksToBounds = true
+      //  imageView.image = UIImage(named: "ic_salesPerson")
+       // imageView.contentMode = .scaleAspectFit
+        view.backgroundColor = UIColor.red
+        view.translatesAutoresizingMaskIntoConstraints = false
+      //  imageView.layer.shadowColor = UIColor.gray.cgColor
+     //   imageView.layer.shadowOpacity = 1
+       // imageView.layer.shadowOffset = CGSize.zero
+       // imageView.layer.shadowRadius = 6
+        return view
+    }()
+    
+    lazy var requestFreeSalesVisitImageView: UIImageView = {
+        let imageView = UIImageView()
+          imageView.image = UIImage(named: "ic_salesPerson")
+          imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private func setupRequestFreeSalesVisitImageViewConstraints(){
+    public func setuprequestFreeSalesVisitImageViewConstraints(){
         NSLayoutConstraint.activate([
-            requestFreeSalesVisitImageView.leftAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.leftAnchor, constant: 2),
-            requestFreeSalesVisitImageView.topAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.topAnchor, constant: 2),
-            requestFreeSalesVisitImageView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.49),
-            requestFreeSalesVisitImageView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
+            requestFreeSalesVisitImageView.topAnchor.constraint(equalTo: self.requestFreeSalesVisitView.topAnchor, constant: 5),
+            requestFreeSalesVisitImageView.leadingAnchor.constraint(equalTo: self.requestFreeSalesVisitView.leadingAnchor),
+            requestFreeSalesVisitImageView.trailingAnchor.constraint(equalTo: self.requestFreeSalesVisitView.trailingAnchor),
+            requestFreeSalesVisitImageView.heightAnchor.constraint(equalTo: self.requestFreeSalesVisitView.heightAnchor, multiplier: 0.7),
+            ])
+    }
+    
+    private func setupRequestFreeSalesVisitViewConstraints(){
+        NSLayoutConstraint.activate([
+            requestFreeSalesVisitView.rightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.rightAnchor, constant: -5),
+            requestFreeSalesVisitView.topAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.topAnchor, constant: 5),
+            requestFreeSalesVisitView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.48),
+            requestFreeSalesVisitView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
             
             ])
-     }
+        }
     
+    lazy var requestFreeSalesVisitLabel: UILabel = {
+       let label = UILabel()
+        label.text = "Request FREE Sales Visit"
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    public func setupRequestFreeSalesVisitLabelConstraints(){
+        NSLayoutConstraint.activate([
+            requestFreeSalesVisitLabel.topAnchor.constraint(equalTo: self.requestFreeSalesVisitImageView.bottomAnchor),
+            requestFreeSalesVisitLabel.leadingAnchor.constraint(equalTo: self.requestFreeSalesVisitView.leadingAnchor),
+            requestFreeSalesVisitLabel.trailingAnchor.constraint(equalTo: self.requestFreeSalesVisitView.trailingAnchor),
+            requestFreeSalesVisitLabel.heightAnchor.constraint(equalTo: self.requestFreeSalesVisitView.heightAnchor, multiplier: 0.3),
+            
+            ])
+    }
+    
+    var visitShowRoomView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 6
+        view.layer.masksToBounds = true
+        view.contentMode = .scaleAspectFit
+      //  imageView.image = UIImage(named: "ic_visitShowroom")
+        view.backgroundColor = UIColor.purple
+      /*  imageView.layer.shadowColor = UIColor.gray.cgColor
+        imageView.layer.shadowOpacity = 1
+        imageView.layer.shadowOffset = CGSize.zero
+        imageView.layer.shadowRadius = 6*/
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupVisitShowRoomViewConstraints(){
+        NSLayoutConstraint.activate([
+            visitShowRoomView.leftAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.leftAnchor, constant: 5),
+            visitShowRoomView.topAnchor.constraint(equalTo: self.shopOnlineView.bottomAnchor, constant: 5),
+            visitShowRoomView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.48),
+            visitShowRoomView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
+            
+            ])
+        }
+
     var visitShowRoomImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "ic_visitShowroom")
         imageView.backgroundColor = UIColor.clear
@@ -242,52 +343,164 @@ class MainMenuView: UIView {
         return imageView
     }()
     
-    private func setupVisitShowRoomImageViewConstraints(){
+    public func setupVisitShowRoomImageViewConstraints(){
         NSLayoutConstraint.activate([
-            visitShowRoomImageView.rightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.rightAnchor, constant: -2),
-            visitShowRoomImageView.topAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.topAnchor, constant: 2),
-            visitShowRoomImageView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.49),
-            visitShowRoomImageView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
+            visitShowRoomImageView.topAnchor.constraint(equalTo: self.visitShowRoomView.topAnchor, constant: 5),
+            visitShowRoomImageView.leadingAnchor.constraint(equalTo: self.visitShowRoomView.leadingAnchor),
+            visitShowRoomImageView.trailingAnchor.constraint(equalTo: self.visitShowRoomView.trailingAnchor),
+            visitShowRoomImageView.heightAnchor.constraint(equalTo: self.visitShowRoomView.heightAnchor, multiplier: 0.7)
+            ])
+    }
+    
+    lazy var visitShowroomLabel: UILabel = {
+       let label = UILabel()
+        label.text = "Visit Showroom"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor.white
+        return label
+    }()
+    
+    func setupVisitShowroomLabelConstraints(){
+        NSLayoutConstraint.activate([
+            visitShowroomLabel.topAnchor.constraint(equalTo: self.visitShowRoomImageView.bottomAnchor),
+            visitShowroomLabel.leadingAnchor.constraint(equalTo: self.visitShowRoomView.leadingAnchor),
+            visitShowroomLabel.trailingAnchor.constraint(equalTo: self.visitShowRoomView.trailingAnchor),
+            visitShowroomLabel.heightAnchor.constraint(equalTo: self.visitShowRoomView.heightAnchor, multiplier: 0.3)
             
             ])
     }
 
-    lazy var shopOnlineImageView: UIImageView = {
+
+    lazy var shopOnlineView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 6
+        view.layer.masksToBounds = true
+        view.contentMode = .scaleAspectFit
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShopOnlineTapped)))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupShopOnlineViewConstraints(){
+        NSLayoutConstraint.activate([
+            shopOnlineView.leftAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.leftAnchor, constant: 5),
+            shopOnlineView.topAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.topAnchor, constant: 5),
+            shopOnlineView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.48),
+            shopOnlineView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
+            
+            ])
+        }
+    
+     var shopOnlineImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.masksToBounds = true
         imageView.isUserInteractionEnabled = true
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "ic_shopOnline")
         imageView.backgroundColor = UIColor.clear
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShopOnlineTapped)))
+        
+       imageView.image = UIImage(named: "ic_shopOnline")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private func setupShopOnlineImageViewConstraints(){
+    public func setupShopOnlineImageViewConstraints(){
         NSLayoutConstraint.activate([
-            shopOnlineImageView.leftAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.leftAnchor, constant: 2),
-            shopOnlineImageView.bottomAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.bottomAnchor, constant: -2),
-            shopOnlineImageView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.49),
-            shopOnlineImageView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
+            shopOnlineImageView.topAnchor.constraint(equalTo: self.shopOnlineView.topAnchor, constant: 5),
+            shopOnlineImageView.leadingAnchor.constraint(equalTo: self.shopOnlineView.leadingAnchor),
+            shopOnlineImageView.trailingAnchor.constraint(equalTo: self.shopOnlineView.trailingAnchor),
+            shopOnlineImageView.heightAnchor.constraint(equalTo: self.shopOnlineView.heightAnchor, multiplier: 0.7)
+            ])
+    }
+    
+    lazy var shopOnlineLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Shop Online"
+       return label
+    }()
+    
+    func setupShopOnlineLabelConstraints(){
+        NSLayoutConstraint.activate([
+            shopOnlineLabel.topAnchor.constraint(equalTo: self.shopOnlineImageView.bottomAnchor),
+            shopOnlineLabel.leadingAnchor.constraint(equalTo: self.shopOnlineView.leadingAnchor),
+            shopOnlineLabel.trailingAnchor.constraint(equalTo: self.shopOnlineView.trailingAnchor),
+            shopOnlineLabel.heightAnchor.constraint(equalTo: self.shopOnlineView.heightAnchor, multiplier: 0.3)
             
             ])
     }
     
-    var aboutUsImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "ic_aboutUs")
-        imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = UIColor.clear
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+    
+    lazy var aboutUsView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 6
+        view.layer.masksToBounds = true
+        view.backgroundColor = UIColor.green
+       // imageView.image = UIImage(named: "ic_aboutUs")
+        view.contentMode = .scaleAspectFit
+        /* imageView.layer.shadowColor = UIColor.gray.cgColor
+         imageView.layer.shadowOpacity = 1
+         imageView.layer.shadowOffset = CGSize.zero
+         imageView.layer.shadowRadius = 6
+         imageView.backgroundColor = UIColor.clear*/
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    
+    private func setupAboutUsViewConstraints(){
+        NSLayoutConstraint.activate([
+            aboutUsView.rightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.rightAnchor, constant: -5),
+            aboutUsView.topAnchor.constraint(equalTo: self.requestFreeSalesVisitView.bottomAnchor ,constant: 5),
+            aboutUsView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.48),
+            aboutUsView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
+            
+            ])
+    }
+    
+    lazy var aboutUsImageView: UIImageView = {
+       let imageView = UIImageView()
+       imageView.image = UIImage(named: "ic_aboutUs")
+       imageView.contentMode = .scaleAspectFit
+       imageView.translatesAutoresizingMaskIntoConstraints = false
+        //imageView.backgroundColor = UIColor.red
         return imageView
     }()
     
-    private func setupAboutUsImageViewConstraints(){
+    public func setupAboutUsImageViewConstraints(){
         NSLayoutConstraint.activate([
-            aboutUsImageView.rightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.rightAnchor, constant: -2),
-            aboutUsImageView.bottomAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.bottomAnchor, constant: -2),
-            aboutUsImageView.widthAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.widthAnchor, multiplier: 0.49),
-            aboutUsImageView.heightAnchor.constraint(equalTo: self.otherHomeOptionsContainerView.heightAnchor, multiplier: 0.48)
+            aboutUsImageView.topAnchor.constraint(equalTo: self.aboutUsView.topAnchor, constant: 5),
+            aboutUsImageView.leadingAnchor.constraint(equalTo: self.aboutUsView.leadingAnchor),
+            aboutUsImageView.trailingAnchor.constraint(equalTo: self.aboutUsView.trailingAnchor),
+            aboutUsImageView.heightAnchor.constraint(equalTo: self.aboutUsView.heightAnchor, multiplier: 0.7)
+            
+            ])
+    }
+    
+    lazy var aboutUsLabel: UILabel = {
+       let label = UILabel()
+        label.text = "About Us"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.adjustsFontSizeToFitWidth = true
+        label.textColor = UIColor.white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    func setupAboutUsLabelConstraints(){
+        NSLayoutConstraint.activate([
+            aboutUsLabel.topAnchor.constraint(equalTo: self.aboutUsImageView.bottomAnchor),
+            aboutUsLabel.leadingAnchor.constraint(equalTo: self.aboutUsView.leadingAnchor),
+            aboutUsLabel.trailingAnchor.constraint(equalTo: self.aboutUsView.trailingAnchor),
+            aboutUsLabel.heightAnchor.constraint(equalTo: self.aboutUsView.heightAnchor, multiplier: 0.3)
             
             ])
     }
@@ -295,46 +508,58 @@ class MainMenuView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         //self.backgroundColor = hexStringToUIColor(hex: "#89fffd")
-        self.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
-        self.applyBottomBarAppTheme()
+       // self.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+       // self.applyBottomBarAppTheme()
         
-        self.addSubview(logoImageView)
-        setupLogoImageViewConstraints()
+       // self.addSubview(logoImageView)
+      //  setupLogoImageViewConstraints()
         
         self.addSubview(productsLabel)
         setupProductsLabelConstraints()
+        
+       // self.productsLabel.addSubview(viewAllProductsButton)
+       // setupViewAllProductsButtonConstraints()
         
         self.addSubview(productsCategoriesView)
         setupProductsCategoriesViewConstraints()
         
         self.addSubview(otherHomeOptionsContainerView)
         setupOtherHomeOptionsContainerViewConstraints()
+        //self.otherHomeOptionsContainerView.Hide()
+    
+        
         
         self.productsCategoriesView.addSubview(windowCoveringsView)
         setupWindowCoveringsViewConstraints()
         
         self.productsCategoriesView.addSubview(foldingDoorsView)
         setupFoldingDoorsViewConstraints()
+    
+       self.productsCategoriesView.addSubview(wirelessSecuritysView)
+      setupWirelessSecuritysViewConstraints()
         
-        self.productsCategoriesView.addSubview(wirelessSecuritysView)
-        setupWirelessSecuritysViewConstraints()
+        self.otherHomeOptionsContainerView.addSubview(requestFreeSalesVisitView)
+        setupRequestFreeSalesVisitViewConstraints()
         
-        self.otherHomeOptionsContainerView.addSubview(requestFreeSalesVisitImageView)
-        setupRequestFreeSalesVisitImageViewConstraints()
+       
         
-        self.otherHomeOptionsContainerView.addSubview(visitShowRoomImageView)
-        setupVisitShowRoomImageViewConstraints()
+        self.otherHomeOptionsContainerView.addSubview(shopOnlineView)
+        setupShopOnlineViewConstraints()
         
-        self.otherHomeOptionsContainerView.addSubview(shopOnlineImageView)
-        setupShopOnlineImageViewConstraints()
+        self.otherHomeOptionsContainerView.addSubview(visitShowRoomView)
+        setupVisitShowRoomViewConstraints()
         
-        self.otherHomeOptionsContainerView.addSubview(aboutUsImageView)
-        setupAboutUsImageViewConstraints()
+        self.otherHomeOptionsContainerView.addSubview(aboutUsView)
+        setupAboutUsViewConstraints()
+        
+        
+       // self.aboutUsView.addSubview(aboutUsImageView)
+     //   self.setupAboutUsImageViewConstraints()
         
         self.windowCoveringsView.addSubview(windowCoveringsLabel)
         setupWindowCoveringsLabelConstraints()
         
-        self.foldingDoorsView.addSubview(foldingDoorsLabel)
+       self.foldingDoorsView.addSubview(foldingDoorsLabel)
         setupFoldingDoorsLabelConstraints()
         
         self.wirelessSecuritysView.addSubview(wirelessSecurityLabel)
