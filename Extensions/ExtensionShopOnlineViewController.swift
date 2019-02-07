@@ -51,7 +51,7 @@ extension ShopOnlineViewController: D3ListDelegate, D3ListDatasource {
     func d3ListView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let viewController = ProductDetailViewController()
         print("Item: \(indexPath.item)")
-        viewController.selectedItem = self.windowCoveringsItems[indexPath.item]
+        viewController.selectedItem = self.currentSelectedCategoryItems[indexPath.item]
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -72,14 +72,14 @@ extension ShopOnlineViewController: D3ListDelegate, D3ListDatasource {
     
     func numberOfItems(inD3List d3List: D3ListView) -> Int {
         print("Count: \(self.windowCoverings.count)")
-        return self.windowCoverings.count
+        return self.currentSelectedCategoryItems.count
     }
     
     func d3ListView(_ d3CollectionView: D3ListView, cellForItemAt indexPath: IndexPath) -> D3ListViewCell {
         
         let cardCell = d3CollectionView.dequeueReusableCell(withReuseIdentifier: "ExampleCell", for: indexPath) as! ProductDisplayCell
         cardCell.applyBottomBarAppTheme()
-        cardCell.categoryNameLabel.text = self.windowCoverings[indexPath.item]
+        cardCell.categoryNameLabel.text = self.currentSelectedCategoryItems[indexPath.item].name
         cardCell.layer.cornerRadius = 6
         cardCell.layer.masksToBounds = true
         let subFrame = CGRect(x: 0, y: 60, width: cardCell.frame.width, height: cardCell.frame.height - 60)

@@ -38,12 +38,15 @@ class MainMenuView: UIView {
         return view
     }()
     
-   /* func setupProductsLabelViewConstraints(){
+   func setupProductsLabelViewConstraints(){
         NSLayoutConstraint.activate([
-            productsLabelView.to
+            productsLabelView.topAnchor.constraint(equalTo: self.safeTopAnchor, constant: 15),
+            productsLabelView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            productsLabelView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            productsLabelView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.05)
             
             ])
-    }*/
+    }
     
     
     
@@ -65,10 +68,10 @@ class MainMenuView: UIView {
     
     private func setupProductsLabelConstraints(){
         NSLayoutConstraint.activate([
-            productsLabel.topAnchor.constraint(equalTo: self.safeTopAnchor, constant: 15),
-            productsLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            productsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            productsLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.05)
+            productsLabel.topAnchor.constraint(equalTo: self.productsLabelView.topAnchor),
+            productsLabel.leadingAnchor.constraint(equalTo: self.productsLabelView.leadingAnchor),
+            productsLabel.trailingAnchor.constraint(equalTo: self.productsLabelView.trailingAnchor),
+            productsLabel.heightAnchor.constraint(equalTo: self.productsLabelView.heightAnchor)
             
             ])
     }
@@ -514,7 +517,10 @@ class MainMenuView: UIView {
        // self.addSubview(logoImageView)
       //  setupLogoImageViewConstraints()
         
-        self.addSubview(productsLabel)
+        self.addSubview(productsLabelView)
+        setupProductsLabelViewConstraints()
+        
+        self.productsLabelView.addSubview(productsLabel)
         setupProductsLabelConstraints()
         
        // self.productsLabel.addSubview(viewAllProductsButton)

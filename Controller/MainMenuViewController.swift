@@ -127,6 +127,8 @@ extension MainMenuViewController {
              self.mainMenuView.requestFreeSalesVisitView.applyHomeOptionsTheme()
              self.mainMenuView.aboutUsView.applyHomeOptionsTheme()
              self.mainMenuView.visitShowRoomView.applyHomeOptionsTheme()
+            self.mainMenuView.productsLabelView.applyCategoryLabelsTheme()
+            self.mainMenuView.productsLabelView.mask = self.mainMenuView.productsLabel
 
             
         self.mainMenuView.requestFreeSalesVisitView.insertSubview(self.mainMenuView.requestFreeSalesVisitImageView, at: 1)

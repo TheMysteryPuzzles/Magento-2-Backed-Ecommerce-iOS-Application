@@ -10,11 +10,15 @@ import UIKit
 
 class ShopOnlineProductCategoriesHeaderView: UIView {
     
-    var windowCoveringsCategory: UIImageView = {
+    var shopOnlineVc: ShopOnlineViewController?
+    
+    lazy var windowCoveringsCategory: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
+        view.isUserInteractionEnabled = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = UIImage(named: "windowCategory")
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleWindowCoveringCategorySelected)))
         return view
     }()
     
@@ -30,6 +34,19 @@ class ShopOnlineProductCategoriesHeaderView: UIView {
         label.backgroundColor = UIColor.clear
         return label
     }()
+    
+    @objc private func handleWindowCoveringCategorySelected(){
+        shopOnlineVc?.handleWindowCoveringCategorySelected()
+    }
+    
+    @objc private func handleFoldingDoorsCategorySelected(){
+        shopOnlineVc?.handleFoldingDoorsCategorySelected()
+    }
+    
+    @objc private func handleWirelessSecurityCategorySelected(){
+        shopOnlineVc?.handleWirelessSecurityCategorySelected()
+    }
+    
     
     private func setupWindowCoveringsCategoryConstraints(){
         NSLayoutConstraint.activate([
@@ -49,11 +66,13 @@ class ShopOnlineProductCategoriesHeaderView: UIView {
             ])
     }
     
-    var foldingDoorsCategory: UIImageView = {
+    lazy var foldingDoorsCategory: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = UIImage(named: "folding_doors")
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleFoldingDoorsCategorySelected)))
         return view
     }()
     
@@ -88,11 +107,13 @@ class ShopOnlineProductCategoriesHeaderView: UIView {
             ])
     }
     
-    var WirelessSecuritySystemCategory: UIImageView = {
+   lazy var WirelessSecuritySystemCategory: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
+        view.isUserInteractionEnabled = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = UIImage(named: "wireless")
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleWirelessSecurityCategorySelected)))
         return view
     }()
     

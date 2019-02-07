@@ -59,6 +59,15 @@ extension UIView {
         self.layer.insertSublayer(gradientLayer, at: 1)
     }
     
+    func applyTextHeadingsTheme(){
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [hexStringToCGColor(hex: "#B066FE"),hexStringToCGColor(hex: "#63E2FF")]
+        gradientLayer.frame = self.bounds
+         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+          gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.layer.insertSublayer(gradientLayer, at: 1)
+    }
+    
     
     func applyBottomBarAppTheme(){
         let gradientLayer = CAGradientLayer()

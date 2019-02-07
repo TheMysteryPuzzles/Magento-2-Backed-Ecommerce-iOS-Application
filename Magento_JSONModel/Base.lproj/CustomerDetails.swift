@@ -32,23 +32,4 @@ struct CustomerDetails: Codable {
     }
 }
 
-class ExtensionAttributes: Codable {
-    let websiteIDS: [Int]?
-    let categoryLinks: [CategoryLink]?
-    let configurableProductOptions: [ConfigurableProductOption]?
-    let configurableProductLinks: [Int]?
-    
-    enum CodingKeys: String, CodingKey {
-        case websiteIDS = "website_ids"
-        case categoryLinks = "category_links"
-        case configurableProductOptions = "configurable_product_options"
-        case configurableProductLinks = "configurable_product_links"
-    }
-    
-    init(websiteIDS: [Int]?, categoryLinks: [CategoryLink]?, configurableProductOptions: [ConfigurableProductOption]?, configurableProductLinks: [Int]?) {
-        self.websiteIDS = websiteIDS
-        self.categoryLinks = categoryLinks
-        self.configurableProductOptions = configurableProductOptions
-        self.configurableProductLinks = configurableProductLinks
-    }
-}
+

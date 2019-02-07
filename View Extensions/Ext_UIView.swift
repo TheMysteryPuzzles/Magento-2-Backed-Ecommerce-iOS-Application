@@ -39,7 +39,7 @@ extension UIView {
 
 extension UIView{
     func animShow(){
-        UIView.animate(withDuration: 2, delay: 1, options: [.curveEaseIn],
+        UIView.animate(withDuration: 1.5, delay: 1, options: [.curveEaseInOut],
                        animations: {
                         self.center.y -= self.bounds.height
                         self.layoutIfNeeded()

@@ -69,7 +69,7 @@ class ProductsViewController: UIViewController {
                 self.getAllProductsUnder(thisCategory: id)
                 
                 if id == 3 {
-                    self.windowCoveringsItems = responseModel.items!
+                    //self.windowCoveringsItems = responseModel.items!
                     /*  if customerToken != nil {
                      //self.addToCart()
                      }*/
