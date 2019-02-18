@@ -10,6 +10,8 @@ import UIKit
 
 class ShopOnlineViewController: UIViewController {
     
+    
+    var selectedCategory =  CategoryTypes.WindowCoverings
     var flag = false
     var items = [String: [Product]]()
     var categories = ["Window Coverings", "Folding Doors", "Wireless Security Systems"]
@@ -24,7 +26,8 @@ class ShopOnlineViewController: UIViewController {
     var images3 = [UIImage(named: "P20"),UIImage(named: "P12"),UIImage(named: "P13"),UIImage(named: "P14"),UIImage(named: "P15"),UIImage(named: "P16"),UIImage(named: "P17")]
     
     var subCategories = [String:[String]]()
-
+    var currentSelectedCategoryItems = [Item]()
+    
     override func viewDidAppear(_ animated: Bool) {
        super.viewDidAppear(animated)
        productsView.setupCategoryLabelFonts()
@@ -34,12 +37,16 @@ class ShopOnlineViewController: UIViewController {
         let productsView = ShopOnlineView(frame: self.view.bounds)
         productsView.productsList.delegate = self
         productsView.productsList.dataSource = self
+        productsView.shopOnlineVc = self
         return productsView
     }()
     
+
     var categoriesResponse: Categories?
     var completeCatalog = [Int:ProductDetailsJSONModel]()
-    var windowCoveringsItems =  [Item]()
+    var windowCoveringsItems = [Item]()
+    var foldingDoorsItems = [Item]()
+    var wirelessSecurityItems = [Item]()
     
     private func getAllMagentoStoreCategories(){
         var request = URLRequest(url: URL(string: hostName+"/rest/V1/categories")!)
@@ -70,29 +77,41 @@ class ShopOnlineViewController: UIViewController {
     }
     
     private func getAllProdcutsUnderCategory(withProductId id: Int){
-        var request = URLRequest(url: URL(string: hostName+"/rest/V1/products/?searchCriteria[filter_groups][0][filters][0][field]=type_id&searchCriteria[filter_groups][0][filters][0][value]=configurable+&searchCriteria[filter_groups][0][filters][0][condition_type]=eq")!)
+        var request = URLRequest(url: URL(string: hostName+"/rest/V1/products/?searchCriteria[filter_groups][0][filters][0][field]=type_id&searchCriteria[filter_groups][0][filters][0][value]=configurable&searchCriteria[filter_groups][0][filters][0][condition_type]=eq&searchCriteria[filter_groups][1][filters][0][field]=category_id&searchCriteria[filter_groups][1][filters][0][value]="+"\(id)"+"&searchCriteria[filter_groups][1][filters][0][condition_type]=eq")!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer "+adminToken!, forHTTPHeaderField:
             "Authorization")
         
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+    
             do {
-                
+            
                 let jsonDecoder = JSONDecoder()
                 let responseModel = try jsonDecoder.decode(ProductDetailsJSONModel.self, from: data!)
-                print("Category ID: \(id)")
-                
-                self.completeCatalog[id] = responseModel
-               
-                self.getAllProductsUnder(thisCategory: id)
+             
+                if responseModel.items != nil {
                 
                 if id == 3 {
                     self.windowCoveringsItems = responseModel.items!
-                  /*  if customerToken != nil {
-                        //self.addToCart()
-                    }*/
+                    switch self.selectedCategory {
+                    case .WindowCoverings: self.currentSelectedCategoryItems = self.windowCoveringsItems
+                    case .WirelessSecurity:  self.currentSelectedCategoryItems = self.wirelessSecurityItems
+                    case .FoldingDoors:  self.currentSelectedCategoryItems = self.foldingDoorsItems
+                    }
+                    DispatchQueue.main.async {
+                        self.stopTaks()
+                        UIView.transition(with: self.productsView.productsList,
+                                          duration: 0.6,
+                                          options: .transitionFlipFromBottom,
+                                          animations: { self.productsView.productsList.reloadData() })
+                    }
+                }else if id == 24 {
+                    self.foldingDoorsItems = responseModel.items!
+                }else if id == 27 {
+                    self.wirelessSecurityItems = responseModel.items!
                 }
+            }
             } catch {
                 print("JSON Serialization error")
             }
@@ -100,6 +119,7 @@ class ShopOnlineViewController: UIViewController {
         
         
     }
+    
     
     private func getAllProductsUnder(thisCategory categoryId: Int){
         let productsDetails = self.completeCatalog[categoryId]
@@ -117,8 +137,7 @@ class ShopOnlineViewController: UIViewController {
      }
   }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    fileprivate func setupNavigationBar() {
         self.navigationItem.leftBarButtonItem = nil
         let button = UIButton(type: .custom)
         button.setTitle("SignUp|Login", for: .normal)
@@ -132,13 +151,40 @@ class ShopOnlineViewController: UIViewController {
         button2.imageView?.contentMode = .scaleAspectFit
         button2.addTarget(self, action: #selector(handleCartButton), for: .touchUpInside)
         button2.frame = CGRect(x: 0.0, y: 0.0, width: 35.0, height: 35.0)
-
+        
         let item2 = UIBarButtonItem(customView: button2)
-      
+        
         self.navigationItem.setRightBarButtonItems([item2,item1], animated: true)
+    }
+    
+    
+    lazy var progressIndicator: ProgressIndidcatorView = {
+        let indicator = ProgressIndidcatorView(frame: self.view.bounds)
+        indicator.indicatorCenter = self.view.center
+        return indicator
+    }()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavigationBar()
         self.view.addSubview(productsView)
         self.view.backgroundColor = UIColor.black
+        self.startTask()
         getAllMagentoStoreCategories()
+      
+    }
+    
+    private func startTask(){
+        self.view.addSubview(progressIndicator)
+        progressIndicator.indicatorCenter = self.view.center
+        self.view.bringSubviewToFront(progressIndicator)
+        self.progressIndicator.startProgress()
+    }
+    
+    private func stopTaks(){
+        self.progressIndicator.stopProgress()
+        self.progressIndicator.isHidden = true
     }
     
     
@@ -166,3 +212,71 @@ class ShopOnlineViewController: UIViewController {
 
 
 
+extension ShopOnlineViewController {
+    
+      func handleWindowCoveringCategorySelected(){
+        
+        self.currentSelectedCategoryItems = windowCoveringsItems
+        DispatchQueue.main.async {
+        if (self.currentSelectedCategoryItems.isEmpty) {
+            self.productsView.productsList.isHidden = true
+             self.productsView.emptyProductsView.isHidden = false
+        }
+        else {
+             self.productsView.emptyProductsView.isHidden = true
+                self.productsView.productsList.isHidden = false
+            UIView.transition(with: self.productsView.productsList,
+                              duration: 0.6,
+                              options: .transitionFlipFromBottom,
+                              animations: { self.productsView.productsList.reloadData() })
+            
+            }
+        }
+    }
+    
+      func handleFoldingDoorsCategorySelected(){
+       
+         self.currentSelectedCategoryItems = foldingDoorsItems
+        
+        DispatchQueue.main.async {
+          
+        if (self.foldingDoorsItems.count < 1) {
+            self.productsView.productsList.isHidden = true
+             self.productsView.emptyProductsView.isHidden = false
+        }else {
+             self.productsView.emptyProductsView.isHidden = true
+            self.productsView.productsList.isHidden = false
+            UIView.transition(with: self.productsView.productsList,
+                              duration: 0.6,
+                              options: .transitionFlipFromBottom,
+                              animations: { self.productsView.productsList.reloadData() })
+            }
+        }
+    }
+    
+      func handleWirelessSecurityCategorySelected(){
+
+         self.currentSelectedCategoryItems = wirelessSecurityItems
+        DispatchQueue.main.async {
+        if (self.currentSelectedCategoryItems.count == 0) {
+            self.productsView.productsList.isHidden = true
+             self.productsView.emptyProductsView.isHidden = false
+        }else{
+            self.productsView.emptyProductsView.isHidden = true
+            self.productsView.productsList.isHidden = false
+            UIView.transition(with: self.productsView.productsList,
+                              duration: 0.6,
+                              options: .transitionFlipFromBottom,
+                              animations: { self.productsView.productsList.reloadData() })
+        }
+      }
+    }
+    
+}
+
+
+enum CategoryTypes {
+    case WindowCoverings
+    case FoldingDoors
+    case WirelessSecurity
+}

@@ -1,0 +1,6 @@
+framework module Pods_MagentoAPI {
+  umbrella header "Pods-MagentoAPI-umbrella.h"
+
+  export *
+  module * { export * }
+}
