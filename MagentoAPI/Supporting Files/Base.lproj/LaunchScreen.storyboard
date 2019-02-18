@@ -18,18 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="0fh-1X-q6e">
-                                <rect key="frame" x="98.5" y="268" width="178" height="151"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="178" id="QGY-4c-dvl"/>
-                                    <constraint firstAttribute="height" constant="151" id="VQ3-gC-oOG"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch-image" translatesAutoresizingMaskIntoConstraints="NO" id="0fh-1X-q6e">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="0fh-1X-q6e" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="4uR-Ta-9l6"/>
-                            <constraint firstItem="0fh-1X-q6e" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="byD-wA-S3E"/>
+                            <constraint firstAttribute="trailing" secondItem="0fh-1X-q6e" secondAttribute="trailing" id="GOe-Oh-qdD"/>
+                            <constraint firstItem="0fh-1X-q6e" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="KWC-DD-MSg"/>
+                            <constraint firstItem="0fh-1X-q6e" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="NDL-O4-nsx"/>
+                            <constraint firstItem="0fh-1X-q6e" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="WwW-AG-BVG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -40,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_logo" width="108" height="120"/>
+        <image name="launch-image" width="2480" height="3508"/>
     </resources>
 </document>

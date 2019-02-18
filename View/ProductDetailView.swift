@@ -20,8 +20,58 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         print("Selected")
     }
     
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView(frame: self.bounds)
+        print("\(self.frame.width)")
+        scrollView.contentSize = CGSize(width: self.frame.width, height: self.frame.height)
+        scrollView.backgroundColor = UIColor.green
+        return scrollView
+    }()
+    
+    
+    func setupBlurView(){
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = customAttributeHelpViewBaground.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.customAttributeHelpViewBaground.addSubview(blurEffectView)
+self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView)
+    }
+    
+    lazy var customAttributeHelpViewBaground: UIView = {
+       let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupCustomAttributeHelpViewBagroundConstraints(){
+    NSLayoutConstraint.activate([
+        customAttributeHelpViewBaground.topAnchor.constraint(equalTo: scrollView.topAnchor),
+        customAttributeHelpViewBaground.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+        customAttributeHelpViewBaground.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+        customAttributeHelpViewBaground.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
+    }
+    
+    lazy var customAttributeHelpView: CustomAttributesDetailsHelpView = {
+       let view = CustomAttributesDetailsHelpView()
+       view.backgroundColor = UIColor.lightGray
+       view.translatesAutoresizingMaskIntoConstraints = false
+       return view
+    }()
+    
+    private func setupCustomAttributeHelpViewConstraints(){
+        NSLayoutConstraint.activate([
+            customAttributeHelpView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            customAttributeHelpView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
+            customAttributeHelpView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 0.8),
+            customAttributeHelpView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 0.25)
+        ])
+    }
+    
     let productDetailHeaderView: UIView = {
        let view = UIView()
+        //view.scroll
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return view
@@ -35,10 +85,10 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             productDetailHeaderView.topAnchor.constraint(equalTo: self.topAnchor, constant: statusBarHeight).isActive = true
         }*/
         NSLayoutConstraint.activate([
-             productDetailHeaderView.topAnchor.constraint(equalTo: self.topAnchor, constant: statusBarHeight),
-        productDetailHeaderView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+             productDetailHeaderView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: statusBarHeight),
+        productDetailHeaderView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             productDetailHeaderView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            productDetailHeaderView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2)
+            productDetailHeaderView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 0.2)
         ])
     }
     
@@ -52,10 +102,10 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     private func setupProductImageViewConstraints(){
         NSLayoutConstraint.activate([
-            productImageView.topAnchor.constraint(equalTo: self.productDetailHeaderView.topAnchor, constant: 5),
-            productImageView.leftAnchor.constraint(equalTo: self.productDetailHeaderView.leftAnchor, constant: 5),
-            productImageView.widthAnchor.constraint(equalTo: self.productDetailHeaderView.widthAnchor, multiplier: 0.39),
-            productImageView.bottomAnchor.constraint(equalTo: self.productDetailHeaderView.bottomAnchor, constant: -5)
+            productImageView.topAnchor.constraint(equalTo: productDetailHeaderView.topAnchor, constant: 5),
+            productImageView.leftAnchor.constraint(equalTo: productDetailHeaderView.leftAnchor, constant: 5),
+            productImageView.widthAnchor.constraint(equalTo: productDetailHeaderView.widthAnchor, multiplier: 0.39),
+            productImageView.bottomAnchor.constraint(equalTo: productDetailHeaderView.bottomAnchor, constant: -5)
             ])
     }
     
@@ -70,10 +120,10 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     private func setupProductNameLabelConstraints(){
         NSLayoutConstraint.activate([
-            productNameLabel.topAnchor.constraint(equalTo: self.productDetailHeaderView.topAnchor, constant: 5),
-            productNameLabel.leftAnchor.constraint(equalTo: self.productImageView.rightAnchor, constant: 5),
-            productNameLabel.rightAnchor.constraint(equalTo: self.productDetailHeaderView.rightAnchor, constant: -5),
-            productNameLabel.heightAnchor.constraint(equalTo: self.productDetailHeaderView.heightAnchor, multiplier: 0.25)
+            productNameLabel.topAnchor.constraint(equalTo: productDetailHeaderView.topAnchor, constant: 5),
+            productNameLabel.leftAnchor.constraint(equalTo: productImageView.rightAnchor, constant: 5),
+            productNameLabel.rightAnchor.constraint(equalTo: productDetailHeaderView.rightAnchor, constant: -5),
+            productNameLabel.heightAnchor.constraint(equalTo: productDetailHeaderView.heightAnchor, multiplier: 0.25)
             ])
        }
     
@@ -89,8 +139,8 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     private func setupProductDetailLabelConstraints(){
         NSLayoutConstraint.activate([
-            productDetailLabel.topAnchor.constraint(equalTo: self.productNameLabel.bottomAnchor, constant: 2),
-            productDetailLabel.leftAnchor.constraint(equalTo: self.productImageView.rightAnchor, constant: 5),
+            productDetailLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 2),
+            productDetailLabel.leftAnchor.constraint(equalTo: productImageView.rightAnchor, constant: 5),
             productDetailLabel.rightAnchor.constraint(equalTo: self.productDetailHeaderView.rightAnchor, constant: -5),
             productDetailLabel.bottomAnchor.constraint(equalTo: self.productDetailHeaderView.bottomAnchor, constant: -5)
             ])
@@ -108,9 +158,47 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             selectColorView.topAnchor.constraint(equalTo: self.productDetailHeaderView.bottomAnchor, constant: 5),
             selectColorView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             selectColorView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            selectColorView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.18)
+            selectColorView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3)
             ])
        }
+    
+    lazy var selectWidthHeightView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.gray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupSelectWidthHeightViewConstraints(){
+        NSLayoutConstraint.activate([
+            selectWidthHeightView.topAnchor.constraint(equalTo: self.insideWindowLabel.bottomAnchor, constant: 5),
+            selectWidthHeightView.leftAnchor.constraint(equalTo: self.selectMountDetailsView.leftAnchor),
+            selectWidthHeightView.rightAnchor.constraint(equalTo: self.selectMountDetailsView.rightAnchor),
+            selectWidthHeightView.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.07)
+            ])
+    }
+    
+    lazy var selectWidthHeightLabel: UILabel = {
+        let label = UILabel()
+        label.text = " Step 3 - Choose Size"
+        label.textAlignment = .left
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = UIColor.lightGray
+        return label
+    }()
+    
+    private func setupSelectWidthHeightLabelConstraints(){
+        NSLayoutConstraint.activate([
+            selectWidthHeightLabel.topAnchor.constraint(equalTo: self.selectWidthHeightView.topAnchor),
+            selectWidthHeightLabel.leftAnchor.constraint(equalTo: self.selectWidthHeightView.leftAnchor),
+            selectWidthHeightLabel.widthAnchor.constraint(equalTo: self.selectWidthHeightView.widthAnchor, multiplier: 0.8),
+            selectWidthHeightLabel.heightAnchor.constraint(equalTo: self.selectWidthHeightView.heightAnchor)
+            ])
+    }
     
     lazy var selectColorHeaderView: UIView = {
        let view = UIView()
@@ -150,23 +238,21 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         ])
     }
     
-    var selectColorCollectionViewLayout: UICollectionViewFlowLayout = {
+    lazy var selectColorCollectionViewLayout: UICollectionViewFlowLayout = {
        let layout = UICollectionViewFlowLayout()
        layout.scrollDirection = .horizontal
        layout.minimumLineSpacing = 5
         layout.minimumInteritemSpacing = 5
-        layout.itemSize = CGSize(width: 50, height: 40)
-        layout.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 5)
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 8, bottom: 1, right: 5)
         return layout
     }()
     
     
     lazy var selectColorCollectionView: UICollectionView = {
        let view = UICollectionView(frame: .zero, collectionViewLayout: selectColorCollectionViewLayout)
-
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        view.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        view.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         return view
     }()
     
@@ -180,13 +266,35 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     }
     
     
-    var selectColorDetailImageView: UIImageView = {
+    lazy var selectColorDetailImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
         imageView.backgroundColor = UIColor.lightGray
+        imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    
+    lazy var selectSizeImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "question_Mark"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
+        imageView.backgroundColor = UIColor.lightGray
+        imageView.isUserInteractionEnabled = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    @objc func handleselectColorDetailImageViewSelected(){
+        self.setupBlurView()
+        self.customAttributeHelpViewBaground.isHidden = false
+    }
+    
+    @objc func dismissCustomAttributeHelpViewBaground(){
+         self.customAttributeHelpViewBaground.isHidden = true
+    }
     
     private func setupSelectColorDetailImageViewConstraints(){
         NSLayoutConstraint.activate([
@@ -196,6 +304,15 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             selectColorDetailImageView.heightAnchor.constraint(equalTo: self.selectColorHeaderView.heightAnchor)
             ])
     }
+    private func setupSelectSizeViewConstraints(){
+        NSLayoutConstraint.activate([
+            selectSizeImageView.topAnchor.constraint(equalTo: self.selectWidthHeightView.topAnchor),
+            selectSizeImageView.rightAnchor.constraint(equalTo: self.selectWidthHeightView.rightAnchor),
+            selectSizeImageView.widthAnchor.constraint(equalTo: self.selectWidthHeightView.widthAnchor, multiplier: 0.2),
+            selectSizeImageView.heightAnchor.constraint(equalTo: self.selectWidthHeightView.heightAnchor)
+            ])
+    }
+    
     
     lazy var selectMountDetailsView: UIView = {
         let view = UIView()
@@ -210,7 +327,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             selectMountDetailsView.topAnchor.constraint(equalTo: self.selectColorView.bottomAnchor, constant: 5),
             selectMountDetailsView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             selectMountDetailsView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            selectMountDetailsView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.27)
+            selectMountDetailsView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.45)
             ])
       }
     
@@ -253,9 +370,11 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             ])
     }
     
-    var selectMountDetailsDetailImageView: UIImageView = {
+    lazy var selectMountDetailsDetailImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
         imageView.backgroundColor = UIColor.lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -270,7 +389,6 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             ])
     }
 
-    
      var insideWindowRadioButton: SSRadioButton = {
        let button = SSRadioButton()
         button.isUserInteractionEnabled = true
@@ -341,43 +459,236 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
                                                                attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
        field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = UIColor.lightGray
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
+        field.delegate = self
+         field.tag = 0
         return field
     }()
     
     private func setupWidthTextFieldConstraints(){
         NSLayoutConstraint.activate([
-            widthTextField.topAnchor.constraint(equalTo: self.insideWindowRadioButton.bottomAnchor, constant: 5),
-            widthTextField.leftAnchor.constraint(equalTo: self.selectMountDetailsView.leftAnchor, constant: 5),
-            widthTextField.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.4),
-            widthTextField.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.2)
+            widthTextField.topAnchor.constraint(equalTo: self.widthInches.bottomAnchor, constant: 5),
+            widthTextField.leftAnchor.constraint(equalTo: self.selectWidthHeightView.leftAnchor),
+            widthTextField.widthAnchor.constraint(equalTo: self.widthInches.widthAnchor, multiplier: 0.45),
+            widthTextField.heightAnchor.constraint(equalToConstant: 30)
+            ])
+      }
+    
+    
+    lazy var widthCmTextField: UITextField = {
+        let field = UITextField()
+        field.textColor = UIColor.black
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.delegate = self
+        field.tag = 0
+        return field
+    }()
+    
+    private func setupWidthCmTextFieldConstraints(){
+        NSLayoutConstraint.activate([
+            widthTextFieldCm.topAnchor.constraint(equalTo: self.widthCm.bottomAnchor, constant: 5),
+            widthTextFieldCm.leftAnchor.constraint(equalTo: self.widthCm.leftAnchor),
+            widthTextFieldCm.widthAnchor.constraint(equalTo: self.widthCm.widthAnchor, multiplier: 0.45),
+            widthTextFieldCm.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
     
-    lazy var heightTextField: UITextField = {
+    
+    lazy var heightCmTextField: UITextField = {
         let field = UITextField()
         field.textColor = UIColor.black
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.attributedPlaceholder = NSAttributedString(string: " Height(Cm)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.delegate = self
+        field.tag = 0
+        return field
+    }()
+    
+    private func setupHeightCmTextFieldConstraints(){
+        NSLayoutConstraint.activate([
+            heightTextFieldCm.topAnchor.constraint(equalTo: self.heightCm.bottomAnchor, constant: 5),
+            heightTextFieldCm.leftAnchor.constraint(equalTo: self.heightCm.leftAnchor),
+            heightTextFieldCm.widthAnchor.constraint(equalTo: self.heightCm.widthAnchor, multiplier: 0.45),
+            heightTextFieldCm.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
+    lazy var widthTextFieldDecimal: UITextField = {
+        let field = UITextField()
+        field.textColor = UIColor.black
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.delegate = self
+        field.tag = 0
+        return field
+    }()
+    
+    private func setupWidthTextDecimalFieldConstraints(){
+        NSLayoutConstraint.activate([
+            widthTextFieldDecimal.topAnchor.constraint(equalTo: self.widthInches.bottomAnchor, constant: 5),
+            widthTextFieldDecimal.leftAnchor.constraint(equalTo: self.widthTextField.rightAnchor, constant: 5),
+            widthTextFieldDecimal.widthAnchor.constraint(equalTo: self.widthInches.widthAnchor, multiplier: 0.45),
+            widthTextFieldDecimal.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    
+    lazy var widthTextFieldCmDecimal: UITextField = {
+        let field = UITextField()
+        field.textColor = UIColor.black
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.delegate = self
+        field.tag = 0
+        return field
+    }()
+    
+    private func setupWidthTextFieldCmDecimalConstraints(){
+        NSLayoutConstraint.activate([
+            widthTextFieldCmDecimal.topAnchor.constraint(equalTo: self.widthTextFieldCm.topAnchor),
+            widthTextFieldCmDecimal.leftAnchor.constraint(equalTo: self.widthTextFieldCm.rightAnchor, constant: 5),
+            widthTextFieldCmDecimal.widthAnchor.constraint(equalTo: self.widthCm.widthAnchor, multiplier: 0.45),
+            widthTextFieldCmDecimal.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
+    lazy var heightTextFieldCmDecimal: UITextField = {
+        let field = UITextField()
+        field.textColor = UIColor.black
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.delegate = self
+        field.tag = 0
+        return field
+    }()
+    
+    private func setupHeightTextFieldCmDecimalConstraints(){
+        NSLayoutConstraint.activate([
+            heightTextFieldCmDecimal.topAnchor.constraint(equalTo: self.heightTextFieldCm.topAnchor),
+            heightTextFieldCmDecimal.leftAnchor.constraint(equalTo: self.heightTextFieldCm.rightAnchor, constant: 5),
+            heightTextFieldCmDecimal.widthAnchor.constraint(equalTo: self.heightCm.widthAnchor, multiplier: 0.45),
+            heightTextFieldCmDecimal.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
+    
+    
+    
+    lazy var widthTextFieldCm: UITextField = {
+        let field = UITextField()
+        field.textColor = UIColor.black
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.attributedPlaceholder = NSAttributedString(string: " Width (Cm)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.delegate = self
+         field.tag = 2
+        return field
+    }()
+    
+    private func setupWidthTextFieldCmConstraints(){
+        NSLayoutConstraint.activate([
+            widthTextFieldCm.topAnchor.constraint(equalTo: self.selectWidthHeightView.bottomAnchor, constant: 5),
+            widthTextFieldCm.leftAnchor.constraint(equalTo: self.selectWidthHeightView.leftAnchor),
+            widthTextFieldCm.widthAnchor.constraint(equalTo: self.selectWidthHeightView.widthAnchor),
+            widthTextFieldCm.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.14)
+            ])
+    }
+    
+    
+    lazy var heightTextField: UITextField = {
+        let field = UITextField()
         field.backgroundColor = UIColor.white
         field.attributedPlaceholder = NSAttributedString(string: " Height (Inches)",
                                                          attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = UIColor.lightGray
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
+         field.tag = 1
+        
         return field
     }()
     
     private func setupHeightTextFieldConstraints(){
         NSLayoutConstraint.activate([
-            heightTextField.topAnchor.constraint(equalTo: self.insideWindowRadioButton.bottomAnchor, constant: 5),
-            heightTextField.rightAnchor.constraint(equalTo: self.selectMountDetailsView.rightAnchor, constant: -10),
-            heightTextField.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.4),
-            heightTextField.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.2)
+            heightTextField.topAnchor.constraint(equalTo: self.heightInches.bottomAnchor, constant: 5),
+            heightTextField.leftAnchor.constraint(equalTo: self.heightInches.leftAnchor),
+            heightTextField.widthAnchor.constraint(equalTo: self.heightInches.widthAnchor, multiplier: 0.45),
+            heightTextField.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    lazy var heightTextFieldDecimal: UITextField = {
+        let field = UITextField()
+        field.backgroundColor = UIColor.white
+        field.attributedPlaceholder = NSAttributedString(string: " Height (Inches)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.tag = 1
+        
+        return field
+    }()
+    
+    private func setupHeightTextFieldDecimalConstraints(){
+        NSLayoutConstraint.activate([
+            heightTextFieldDecimal.topAnchor.constraint(equalTo: self.heightInches.bottomAnchor, constant: 5),
+            heightTextFieldDecimal.leftAnchor.constraint(equalTo: self.heightTextField.rightAnchor, constant: 5),
+            heightTextFieldDecimal.widthAnchor.constraint(equalTo: self.heightInches.widthAnchor, multiplier: 0.45),
+            heightTextFieldDecimal.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
+    
+    lazy var heightTextFieldCm: UITextField = {
+        let field = UITextField()
+        field.backgroundColor = UIColor.white
+        field.attributedPlaceholder = NSAttributedString(string: " Height (Cm)",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        field.layer.cornerRadius = 3
+        field.tag = 3
+        return field
+    }()
+    
+    private func setupHeightTextFieldCmConstraints(){
+        NSLayoutConstraint.activate([
+            heightTextFieldCm.topAnchor.constraint(equalTo: self.widthTextFieldCm.bottomAnchor, constant: 5),
+            heightTextFieldCm.leftAnchor.constraint(equalTo: self.widthTextFieldCm.leftAnchor),
+            heightTextFieldCm.widthAnchor.constraint(equalTo: self.widthTextFieldCm.widthAnchor),
+            heightTextFieldCm.heightAnchor.constraint(equalTo: self.widthTextFieldCm.heightAnchor)
             ])
     }
     
     lazy var widthImageView: UIImageView = {
        let imageView = UIImageView(image: UIImage(named: "ic_insideWidth"))
+        imageView.backgroundColor = UIColor.clear
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -386,16 +697,17 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     private func setupWidthImageViewConstraints(){
         NSLayoutConstraint.activate([
-            widthImageView.topAnchor.constraint(equalTo: self.widthTextField.bottomAnchor, constant: 5),
-            widthImageView.leftAnchor.constraint(equalTo: self.widthTextField.leftAnchor),
-            widthImageView.rightAnchor.constraint(equalTo: self.widthTextField.rightAnchor),
-            widthImageView.bottomAnchor.constraint(equalTo: self.selectMountDetailsView.bottomAnchor, constant: -5)
+            widthImageView.topAnchor.constraint(equalTo: self.selectMountDetailsHeaderView.bottomAnchor, constant: 5),
+            widthImageView.leftAnchor.constraint(equalTo: self.selectMountDetailsView.leftAnchor, constant: 10),
+            widthImageView.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
+            widthImageView.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.3)
         ])
     }
     
     lazy var heightImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "ic_insideHeight"))
         imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = UIColor.clear
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -403,10 +715,10 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     private func setupHeightImageViewConstraints(){
         NSLayoutConstraint.activate([
-            heightImageView.topAnchor.constraint(equalTo: self.heightTextField.bottomAnchor, constant: 5),
-            heightImageView.leftAnchor.constraint(equalTo: self.heightTextField.leftAnchor),
-            heightImageView.rightAnchor.constraint(equalTo: self.heightTextField.rightAnchor),
-            heightImageView.bottomAnchor.constraint(equalTo: self.selectMountDetailsView.bottomAnchor,constant: -5)
+            heightImageView.topAnchor.constraint(equalTo: self.selectMountDetailsHeaderView.bottomAnchor, constant: 5),
+            heightImageView.rightAnchor.constraint(equalTo: self.selectMountDetailsView.rightAnchor, constant: -10),
+            heightImageView.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
+            heightImageView.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.3)
             ])
     }
     
@@ -431,7 +743,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             selectOperationsHeaderView.topAnchor.constraint(equalTo: self.selectOperationsView.topAnchor),
             selectOperationsHeaderView.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor),
             selectOperationsHeaderView.rightAnchor.constraint(equalTo: self.selectOperationsView.rightAnchor),
-            selectOperationsHeaderView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.15)
+            selectOperationsHeaderView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.05)
             ])
     }
     
@@ -441,11 +753,11 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             selectOperationsView.topAnchor.constraint(equalTo: self.selectMountDetailsView.bottomAnchor, constant: 5),
             selectOperationsView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             selectOperationsView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            selectOperationsView.bottomAnchor.constraint(equalTo: self.safeBottomAnchor, constant: -50)
+            selectOperationsView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
             ])
     }
     
-    lazy var leftCordOperationRadioButton: SSRadioButton = {
+    lazy var ManualCordOperationRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
         button.addTarget(self, action: #selector(toggleLeftCordOperationRadioButton), for: .touchUpInside)
@@ -456,34 +768,36 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.backgroundColor = UIColor.clear
         button.setTitleColor(UIColor.black, for: .normal)
-        button.setTitle("Left Side", for: .normal)
+        button.setTitle(" Manual", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+         button.contentHorizontalAlignment = .left
         return button
     }()
     
     @objc private func toggleLeftCordOperationRadioButton(){
         self.selectedCordOperation = CordOperation.leftSide
-        rightCordOperationRadioButton.isSelected = false
-        leftCordOperationRadioButton.isSelected = true
+        motorizedCordOperationRadioButton.isSelected = false
+        ManualCordOperationRadioButton.isSelected = true
+        
         
     }
     
     @objc private func toggleRightCordOperationRadioButton(){
         self.selectedCordOperation = CordOperation.RightSide
-        leftCordOperationRadioButton.isSelected = false
-        rightCordOperationRadioButton.isSelected = true
+        ManualCordOperationRadioButton.isSelected = false
+        motorizedCordOperationRadioButton.isSelected = true
     }
     
     private func setupLeftCordOperationRadioButtonConstraints(){
         NSLayoutConstraint.activate([
-            leftCordOperationRadioButton.topAnchor.constraint(equalTo: self.selectOperationsHeaderView.bottomAnchor, constant: 5),
-            leftCordOperationRadioButton.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor, constant: 5),
-            leftCordOperationRadioButton.widthAnchor.constraint(equalTo: self.selectOperationsView.widthAnchor, multiplier: 0.45),
-            leftCordOperationRadioButton.heightAnchor.constraint(equalToConstant: 30)
+            ManualCordOperationRadioButton.topAnchor.constraint(equalTo: self.selectOperationsHeaderView.bottomAnchor, constant: 5),
+            ManualCordOperationRadioButton.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor, constant: 5),
+            ManualCordOperationRadioButton.widthAnchor.constraint(equalTo: self.selectOperationsView.widthAnchor, multiplier: 0.45),
+            ManualCordOperationRadioButton.heightAnchor.constraint(equalToConstant: 30)
             ])
      }
     
-     lazy var rightCordOperationRadioButton: SSRadioButton = {
+     lazy var motorizedCordOperationRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
         button.addTarget(self, action: #selector(toggleRightCordOperationRadioButton), for: .touchUpInside)
@@ -494,17 +808,18 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.setTitleColor(UIColor.black, for: .normal)
         button.circleColor = UIColor.black
-        button.setTitle("Right Side", for: .normal)
+        button.setTitle(" Motorized", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+         button.contentHorizontalAlignment = .left
         return button
     }()
     
     private func setupRightCordOperationRadioButtonConstraints(){
         NSLayoutConstraint.activate([
-            rightCordOperationRadioButton.topAnchor.constraint(equalTo: self.selectOperationsHeaderView.bottomAnchor, constant: 5),
-            rightCordOperationRadioButton.leftAnchor.constraint(equalTo: self.leftCordOperationRadioButton.rightAnchor, constant: 5),
-            rightCordOperationRadioButton.widthAnchor.constraint(equalTo: selectOperationsView.widthAnchor, multiplier: 0.45),
-            rightCordOperationRadioButton.heightAnchor.constraint(equalToConstant: 30)
+            motorizedCordOperationRadioButton.topAnchor.constraint(equalTo: self.selectOperationsHeaderView.bottomAnchor, constant: 5),
+            motorizedCordOperationRadioButton.leftAnchor.constraint(equalTo: self.ManualCordOperationRadioButton.rightAnchor, constant: 5),
+            motorizedCordOperationRadioButton.widthAnchor.constraint(equalTo: selectOperationsView.widthAnchor, multiplier: 0.45),
+            motorizedCordOperationRadioButton.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
     
@@ -529,9 +844,11 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             ])
     }
     
-    var selectCordOperationDetailImageView: UIImageView = {
+   lazy var selectCordOperationDetailImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
+          imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
         imageView.backgroundColor = UIColor.lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -558,7 +875,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     private func setupSelectControlOperationHeaderViewConstraints(){
         NSLayoutConstraint.activate([
-            selectControlOperationHeaderView.topAnchor.constraint(equalTo: self.leftCordOperationRadioButton.bottomAnchor),
+            selectControlOperationHeaderView.topAnchor.constraint(equalTo: self.ManualCordOperationRadioButton.bottomAnchor),
             selectControlOperationHeaderView.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor),
             selectControlOperationHeaderView.rightAnchor.constraint(equalTo: self.selectOperationsView.rightAnchor),
             selectControlOperationHeaderView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.15)
@@ -586,9 +903,12 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             ])
     }
     
-    var selectControlOperationsDetailImageView: UIImageView = {
+    lazy var selectControlOperationsDetailImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
+        
+          imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
         imageView.backgroundColor = UIColor.lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -607,6 +927,8 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     var manualControlRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
+     
+     
         button.addTarget(self, action: #selector(toggleManualControlRadioButton), for: .touchUpInside)
         button.circleColor = UIColor.black
         button.circleRadius = 8
@@ -615,8 +937,9 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.backgroundColor = UIColor.clear
         button.setTitleColor(UIColor.black, for: .normal)
-        button.setTitle("Manual", for: .normal)
+        button.setTitle(" Manual", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.contentHorizontalAlignment = .left
         return button
     }()
     
@@ -654,8 +977,9 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         button.titleLabel?.adjustsFontSizeToFitWidth = true
        button.setTitleColor(UIColor.black, for: .normal)
         button.circleColor = UIColor.black
-        button.setTitle("Automatic", for: .normal)
+        button.setTitle(" Automatic", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+         button.contentHorizontalAlignment = .left
         return button
     }()
     
@@ -686,8 +1010,8 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         NSLayoutConstraint.activate([
             roomNameTextField.topAnchor.constraint(equalTo: self.manualControlRadioButton.bottomAnchor, constant: 5),
             roomNameTextField.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor, constant: 5),
-            roomNameTextField.widthAnchor.constraint(equalTo: self.selectOperationsView.widthAnchor, multiplier: 0.9),
-            roomNameTextField.bottomAnchor.constraint(equalTo: self.selectOperationsView.bottomAnchor, constant: -1)
+            roomNameTextField.widthAnchor.constraint(equalTo: self.selectOperationsView.widthAnchor, multiplier: 0.98),
+            roomNameTextField.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.13)
             ])
     }
     
@@ -733,23 +1057,23 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     
     fileprivate func setupContainerViews() {
-        self.addSubview(productDetailHeaderView)
+        self.scrollView.addSubview(productDetailHeaderView)
         setupProductDetailHeaderViewConstraints()
         
-        self.addSubview(selectColorView)
+       self.scrollView.addSubview(selectColorView)
         setupSelectColorViewConstraints()
-        
-        self.addSubview(selectMountDetailsView)
+       
+        self.scrollView.addSubview(selectMountDetailsView)
         setupSelectMountDetailsViewConstraints()
-        
-        self.addSubview(selectOperationsView)
+       
+        self.scrollView.addSubview(selectOperationsView)
         setupSelectOperationsViewConstraints()
-        
-        self.addSubview(cancelButton)
+          /*
+       self.scrollView.addSubview(cancelButton)
         setupCancelButtonConstraints()
         
-        self.addSubview(addToCartButton)
-        setupAddToCartButtonConstraints()
+        self.scrollView.addSubview(addToCartButton)
+        setupAddToCartButtonConstraints()*/
     }
     
     fileprivate func setupProductDetailHeaderViewSubviews() {
@@ -777,6 +1101,134 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         setupSelectColorCollectionViewConstraints()
     }
     
+    lazy var insideWindowLabel: UILabel = {
+       let label = UILabel()
+       label.text = "Inside Window"
+        label.textAlignment = .center
+          label.backgroundColor = UIColor.gray
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
+    }()
+    private func setupInsideWindowLabelConstraints(){
+        NSLayoutConstraint.activate([
+            insideWindowLabel.topAnchor.constraint(equalTo: self.widthImageView.bottomAnchor),
+            insideWindowLabel.leadingAnchor.constraint(equalTo: self.widthImageView.leadingAnchor),
+            insideWindowLabel.trailingAnchor.constraint(equalTo: self.widthImageView.trailingAnchor),
+            insideWindowLabel.heightAnchor.constraint(equalTo: self.widthImageView.heightAnchor, multiplier: 0.3)
+            ])
+    }
+    
+    lazy var outsideWindowLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Inside Window"
+            label.textAlignment = .center
+        label.backgroundColor = UIColor.gray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    private func setupOutsideWindowLabelConstraints(){
+        NSLayoutConstraint.activate([
+            outsideWindowLabel.topAnchor.constraint(equalTo: self.heightImageView.bottomAnchor),
+            outsideWindowLabel.leadingAnchor.constraint(equalTo: self.heightImageView.leadingAnchor),
+            outsideWindowLabel.trailingAnchor.constraint(equalTo: self.heightImageView.trailingAnchor),
+            outsideWindowLabel.heightAnchor.constraint(equalTo: self.heightImageView.heightAnchor, multiplier: 0.3)
+            ])
+    }
+    
+    lazy var widthInches: UILabel = {
+       let label = UILabel()
+       label.text = "Width(Inches)"
+         label.textAlignment = .center
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
+    }()
+    
+    private func setupwidthInchesConstraints(){
+     NSLayoutConstraint.activate([
+        widthInches.leadingAnchor.constraint(equalTo: self.selectMountDetailsView.leadingAnchor, constant: 5),
+         widthInches.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
+         widthInches.topAnchor.constraint(equalTo: self.selectWidthHeightView.bottomAnchor),
+         widthInches.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    
+    lazy var widthCm: UILabel = {
+        let label = UILabel()
+        label.text = "Width(Cm)"
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func setupWidthCmConstraints(){
+        NSLayoutConstraint.activate([
+            widthCm.leadingAnchor.constraint(equalTo: self.selectMountDetailsView.leadingAnchor, constant: 5),
+            widthCm.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
+            widthCm.topAnchor.constraint(equalTo: self.widthTextField.bottomAnchor, constant: 5),
+            widthCm.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+ 
+    lazy var heightInches: UILabel = {
+        let label = UILabel()
+        label.text = "Height(Inches)"
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func setupHeightInchesConstraints(){
+        NSLayoutConstraint.activate([
+            heightInches.trailingAnchor.constraint(equalTo: self.selectMountDetailsView.trailingAnchor, constant: -5),
+            heightInches.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
+            heightInches.topAnchor.constraint(equalTo: self.selectWidthHeightView.bottomAnchor),
+            heightInches.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
+    lazy var heightCm: UILabel = {
+        let label = UILabel()
+        label.text = "Height(Cm)"
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func setupHeightCmConstraints(){
+        NSLayoutConstraint.activate([
+            heightCm.trailingAnchor.constraint(equalTo: self.selectMountDetailsView.trailingAnchor, constant: -5),
+            heightCm.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
+            heightCm.topAnchor.constraint(equalTo: self.heightTextField.bottomAnchor, constant: 5),
+            heightCm.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
+    lazy var manualControlOperationsView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.green
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupManualControlOperationsViewConstraints(){
+        NSLayoutConstraint.activate([
+            manualControlOperationsView.topAnchor.constraint(equalTo: self.manualControlRadioButton.bottomAnchor, constant: 5),
+            manualControlOperationsView.leadingAnchor.constraint(equalTo: self.selectOperationsView.leadingAnchor, constant: 5),
+            manualControlOperationsView.trailingAnchor.constraint(equalTo: self.selectOperationsView.trailingAnchor, constant: -5),
+            manualControlOperationsView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.3)
+        ])
+    }
+    
+    
+    lazy var automaticControlOperationsView: UIView  = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    
+    
     fileprivate func setupMountDetailsSubViews() {
         self.selectMountDetailsView.addSubview(selectMountDetailsHeaderView)
         setupSelectMountDetailsHeaderViewConstraints()
@@ -787,26 +1239,67 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
       self.selectMountDetailsHeaderView.addSubview(selectMountDetailsDetailImageView)
         setupSelectMountDetailsDetailImageViewConstraints()
         
-        self.selectMountDetailsView.addSubview(insideWindowRadioButton)
-        setupInsideWindowRadioButtonConstraints()
-        
-        self.selectMountDetailsView.addSubview(outsideWindowRadioButton)
-        setupOutsideWindowRadioButtonConstraints()
-        
-        self.selectMountDetailsView.addSubview(widthTextField)
-        setupWidthTextFieldConstraints()
-        
-        self.selectMountDetailsView.addSubview(heightTextField)
-        setupHeightTextFieldConstraints()
-        
         self.selectMountDetailsView.addSubview(widthImageView)
         setupWidthImageViewConstraints()
         
         self.selectMountDetailsView.addSubview(heightImageView)
         setupHeightImageViewConstraints()
+        
+        self.selectMountDetailsView.addSubview(insideWindowLabel)
+        setupInsideWindowLabelConstraints()
+        
+        self.selectMountDetailsView.addSubview(outsideWindowLabel)
+        setupOutsideWindowLabelConstraints()
+        
+        self.selectMountDetailsView.addSubview(selectWidthHeightView)
+        setupSelectWidthHeightViewConstraints()
+        
+        self.selectWidthHeightView.addSubview(selectWidthHeightLabel)
+        setupSelectWidthHeightLabelConstraints()
+        
+        self.selectWidthHeightView.addSubview(selectSizeImageView)
+        setupSelectSizeViewConstraints()
+        
+        self.selectMountDetailsView.addSubview(widthInches)
+        setupwidthInchesConstraints()
+        
+        self.selectMountDetailsView.addSubview(heightInches)
+        setupHeightInchesConstraints()
+    
+       self.selectMountDetailsView.addSubview(widthTextField)
+       setupWidthTextFieldConstraints()
+        
+        self.selectMountDetailsView.addSubview(heightTextField)
+        setupHeightTextFieldConstraints()
+        
+       self.selectMountDetailsView.addSubview(widthCm)
+        setupWidthCmConstraints()
+        
+        self.selectMountDetailsView.addSubview(heightCm)
+        setupHeightCmConstraints()
+        
+        self.selectMountDetailsView.addSubview(widthTextFieldDecimal)
+        setupWidthTextDecimalFieldConstraints()
+        
+        
+        self.selectMountDetailsView.addSubview(heightTextFieldDecimal)
+        setupHeightTextFieldDecimalConstraints()
+        
+       self.selectMountDetailsView.addSubview(widthTextFieldCm)
+        setupWidthCmTextFieldConstraints()
+        
+        self.selectMountDetailsView.addSubview(heightTextFieldCm)
+        setupHeightCmTextFieldConstraints()
+        
+        self.selectMountDetailsView.addSubview(widthTextFieldCmDecimal)
+       setupWidthTextFieldCmDecimalConstraints()
+        
+        self.selectMountDetailsView.addSubview(heightTextFieldCmDecimal)
+        setupHeightTextFieldCmDecimalConstraints()
     }
     
     fileprivate func setupSelectCordOperationSubViews() {
+        
         self.selectOperationsView.addSubview(selectOperationsHeaderView)
         setupSelectOperationsHeaderViewConstraints()
         
@@ -816,30 +1309,35 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         self.selectOperationsHeaderView.addSubview(selectCordOperationDetailImageView)
         setupSelectCordOperationDetailImageViewConstraints()
         
-        self.selectOperationsView.addSubview(leftCordOperationRadioButton)
+        self.selectOperationsView.addSubview(ManualCordOperationRadioButton)
         setupLeftCordOperationRadioButtonConstraints()
         
-        self.selectOperationsView.addSubview(rightCordOperationRadioButton)
+        self.selectOperationsView.addSubview(motorizedCordOperationRadioButton)
         setupRightCordOperationRadioButtonConstraints()
+        
+        self.selectOperationsView.addSubview(manualControlOperationsView)
+        setupManualControlOperationsViewConstraints()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.white
         
+        self.addSubview(scrollView)
         setupContainerViews()
         setupProductDetailHeaderViewSubviews()
+        
         setupSelectColorContainerViewSubView()
         setupMountDetailsSubViews()
         setupSelectCordOperationSubViews()
-        
-        self.selectOperationsView.addSubview(selectControlOperationHeaderView)
+    
+    /*  self.selectOperationsView.addSubview(selectControlOperationHeaderView)
         setupSelectControlOperationHeaderViewConstraints()
         
         self.selectControlOperationHeaderView.addSubview(selectControlOperationLabel)
         setupSelectControlOperationLabelConstraints()
         
-        self.selectControlOperationHeaderView.addSubview(selectControlOperationsDetailImageView)
+         self.selectControlOperationHeaderView.addSubview(selectControlOperationsDetailImageView)
         setupSelectControlOperationsDetailImageViewConstraints()
         
         self.selectOperationsView.addSubview(manualControlRadioButton)
@@ -850,9 +1348,38 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         
         self.selectOperationsView.addSubview(roomNameTextField)
         setupRoomNameTextFieldContriants()
-    }
+        
+        
+        self.addSubview(customAttributeHelpViewBaground)
+        setupCustomAttributeHelpViewBagroundConstraints()
+        
+        self.customAttributeHelpViewBaground.addSubview(customAttributeHelpView)
+        setupCustomAttributeHelpViewConstraints()
+        
+        self.customAttributeHelpViewBaground.isHidden = true
+        
+        self.customAttributeHelpView.doneButton.addTarget(self, action: #selector(dismissCustomAttributeHelpViewBaground), for: .touchUpInside)
+ */
+ 
+ }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension ProductDetailView: UITextFieldDelegate{
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.tag == 0 {
+            
+        }else if textField.tag == 1{
+            
+        }else if textField.tag == 2{
+            
+        }
+        else if textField.tag == 3{
+            
+        }
     }
 }

@@ -41,17 +41,17 @@ class ProductsViewController: UIViewController {
         for items in categoriesResponse!.childrenData{
             print(items.name)
             allCategories.append(items.name)
-            getAllProdcutsUnderCategory(withProductId: items.id)
+            getAllProdcutsUnderCategory(withProductId: items.id, position: items.position)
         }
         DispatchQueue.main.async {
-            self.productsView.windowCoveringsLabel.text = self.allCategories.last!
-            self.productsView.foldingDoorsLabel.text = self.allCategories.first
-            self.productsView.wirelessSecurityLabel.text = self.allCategories[1]
+            self.productsView.windowCoveringsLabel.text = self.allCategories.first!
+            self.productsView.foldingDoorsLabel.text = self.allCategories[1]
+            self.productsView.wirelessSecurityLabel.text = self.allCategories.last
         }
     }
     
-    private func getAllProdcutsUnderCategory(withProductId id: Int){
-        var request = URLRequest(url: URL(string: hostName+"//rest/V1/products/?searchCriteria[filter_groups][0][filters][0][field]=type_id&searchCriteria[filter_groups][0][filters][0][value]=configurable+&searchCriteria[filter_groups][0][filters][0][condition_type]=eq")!)
+    private func getAllProdcutsUnderCategory(withProductId id: Int, position: Int){
+        var request = URLRequest(url: URL(string: hostName+"/rest/V1/products/?searchCriteria[filter_groups][0][filters][0][field]=category_id&searchCriteria[filter_groups][0][filters][0][value]="+"\(id)"+"&searchCriteria[filter_groups][0][filters][0][condition_type]=eq")!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer "+adminToken!, forHTTPHeaderField:
@@ -68,11 +68,12 @@ class ProductsViewController: UIViewController {
                 
                 self.getAllProductsUnder(thisCategory: id)
                 
-                if id == 3 {
-                    //self.windowCoveringsItems = responseModel.items!
-                    /*  if customerToken != nil {
-                     //self.addToCart()
-                     }*/
+               if position == 1 {
+                    self.windowCoveringsItems = responseModel.items!
+               }else if position == 2 {
+                  //self.foldi
+               }else if position == 3 {
+                
                 }
             } catch {
                 print("JSON Serialization error")
@@ -114,8 +115,7 @@ class ProductsViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
        
-            self.navigationController?.navigationBar.isHidden = false
-       
+       self.navigationController?.navigationBar.isHidden = false
        productsView.setupProductView()
     }
     
@@ -134,6 +134,7 @@ extension ProductsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView.tag == 1{
+            print("Item:\(windowCoveringsItems.count)")
             return windowCoveringsItems.count
         }else if collectionView.tag == 2{
             return 2
@@ -147,13 +148,23 @@ extension ProductsViewController: UICollectionViewDataSource {
          cell.backgroundColor = #colorLiteral(red: 0.1514958441, green: 0.726865232, blue: 0.9147748351, alpha: 1)
         
         cell.nameLabel.text = windowCoveringsItems[indexPath.item].name
-        if let thumbNailUrl = windowCoveringsItems[indexPath.item].mediaGalleryEntries?.first?.file{
-            if let url = URL(string: webServerDocumentRootUrl + thumbNailUrl){
-                cell.productImageView.downloadAndSetImage(from: url, contentMode: .scaleAspectFill)
+        
+        for attr in windowCoveringsItems[indexPath.item].customAttributes!{
+            if attr.attributeCode == "thumbnail" {
+                
+                var thumbNailUrl = "\(attr.value.unsafelyUnwrapped)"
+                thumbNailUrl = String(thumbNailUrl.dropFirst(8))
+                thumbNailUrl = String(thumbNailUrl.dropLast(2))
+                
+                print("\(thumbNailUrl)")
+                    if let url = URL(string: webServerDocumentRootUrl + thumbNailUrl){
+                        
+                        cell.productImageView.downloadAndSetImage(from: url, contentMode: .scaleAspectFill)
+                    }
+                }
             }
-        }
         return cell
-    }
+}
 }
 
 extension ProductsViewController: UICollectionViewDelegate{

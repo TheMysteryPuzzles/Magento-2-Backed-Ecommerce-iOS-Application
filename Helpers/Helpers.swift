@@ -36,7 +36,7 @@ extension UIView {
     
     func applyMainAppTheme(){
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [hexStringToCGColor(hex: "#C33764"),hexStringToCGColor(hex: "#1D2671")]
+        gradientLayer.colors = [hexStringToCGColor(hex: "#8E2DE2"),hexStringToCGColor(hex: "#4A00E0")]
         gradientLayer.frame = self.bounds
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
@@ -78,7 +78,8 @@ extension UIView {
     
     func applyBackgroundTheme(){
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [hexStringToCGColor(hex: "#0f0c29"),hexStringToCGColor(hex: "#302b63"),hexStringToCGColor(hex: "#24243e")]
+        gradientLayer.colors = [hexStringToCGColor(hex: "#B066FE"),hexStringToCGColor(hex: "#63E2FF")]
+       /* gradientLayer.colors = [hexStringToCGColor(hex: "#0f0c29"),hexStringToCGColor(hex: "#302b63"),hexStringToCGColor(hex: "#24243e")]*/
         gradientLayer.frame = self.bounds
         self.layer.insertSublayer(gradientLayer, at: 0)
         

@@ -32,18 +32,36 @@ class ProductDetailViewController: UIViewController {
          self.navigationController?.navigationBar.isHidden = false
     }
  
+    override func viewDidAppear(_ animated: Bool) {
+        self.productDetailView.scrollView.contentSize.height = self.productDetailView.selectOperationsView.frame.maxY //self.productDetailView.roomNameTextField.frame.maxY
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.productDetailView.productNameLabel.text = self.selectedItem?.name!
-        if let thumbNailUrl = selectedItem!.mediaGalleryEntries?.first?.file{
+        
+        for attr in selectedItem!.customAttributes!{
+            if attr.attributeCode == "thumbnail" {
+                
+                var thumbNailUrl = "\(attr.value.unsafelyUnwrapped)"
+                thumbNailUrl = String(thumbNailUrl.dropFirst(8))
+                thumbNailUrl = String(thumbNailUrl.dropLast(2))
             if let url = URL(string: webServerDocumentRootUrl + thumbNailUrl){
                 self.productDetailView.productImageView.downloadAndSetImage(from: url, contentMode: .scaleAspectFill)
             }
         }
+            
+            if attr.attributeCode == "description" {
+                var text = "\(attr.value.unsafelyUnwrapped)"
+                text = String(text.dropFirst(8))
+                text = String(text.dropLast(2))
+              self.productDetailView.productDetailLabel.text = text
+        }
         self.view.addSubview(productDetailView)
-    
     }
     
+}
 }
 
 
@@ -51,7 +69,8 @@ extension ProductDetailViewController: UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = collectionView.frame.height * 0.45
-        return CGSize(width: 50, height: height)
+        let width  = collectionView.frame.width * 0.3
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -60,8 +79,59 @@ extension ProductDetailViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = colors[indexPath.item]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ColorCollectionViewCell
+        cell.colorView.backgroundColor = colors[indexPath.item]
+        cell.colorNameLabel.text = "Color Name"
         return cell
+    }
+}
+
+
+class ColorCollectionViewCell: UICollectionViewCell {
+    
+    lazy var colorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupcolorViewConstraints(){
+        NSLayoutConstraint.activate([
+            colorView.topAnchor.constraint(equalTo: self.topAnchor),
+            colorView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            colorView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            colorView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75)
+            ])
+    }
+    
+    lazy var colorNameLabel: UILabel = {
+       let label = UILabel()
+       label.backgroundColor = UIColor.lightGray
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
+    }()
+    
+    private func setupColorNameLabelConstraints(){
+        NSLayoutConstraint.activate([
+            colorNameLabel.topAnchor.constraint(equalTo: self.colorView.bottomAnchor),
+            colorNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            colorNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            colorNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            
+            ])
+      }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.addSubview(colorView)
+        setupcolorViewConstraints()
+        
+        self.addSubview(colorNameLabel)
+        setupColorNameLabelConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

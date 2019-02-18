@@ -37,13 +37,12 @@ class ProductView: UIView {
     
     private func setupWindowCoveringsCollectionViewConstraints(){
         NSLayoutConstraint.activate([
-            windowCoveringsCollectionView.topAnchor.constraint(equalTo: self.windowCoveringsLabelBaground.bottomAnchor),
+            windowCoveringsCollectionView.topAnchor.constraint(equalTo: self.windowCoveringsLabelBaground.bottomAnchor, constant: 5),
             windowCoveringsCollectionView.leadingAnchor.constraint(equalTo: self.windowCoveringsContainerView.leadingAnchor),
             windowCoveringsCollectionView.trailingAnchor.constraint(equalTo: self.windowCoveringsContainerView.trailingAnchor),
             windowCoveringsCollectionView.bottomAnchor.constraint(equalTo: self.windowCoveringsContainerView.bottomAnchor, constant: -5)
-            
             ])
-    }
+     }
     
     lazy var windowCoveringsLabelBaground: UIView = {
         let view = UIView()
@@ -66,7 +65,7 @@ class ProductView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = UIColor.clear
-        label.text = "Hello"
+        label.text = ""
         label.layer.masksToBounds = true
         label.textAlignment = .center
         label.textColor = UIColor.white

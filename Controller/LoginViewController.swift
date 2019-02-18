@@ -378,7 +378,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
        //loginRegisterViewBackgroundLayer.frame = self.view.bounds
        //view.layer.addSublayer(loginRegisterViewBackgroundLayer)
         //view.applyMainAppTheme()
-        view.applyBottomBarAppTheme()
+        view.applyBackgroundTheme()
         
         view.addSubview(loginConatinerView)
         setupConstraintsOfInputContainer()

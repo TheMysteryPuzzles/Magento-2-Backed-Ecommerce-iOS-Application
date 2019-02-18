@@ -7,8 +7,13 @@
 //
 
 import UIKit
-var hostName: String = "http://co2.techrecto.com"
-var webServerDocumentRootUrl = "http://co2.techrecto.com/pub/media/catalog/product"
+import GoogleMaps
+import GooglePlaces
+
+/*AIzaSyCBIiQc2riHy0lx0vWzfi6T2yifOoN3FJw*/
+
+var hostName: String = "http://157.230.218.91/magenta"
+var webServerDocumentRootUrl = "http://157.230.218.91/magenta/pub/media/catalog/product"
 
 var adminToken: String?
 var navBarHeight: CGFloat?
@@ -21,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-      
+      GMSServices.provideAPIKey("AIzaSyC_144UylYWecjJQx9N0m4ce4ycSoGXnZg")
+      GMSPlacesClient.provideAPIKey("AIzaSyC_144UylYWecjJQx9N0m4ce4ycSoGXnZg")
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.makeKeyAndVisible()
         self.window?.rootViewController = LaunchScreenViewController()
@@ -55,3 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+var isDeviceIPad: Bool {
+    get{
+        if(UIDevice.current.userInterfaceIdiom == .pad){
+            return true
+        }
+        return false
+    }
+}
