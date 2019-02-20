@@ -15,10 +15,11 @@ extension ProductDetailView {
     }
     
     @objc func addToCartButtonTapped(){
-        let width = Double(self.widthTextField.text!)
-        let height = Double(self.heightTextField.text!)
-        self.viewModel = CustomAttributesViewModel(width: width!, height: height!, cordOperation: self.selectedCordOperation!, controlOperation: self.selectedControlOperation!, mountDetails: self.selectedMountDetails!, selectedColor: UIColor.green)
-        self.delegate?.addToCartButtonTapped(withAttributes: self.viewModel!)
+        
+    //    let width = Double(self.widthTextField.text!)
+      //  let height = Double(self.heightTextField.text!)
+       // self.viewModel = CustomAttributesViewModel(width: width!, height: height!, cordOperation: self.selectedCordOperation!, controlOperation: self.selectedControlOperation!, mountDetails: self.selectedMountDetails!, selectedColor: UIColor.green)
+       // self.delegate?.addToCartButtonTapped(withAttributes: self.viewModel!)
     }
     
     @objc func productDetailLabelTapped(){

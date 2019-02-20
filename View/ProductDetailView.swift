@@ -15,16 +15,108 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     var selectedMountDetails: MountDetails?
     var selectedCordOperation: CordOperation?
     var selectedControlOperation: ControlOperation?
-
+    var productDetailViewController: ProductDetailViewController?
+    
+    var widthInchesDropdown = DropDown()
+    let heightInchesDropdown = DropDown()
+    let widthInchesDecimalDropdown = DropDown()
+    let heightInchesDecimalDropdown = DropDown()
+    
+    let widthCmDropdown = DropDown()
+    let heightCmDropdown = DropDown()
+    let widthCmDecimalDropdown = DropDown()
+    let heightCmDecimalDropdown = DropDown()
+    
+    
+    lazy var cartAndRate: UIView = {
+       let view = UIView()
+       view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.gray
+       return view
+    }()
+    
+    private func setupcartAndRateConstraints(){
+    NSLayoutConstraint.activate([
+        cartAndRate.topAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
+        cartAndRate.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+        cartAndRate.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+        cartAndRate.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2)
+        ])
+    }
+    
+    lazy var rateLabel: UILabel = {
+       let label = UILabel()
+       label.text = "Rate"
+       label.font = UIFont.boldSystemFont(ofSize: 28)
+       label.adjustsFontSizeToFitWidth = true
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
+    }()
+    
+    private func setuprateLabelConstraints(){
+        NSLayoutConstraint.activate([
+            rateLabel.leadingAnchor.constraint(equalTo: self.cartAndRate.leadingAnchor, constant: 10),
+            rateLabel.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.4),
+            rateLabel.heightAnchor.constraint(equalToConstant: 30),
+            rateLabel.topAnchor.constraint(equalTo: self.cartAndRate.topAnchor, constant: 10)
+        ])
+    }
+    
+    
+    lazy var rateValueLabel: UILabel = {
+        let label = UILabel()
+        label.text = "$"
+        label.font = UIFont.boldSystemFont(ofSize: 28)
+        label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = UIColor.green
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func setupRateValueLabelConstraints(){
+        NSLayoutConstraint.activate([
+            rateValueLabel.leadingAnchor.constraint(equalTo: self.rateLabel.trailingAnchor, constant: 10),
+            rateValueLabel.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.4),
+            rateValueLabel.heightAnchor.constraint(equalToConstant: 30),
+            rateValueLabel.topAnchor.constraint(equalTo: self.cartAndRate.topAnchor, constant: 10)
+            ])
+    }
+    
+    lazy var addToCartButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Add To Cart", for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        button.addTarget(self, action: #selector(handleAddToCart), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    
+    @objc func handleAddToCart(){
+        self.productDetailViewController?.handleAddToCart()
+    }
+    
+    private func setupAddToCartButtonConstraints(){
+        NSLayoutConstraint.activate([
+            addToCartButton.centerXAnchor.constraint(equalTo: self.cartAndRate.centerXAnchor),
+            addToCartButton.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.4),
+            addToCartButton.heightAnchor.constraint(equalToConstant: 30),
+            addToCartButton.topAnchor.constraint(equalTo: self.rateLabel.bottomAnchor, constant: 10)
+            ])
+    }
+    
+    
+    
     func didSelectButton(selectedButton: UIButton?) {
         print("Selected")
     }
     
     lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: self.bounds)
+        let scrollView = UIScrollView(frame: CGRect(x: 0, y: self.frame.minY + 24, width: self.frame.width, height: self.frame.height * 0.8))
         print("\(self.frame.width)")
         scrollView.contentSize = CGSize(width: self.frame.width, height: self.frame.height)
-        scrollView.backgroundColor = UIColor.green
+        scrollView.backgroundColor = UIColor.clear
         return scrollView
     }()
     
@@ -35,7 +127,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         blurEffectView.frame = customAttributeHelpViewBaground.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.customAttributeHelpViewBaground.addSubview(blurEffectView)
-self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView)
+     self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView)
     }
     
     lazy var customAttributeHelpViewBaground: UIView = {
@@ -124,8 +216,8 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             productNameLabel.leftAnchor.constraint(equalTo: productImageView.rightAnchor, constant: 5),
             productNameLabel.rightAnchor.constraint(equalTo: productDetailHeaderView.rightAnchor, constant: -5),
             productNameLabel.heightAnchor.constraint(equalTo: productDetailHeaderView.heightAnchor, multiplier: 0.25)
-            ])
-       }
+        ])
+    }
     
     lazy var productDetailLabel: UILabel = {
         let label = UILabel()
@@ -160,7 +252,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             selectColorView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             selectColorView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3)
             ])
-       }
+     }
     
     lazy var selectWidthHeightView: UIView = {
         let view = UIView()
@@ -213,7 +305,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             selectColorHeaderView.topAnchor.constraint(equalTo: self.selectColorView.topAnchor),
             selectColorHeaderView.leftAnchor.constraint(equalTo: self.selectColorView.leftAnchor),
             selectColorHeaderView.rightAnchor.constraint(equalTo: self.selectColorView.rightAnchor),
-            selectColorHeaderView.heightAnchor.constraint(equalTo: self.selectColorView.heightAnchor, multiplier: 0.15)
+            selectColorHeaderView.heightAnchor.constraint(equalToConstant: 25)
             ])
     }
     
@@ -345,16 +437,16 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             selectMountDetailsHeaderView.topAnchor.constraint(equalTo: self.selectMountDetailsView.topAnchor),
             selectMountDetailsHeaderView.leftAnchor.constraint(equalTo: self.selectMountDetailsView.leftAnchor),
             selectMountDetailsHeaderView.rightAnchor.constraint(equalTo: self.selectMountDetailsView.rightAnchor),
-            selectMountDetailsHeaderView.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.10)
+            selectMountDetailsHeaderView.heightAnchor.constraint(equalToConstant: 25)
             ])
     }
     
     var selectMountDetailsLabel: UILabel = {
         let label = UILabel()
-        label.text = " Step 2 - Choose Mount Details"
+        label.text = " Step 2 - Choose Mount Type"
         label.backgroundColor = UIColor.lightGray
         label.textColor = UIColor.white
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontSizeToFitWidth = true
@@ -452,19 +544,24 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         ])
     }
     
-    lazy var widthTextField: UITextField = {
-       let field = UITextField()
-       field.textColor = UIColor.black
-        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
-                                                               attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+    lazy var widthTextField: UIButton = {
+       let field = UIButton()
+       field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+       field.setTitle("24'", for: .normal)
+       field.setTitleColor(UIColor.black, for: .normal)
        field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
-        field.layer.cornerRadius = 3
-        field.delegate = self
-         field.tag = 0
+       field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+       field.layer.cornerRadius = 3
+        field.isUserInteractionEnabled = true
+        field.addTarget(self, action: #selector(handleWidthInchesDropdown), for: .touchUpInside)
+       field.tag = 0
         return field
     }()
+    
+    @objc func handleWidthInchesDropdown(){
+        print("Selected")
+        self.widthInchesDropdown.show()
+    }
     
     private func setupWidthTextFieldConstraints(){
         NSLayoutConstraint.activate([
@@ -476,19 +573,22 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
       }
     
     
-    lazy var widthCmTextField: UITextField = {
-        let field = UITextField()
-        field.textColor = UIColor.black
+    lazy var widthCmTextField: UIButton = {
+        let field = UIButton()
         field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.setTitle("24'", for: .normal)
+        field.setTitleColor(UIColor.black, for: .normal)
+        field.addTarget(self, action: #selector(handleWidthCmDropdown), for: .touchUpInside)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.delegate = self
         field.tag = 0
         return field
     }()
+    
+    @objc func handleWidthCmDropdown(){
+        self.widthCmDropdown.show()
+    }
     
     private func setupWidthCmTextFieldConstraints(){
         NSLayoutConstraint.activate([
@@ -500,19 +600,22 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     }
     
     
-    lazy var heightCmTextField: UITextField = {
-        let field = UITextField()
-        field.textColor = UIColor.black
+    lazy var heightCmTextField: UIButton = {
+        let field = UIButton()
         field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        field.attributedPlaceholder = NSAttributedString(string: " Height(Cm)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.setTitle("24'", for: .normal)
+         field.addTarget(self, action: #selector(handleHeightCmDropdown), for: .touchUpInside)
+        field.setTitleColor(UIColor.black, for: .normal)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.delegate = self
         field.tag = 0
         return field
     }()
+    
+    @objc func handleHeightCmDropdown(){
+        self.heightCmDropdown.show()
+    }
     
     private func setupHeightCmTextFieldConstraints(){
         NSLayoutConstraint.activate([
@@ -523,19 +626,22 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             ])
     }
     
-    lazy var widthTextFieldDecimal: UITextField = {
-        let field = UITextField()
-        field.textColor = UIColor.black
+    lazy var widthTextFieldDecimal: UIButton = {
+        let field = UIButton()
         field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.setTitle("24'", for: .normal)
+         field.addTarget(self, action: #selector(handleWidthDecimalDropdown), for: .touchUpInside)
+        field.setTitleColor(UIColor.black, for: .normal)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.delegate = self
         field.tag = 0
         return field
     }()
+    
+    @objc func handleWidthDecimalDropdown(){
+      self.widthInchesDecimalDropdown.show()
+    }
     
     private func setupWidthTextDecimalFieldConstraints(){
         NSLayoutConstraint.activate([
@@ -547,19 +653,21 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     }
     
     
-    lazy var widthTextFieldCmDecimal: UITextField = {
-        let field = UITextField()
-        field.textColor = UIColor.black
+    lazy var widthTextFieldCmDecimal: UIButton = {
+        let field = UIButton()
         field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.setTitle("24'", for: .normal)
+        field.addTarget(self, action: #selector(handleWidthCmDecimalDropdown), for: .touchUpInside)
+        field.setTitleColor(UIColor.black, for: .normal)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.delegate = self
         field.tag = 0
         return field
     }()
+    @objc func handleWidthCmDecimalDropdown(){
+        self.widthCmDecimalDropdown.show()
+    }
     
     private func setupWidthTextFieldCmDecimalConstraints(){
         NSLayoutConstraint.activate([
@@ -570,19 +678,22 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             ])
     }
     
-    lazy var heightTextFieldCmDecimal: UITextField = {
-        let field = UITextField()
-        field.textColor = UIColor.black
+    lazy var heightTextFieldCmDecimal: UIButton = {
+        let field = UIButton()
         field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        field.attributedPlaceholder = NSAttributedString(string: " Width (Inches)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.addTarget(self, action: #selector(handleHeightCmDecimalDropdown), for: .touchUpInside)
+        field.setTitle("24'", for: .normal)
+        field.setTitleColor(UIColor.black, for: .normal)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.delegate = self
         field.tag = 0
         return field
     }()
+    
+    @objc func handleHeightCmDecimalDropdown(){
+        self.heightCmDecimalDropdown.show()
+    }
     
     private func setupHeightTextFieldCmDecimalConstraints(){
         NSLayoutConstraint.activate([
@@ -594,19 +705,15 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     }
     
     
-    
-    
-    lazy var widthTextFieldCm: UITextField = {
-        let field = UITextField()
-        field.textColor = UIColor.black
+    lazy var widthTextFieldCm: UIButton = {
+        let field = UIButton()
         field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        field.attributedPlaceholder = NSAttributedString(string: " Width (Cm)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        field.setTitle("24'", for: .normal)
+        field.setTitleColor(UIColor.black, for: .normal)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.delegate = self
-         field.tag = 2
+        field.tag = 0
         return field
     }()
     
@@ -620,18 +727,22 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     }
     
     
-    lazy var heightTextField: UITextField = {
-        let field = UITextField()
-        field.backgroundColor = UIColor.white
-        field.attributedPlaceholder = NSAttributedString(string: " Height (Inches)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+    lazy var heightTextField: UIButton = {
+        let field = UIButton()
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.setTitle("24'", for: .normal)
+        field.setTitleColor(UIColor.black, for: .normal)
+        field.addTarget(self, action: #selector(handleHightDropDown), for: .touchUpInside)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-         field.tag = 1
-        
+        field.tag = 0
         return field
     }()
+    @objc func handleHightDropDown(){
+        
+        self.heightInchesDropdown.show()
+        }
     
     private func setupHeightTextFieldConstraints(){
         NSLayoutConstraint.activate([
@@ -642,18 +753,22 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         ])
     }
     
-    lazy var heightTextFieldDecimal: UITextField = {
-        let field = UITextField()
-        field.backgroundColor = UIColor.white
-        field.attributedPlaceholder = NSAttributedString(string: " Height (Inches)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+    lazy var heightTextFieldDecimal: UIButton = {
+        let field = UIButton()
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.setTitle("24'", for: .normal)
+        field.setTitleColor(UIColor.black, for: .normal)
+        field.addTarget(self, action: #selector(handleHeightDecialDropdrown), for: .touchUpInside)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.tag = 1
-        
+        field.tag = 0
         return field
     }()
+    
+    @objc func handleHeightDecialDropdrown(){
+        self.heightInchesDecimalDropdown.show()
+    }
     
     private func setupHeightTextFieldDecimalConstraints(){
         NSLayoutConstraint.activate([
@@ -665,15 +780,15 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     }
     
     
-    lazy var heightTextFieldCm: UITextField = {
-        let field = UITextField()
-        field.backgroundColor = UIColor.white
-        field.attributedPlaceholder = NSAttributedString(string: " Height (Cm)",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+    lazy var heightTextFieldCm: UIButton = {
+        let field = UIButton()
+        field.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        field.setTitle("24'", for: .normal)
+        field.setTitleColor(UIColor.black, for: .normal)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
         field.layer.cornerRadius = 3
-        field.tag = 3
+        field.tag = 0
         return field
     }()
     
@@ -697,7 +812,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     
     private func setupWidthImageViewConstraints(){
         NSLayoutConstraint.activate([
-            widthImageView.topAnchor.constraint(equalTo: self.selectMountDetailsHeaderView.bottomAnchor, constant: 5),
+            widthImageView.topAnchor.constraint(equalTo: self.selectMountDetailsHeaderView.bottomAnchor, constant: 10),
             widthImageView.leftAnchor.constraint(equalTo: self.selectMountDetailsView.leftAnchor, constant: 10),
             widthImageView.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
             widthImageView.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.3)
@@ -715,7 +830,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     
     private func setupHeightImageViewConstraints(){
         NSLayoutConstraint.activate([
-            heightImageView.topAnchor.constraint(equalTo: self.selectMountDetailsHeaderView.bottomAnchor, constant: 5),
+            heightImageView.topAnchor.constraint(equalTo: self.selectMountDetailsHeaderView.bottomAnchor, constant: 10),
             heightImageView.rightAnchor.constraint(equalTo: self.selectMountDetailsView.rightAnchor, constant: -10),
             heightImageView.widthAnchor.constraint(equalTo: self.selectMountDetailsView.widthAnchor, multiplier: 0.45),
             heightImageView.heightAnchor.constraint(equalTo: self.selectMountDetailsView.heightAnchor, multiplier: 0.3)
@@ -743,7 +858,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             selectOperationsHeaderView.topAnchor.constraint(equalTo: self.selectOperationsView.topAnchor),
             selectOperationsHeaderView.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor),
             selectOperationsHeaderView.rightAnchor.constraint(equalTo: self.selectOperationsView.rightAnchor),
-            selectOperationsHeaderView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.05)
+            selectOperationsHeaderView.heightAnchor.constraint(equalToConstant: 25)
             ])
     }
     
@@ -760,7 +875,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     lazy var ManualCordOperationRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
-        button.addTarget(self, action: #selector(toggleLeftCordOperationRadioButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleManualOperationRadioButton), for: .touchUpInside)
         button.circleColor = UIColor.black
         button.circleRadius = 8
         button.strokeColor = UIColor.black
@@ -774,18 +889,20 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         return button
     }()
     
-    @objc private func toggleLeftCordOperationRadioButton(){
+    @objc private func toggleManualOperationRadioButton(){
         self.selectedCordOperation = CordOperation.leftSide
         motorizedCordOperationRadioButton.isSelected = false
         ManualCordOperationRadioButton.isSelected = true
-        
-        
+        motorizedControlOperationsView.isHidden = true
+        manualControlOperationsView.isHidden = false
     }
     
-    @objc private func toggleRightCordOperationRadioButton(){
+    @objc private func toggleMotorizedCordOperationRadioButton(){
         self.selectedCordOperation = CordOperation.RightSide
         ManualCordOperationRadioButton.isSelected = false
         motorizedCordOperationRadioButton.isSelected = true
+        motorizedControlOperationsView.isHidden = false
+        manualControlOperationsView.isHidden = true
     }
     
     private func setupLeftCordOperationRadioButtonConstraints(){
@@ -800,7 +917,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
      lazy var motorizedCordOperationRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
-        button.addTarget(self, action: #selector(toggleRightCordOperationRadioButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleMotorizedCordOperationRadioButton), for: .touchUpInside)
         button.circleRadius = 8
         button.strokeColor = UIColor.black
         button.backgroundColor = UIColor.clear
@@ -827,8 +944,8 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         let label = UILabel()
         label.backgroundColor = UIColor.lightGray
         label.textColor = UIColor.white
-        label.text = "Step 3 - Select Cord Operation"
-        label.textAlignment = .center
+        label.text = " Step 4 - Choose Control Option"
+        label.textAlignment = .left
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontSizeToFitWidth = true
@@ -875,7 +992,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     
     private func setupSelectControlOperationHeaderViewConstraints(){
         NSLayoutConstraint.activate([
-            selectControlOperationHeaderView.topAnchor.constraint(equalTo: self.ManualCordOperationRadioButton.bottomAnchor),
+            selectControlOperationHeaderView.topAnchor.constraint(equalTo: self.manualControlOperationsView.bottomAnchor),
             selectControlOperationHeaderView.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor),
             selectControlOperationHeaderView.rightAnchor.constraint(equalTo: self.selectOperationsView.rightAnchor),
             selectControlOperationHeaderView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.15)
@@ -923,13 +1040,10 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
             ])
     }
     
-    
-    var manualControlRadioButton: SSRadioButton = {
+    var remoteControlRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
-     
-     
-        button.addTarget(self, action: #selector(toggleManualControlRadioButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleRemoteControlRadioButton), for: .touchUpInside)
         button.circleColor = UIColor.black
         button.circleRadius = 8
         button.strokeColor = UIColor.black
@@ -937,39 +1051,60 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.backgroundColor = UIColor.clear
         button.setTitleColor(UIColor.black, for: .normal)
-        button.setTitle(" Manual", for: .normal)
+        button.setTitle(" Remote (+ $7000)", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.contentHorizontalAlignment = .left
         return button
     }()
     
-    @objc private func toggleManualControlRadioButton(){
+    
+    @objc private func toggleRemoteControlRadioButton(){
         self.selectedControlOperation = ControlOperation.manual
-        automaticControlRadioButton.isSelected = false
-        manualControlRadioButton.isSelected = true
+        wallSocketControlRadioButton.isSelected = false
+        remoteControlRadioButton.isSelected = true
         
+        let currentPrice = self.productDetailViewController?.sum
+        self.productDetailViewController?.sum += 7000
+        print("\(self.productDetailViewController!.sum)")
+        self.rateValueLabel.text = String(self.productDetailViewController!.sum)
+      
     }
     
-    @objc private func toggleAutomaticControlRadioButton(){
-        self.selectedControlOperation = ControlOperation.automatic
-        manualControlRadioButton.isSelected = false
-        automaticControlRadioButton.isSelected = true
+    @objc private func toggleWallSocketControlRadioButton(){
+
+        remoteControlRadioButton.isSelected = false
+        wallSocketControlRadioButton.isSelected = true
         
+        let currentPrice = self.productDetailViewController?.sum
+        self.productDetailViewController?.sum += 7000
+        print("\(self.productDetailViewController!.sum)")
+        self.rateValueLabel.text = String(self.productDetailViewController!.sum)
     }
     
-    private func setupManualControlRadioButtonConstraints(){
+    @objc private func toggleRemotePlusWallSocketControlRadioButton(){
+        remoteControlRadioButton.isSelected = false
+        wallSocketControlRadioButton.isSelected = false
+        remoteAndWallSocketControlRadioButton.isSelected = true
+        
+        let currentPrice = self.productDetailViewController?.sum
+        self.productDetailViewController?.sum += 7000
+        print("\(self.productDetailViewController!.sum)")
+        self.rateValueLabel.text = String(self.productDetailViewController!.sum)
+    }
+    
+    private func setupRemoteRadioButtonConstraints(){
         NSLayoutConstraint.activate([
-            manualControlRadioButton.topAnchor.constraint(equalTo: self.selectControlOperationHeaderView.bottomAnchor, constant: 5),
-            manualControlRadioButton.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor, constant: 5),
-            manualControlRadioButton.widthAnchor.constraint(equalTo: self.selectOperationsView.widthAnchor, multiplier: 0.45),
-            manualControlRadioButton.heightAnchor.constraint(equalToConstant: 30)
-            ])
-      }
+            remoteControlRadioButton.topAnchor.constraint(equalTo: self.motorizedControlOperationsView.topAnchor, constant: 5),
+            remoteControlRadioButton.leftAnchor.constraint(equalTo: self.motorizedControlOperationsView.leftAnchor, constant: 5),
+            remoteControlRadioButton.rightAnchor.constraint(equalTo: self.motorizedControlOperationsView.rightAnchor, constant: -5),
+            remoteControlRadioButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
     
-    lazy var automaticControlRadioButton: SSRadioButton = {
+    lazy var wallSocketControlRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
-        button.addTarget(self, action: #selector(toggleAutomaticControlRadioButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleWallSocketControlRadioButton), for: .touchUpInside)
         button.circleRadius = 8
         button.strokeColor = UIColor.black
         button.backgroundColor = UIColor.clear
@@ -977,18 +1112,44 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         button.titleLabel?.adjustsFontSizeToFitWidth = true
        button.setTitleColor(UIColor.black, for: .normal)
         button.circleColor = UIColor.black
-        button.setTitle(" Automatic", for: .normal)
+        button.setTitle(" Wall Switch (+ $5000)", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
          button.contentHorizontalAlignment = .left
         return button
     }()
     
-    private func setupAutomaticControlRadioButtonConstraints(){
+    private func setupWallSocketControlRadioButtonConstraints(){
         NSLayoutConstraint.activate([
-            automaticControlRadioButton.topAnchor.constraint(equalTo: self.selectControlOperationHeaderView.bottomAnchor, constant: 5),
-            automaticControlRadioButton.leftAnchor.constraint(equalTo: self.manualControlRadioButton.rightAnchor, constant: 5),
-            automaticControlRadioButton.widthAnchor.constraint(equalTo: selectOperationsView.widthAnchor, multiplier: 0.45),
-            automaticControlRadioButton.heightAnchor.constraint(equalToConstant: 30)
+            wallSocketControlRadioButton.topAnchor.constraint(equalTo: self.remoteControlRadioButton.bottomAnchor, constant: 5),
+            wallSocketControlRadioButton.leftAnchor.constraint(equalTo: self.remoteControlRadioButton.leftAnchor),
+            wallSocketControlRadioButton.widthAnchor.constraint(equalTo: remoteControlRadioButton.widthAnchor),
+            wallSocketControlRadioButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    lazy var remoteAndWallSocketControlRadioButton: SSRadioButton = {
+        let button = SSRadioButton()
+        button.isUserInteractionEnabled = true
+        button.addTarget(self, action: #selector(toggleRemotePlusWallSocketControlRadioButton), for: .touchUpInside)
+        button.circleRadius = 8
+        button.strokeColor = UIColor.black
+        button.backgroundColor = UIColor.clear
+        button.titleLabel?.font = UIFont(name: "Kefa", size: 18)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.circleColor = UIColor.black
+        button.setTitle(" Remote + Wall Switch (+ $12000)", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.contentHorizontalAlignment = .left
+        return button
+    }()
+    
+    private func setupremoteAndWallSocketControlRadioButtonConstraints(){
+        NSLayoutConstraint.activate([
+            remoteAndWallSocketControlRadioButton.topAnchor.constraint(equalTo: self.wallSocketControlRadioButton.bottomAnchor, constant: 5),
+            remoteAndWallSocketControlRadioButton.leftAnchor.constraint(equalTo: self.remoteControlRadioButton.leftAnchor),
+            remoteAndWallSocketControlRadioButton.widthAnchor.constraint(equalTo: remoteControlRadioButton.widthAnchor),
+            remoteAndWallSocketControlRadioButton.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
     
@@ -1008,32 +1169,103 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     
     private func setupRoomNameTextFieldContriants(){
         NSLayoutConstraint.activate([
-            roomNameTextField.topAnchor.constraint(equalTo: self.manualControlRadioButton.bottomAnchor, constant: 5),
+            roomNameTextField.topAnchor.constraint(equalTo: self.selectRoomnameHeaderView.bottomAnchor, constant: 5),
             roomNameTextField.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor, constant: 5),
             roomNameTextField.widthAnchor.constraint(equalTo: self.selectOperationsView.widthAnchor, multiplier: 0.98),
-            roomNameTextField.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.13)
+            roomNameTextField.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    lazy var cordPosition: UILabel = {
+        let label = UILabel()
+        label.text = "Cord Position: "
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func setupCordPositionLabelConstraints(){
+        NSLayoutConstraint.activate([
+            cordPosition.topAnchor.constraint(equalTo: self.manualControlOperationsView.topAnchor, constant: 5),
+            cordPosition.leftAnchor.constraint(equalTo: self.manualControlOperationsView.leftAnchor, constant: 5),
+            cordPosition.widthAnchor.constraint(equalTo: self.manualControlOperationsView.widthAnchor, multiplier: 0.4),
+            cordPosition.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
     
+    lazy var cordHeight: UITextField = {
+       let field = UITextField()
+        field.placeholder = "Cord Height(Inches)"
+        field.backgroundColor = UIColor.lightGray
+       field.translatesAutoresizingMaskIntoConstraints = false
+       return field
+    }()
+
+    private func setupcordHeightConstraints(){
+    NSLayoutConstraint.activate([
+        cordHeight.leadingAnchor.constraint(equalTo: self.cordPosition.trailingAnchor, constant: 5),
+        cordHeight.trailingAnchor.constraint(equalTo: self.manualControlOperationsView.trailingAnchor, constant: -5),
+        cordHeight.topAnchor.constraint(equalTo: self.cordPosition.topAnchor),
+        cordHeight.heightAnchor.constraint(equalTo: self.cordPosition.heightAnchor)
+        ])
+    }
     
+    //#CA1F7B
     
-    let addToCartButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Add To Cart", for: .normal)
-        button.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
+    lazy var leftSideControlRadioButton: SSRadioButton = {
+        let button = SSRadioButton()
+        button.isUserInteractionEnabled = true
+        button.addTarget(self, action: #selector(toggleWallSocketControlRadioButton), for: .touchUpInside)
+        button.circleRadius = 8
+        button.strokeColor = UIColor.black
+        button.backgroundColor = UIColor.clear
+        button.titleLabel?.font = UIFont(name: "Kefa", size: 18)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.circleColor = UIColor.black
+        button.setTitle(" Left Side", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
+        button.contentHorizontalAlignment = .left
         return button
     }()
     
-    private func setupAddToCartButtonConstraints(){
+    private func setupLeftSideControlRadioButtonRadioButtonConstraints(){
         NSLayoutConstraint.activate([
-            addToCartButton.topAnchor.constraint(equalTo: self.selectOperationsView.bottomAnchor, constant: 5),
-            addToCartButton.leftAnchor.constraint(equalTo: self.cancelButton.rightAnchor, constant: 5),
-            addToCartButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.48),
-            addToCartButton.bottomAnchor.constraint(equalTo: self.safeBottomAnchor, constant: -5)
+            leftSideControlRadioButton.topAnchor.constraint(equalTo: self.cordPosition.bottomAnchor, constant: 5),
+            leftSideControlRadioButton.leftAnchor.constraint(equalTo: self.cordPosition.leftAnchor),
+            leftSideControlRadioButton.widthAnchor.constraint(equalTo: cordPosition.widthAnchor),
+            leftSideControlRadioButton.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
+    
+    
+    lazy var rightSideControlRadioButton: SSRadioButton = {
+        let button = SSRadioButton()
+        button.isUserInteractionEnabled = true
+        button.addTarget(self, action: #selector(toggleWallSocketControlRadioButton), for: .touchUpInside)
+        button.circleRadius = 8
+        button.strokeColor = UIColor.black
+        button.backgroundColor = UIColor.clear
+        button.titleLabel?.font = UIFont(name: "Kefa", size: 18)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.circleColor = UIColor.black
+        button.setTitle(" Right Side", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.contentHorizontalAlignment = .left
+        return button
+    }()
+    
+    private func setupRightSideControlRadioButtonConstraints(){
+        NSLayoutConstraint.activate([
+            rightSideControlRadioButton.topAnchor.constraint(equalTo: self.leftSideControlRadioButton.bottomAnchor, constant: 5),
+            rightSideControlRadioButton.leftAnchor.constraint(equalTo: self.cordPosition.leftAnchor),
+            rightSideControlRadioButton.widthAnchor.constraint(equalTo: cordPosition.widthAnchor),
+            rightSideControlRadioButton.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
+    
+
     
     
     let cancelButton: UIButton = {
@@ -1101,11 +1333,14 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         setupSelectColorCollectionViewConstraints()
     }
     
+    
+    
+    
     lazy var insideWindowLabel: UILabel = {
        let label = UILabel()
        label.text = "Inside Window"
         label.textAlignment = .center
-          label.backgroundColor = UIColor.gray
+          label.backgroundColor = UIColor.clear
        label.translatesAutoresizingMaskIntoConstraints = false
        return label
     }()
@@ -1113,16 +1348,48 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         NSLayoutConstraint.activate([
             insideWindowLabel.topAnchor.constraint(equalTo: self.widthImageView.bottomAnchor),
             insideWindowLabel.leadingAnchor.constraint(equalTo: self.widthImageView.leadingAnchor),
-            insideWindowLabel.trailingAnchor.constraint(equalTo: self.widthImageView.trailingAnchor),
+            insideWindowLabel.trailingAnchor.constraint(equalTo: self.widthImageView.trailingAnchor, constant: -20),
             insideWindowLabel.heightAnchor.constraint(equalTo: self.widthImageView.heightAnchor, multiplier: 0.3)
             ])
     }
     
+    lazy var insideWindowVideoPlayer: UIImageView = {
+        let label = UIImageView()
+        label.image = UIImage(named: "ic_VideoPlayer")
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handlePlayInsideWindow)))
+        label.backgroundColor = UIColor.clear
+        label.contentMode = .scaleAspectFill
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func setupInsideWindowVideoPlayerConstraints(){
+        NSLayoutConstraint.activate([
+            insideWindowVideoPlayer.topAnchor.constraint(equalTo: self.widthImageView.bottomAnchor),
+            insideWindowVideoPlayer.leadingAnchor.constraint(equalTo: self.insideWindowLabel.trailingAnchor),
+            insideWindowVideoPlayer.trailingAnchor.constraint(equalTo: self.widthImageView.trailingAnchor),
+            insideWindowVideoPlayer.heightAnchor.constraint(equalTo: self.widthImageView.heightAnchor, multiplier: 0.3)
+        ])
+    }
+    
+    lazy var webView: UIWebView = {
+        let view = UIWebView(frame: self.bounds)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    
+    @objc func handlePlayInsideWindow(){
+        self.scrollView.isHidden = true
+        self.productDetailViewController?.handlePlayVideoTapped()
+    }
+    
     lazy var outsideWindowLabel: UILabel = {
         let label = UILabel()
-        label.text = "Inside Window"
+        label.text = "Outside Window"
             label.textAlignment = .center
-        label.backgroundColor = UIColor.gray
+        label.backgroundColor = UIColor.clear
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -1206,27 +1473,95 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
     
     lazy var manualControlOperationsView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.green
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private func setupManualControlOperationsViewConstraints(){
         NSLayoutConstraint.activate([
-            manualControlOperationsView.topAnchor.constraint(equalTo: self.manualControlRadioButton.bottomAnchor, constant: 5),
+            manualControlOperationsView.topAnchor.constraint(equalTo: self.ManualCordOperationRadioButton.bottomAnchor, constant: 5),
             manualControlOperationsView.leadingAnchor.constraint(equalTo: self.selectOperationsView.leadingAnchor, constant: 5),
             manualControlOperationsView.trailingAnchor.constraint(equalTo: self.selectOperationsView.trailingAnchor, constant: -5),
             manualControlOperationsView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.3)
         ])
     }
     
-    
-    lazy var automaticControlOperationsView: UIView  = {
+    lazy var motorizedControlOperationsView: UIView  = {
         let view = UIView()
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    private func setupMotorizedControlOperationsView(){
+        NSLayoutConstraint.activate([
+            motorizedControlOperationsView.topAnchor.constraint(equalTo: self.ManualCordOperationRadioButton.bottomAnchor, constant: 5),
+            motorizedControlOperationsView.leadingAnchor.constraint(equalTo: self.selectOperationsView.leadingAnchor, constant: 5),
+            motorizedControlOperationsView.trailingAnchor.constraint(equalTo: self.selectOperationsView.trailingAnchor, constant: -5),
+            motorizedControlOperationsView.heightAnchor.constraint(equalTo: self.selectOperationsView.heightAnchor, multiplier: 0.3)
+            ])
+    }
+    
+    lazy var selectRoomnameHeaderView: UIView = {
+        let view = UIView()
+        view.isUserInteractionEnabled = true
+        view.backgroundColor = UIColor.gray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private func setupSelectRoomnameHeaderViewConstraints(){
+        NSLayoutConstraint.activate([
+            selectRoomnameHeaderView.topAnchor.constraint(equalTo: self.manualControlOperationsView.bottomAnchor, constant: 10),
+            selectRoomnameHeaderView.leftAnchor.constraint(equalTo: self.selectOperationsView.leftAnchor),
+            selectRoomnameHeaderView.rightAnchor.constraint(equalTo: self.selectOperationsView.rightAnchor),
+            selectRoomnameHeaderView.heightAnchor.constraint(equalToConstant: 25)
+        ])
+    }
+    
+    var selectRoomnameHeaderViewLabel: UILabel = {
+        let label = UILabel()
+        label.text = " Step 5 - Choose Roomname"
+        label.textAlignment = .left
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = UIColor.lightGray
+        label.textColor = UIColor.white
+        return label
+    }()
+    
+    
+    private func setupSelectRoomnameHeaderViewLabelConstraints(){
+        NSLayoutConstraint.activate([
+            selectRoomnameHeaderViewLabel.topAnchor.constraint(equalTo: self.selectRoomnameHeaderView.topAnchor),
+            selectRoomnameHeaderViewLabel.leftAnchor.constraint(equalTo: self.selectRoomnameHeaderView.leftAnchor),
+            selectRoomnameHeaderViewLabel.widthAnchor.constraint(equalTo: self.selectRoomnameHeaderView.widthAnchor, multiplier: 0.8),
+            selectRoomnameHeaderViewLabel.heightAnchor.constraint(equalTo: self.selectRoomnameHeaderView.heightAnchor)
+            ])
+    }
+    
+    lazy var selectRoomnameHeaderViewLabelDetailImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "question_Mark"))
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
+        imageView.backgroundColor = UIColor.lightGray
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private func setupSelectRoomnameHeaderViewLabelImageViewConstraints(){
+        NSLayoutConstraint.activate([
+            selectRoomnameHeaderViewLabelDetailImageView.topAnchor.constraint(equalTo: self.selectRoomnameHeaderView.topAnchor),
+            selectRoomnameHeaderViewLabelDetailImageView.rightAnchor.constraint(equalTo: self.selectRoomnameHeaderView.rightAnchor),
+            selectRoomnameHeaderViewLabelDetailImageView.widthAnchor.constraint(equalTo: self.selectRoomnameHeaderView.widthAnchor, multiplier: 0.2),
+            selectRoomnameHeaderViewLabelDetailImageView.heightAnchor.constraint(equalTo: self.selectRoomnameHeaderView.heightAnchor)
+            ])
+    }
     
     
     fileprivate func setupMountDetailsSubViews() {
@@ -1247,6 +1582,9 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         
         self.selectMountDetailsView.addSubview(insideWindowLabel)
         setupInsideWindowLabelConstraints()
+        
+        self.selectMountDetailsView.addSubview(insideWindowVideoPlayer)
+        setupInsideWindowVideoPlayerConstraints()
         
         self.selectMountDetailsView.addSubview(outsideWindowLabel)
         setupOutsideWindowLabelConstraints()
@@ -1296,7 +1634,11 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         
         self.selectMountDetailsView.addSubview(heightTextFieldCmDecimal)
         setupHeightTextFieldCmDecimalConstraints()
+    
     }
+    
+    
+    
     
     fileprivate func setupSelectCordOperationSubViews() {
         
@@ -1306,7 +1648,7 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         self.selectOperationsHeaderView.addSubview(selectCordOperationLabel)
         setupSelectCordOperationLabelConstraints()
         
-        self.selectOperationsHeaderView.addSubview(selectCordOperationDetailImageView)
+       self.selectOperationsHeaderView.addSubview(selectCordOperationDetailImageView)
         setupSelectCordOperationDetailImageViewConstraints()
         
         self.selectOperationsView.addSubview(ManualCordOperationRadioButton)
@@ -1317,6 +1659,12 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         
         self.selectOperationsView.addSubview(manualControlOperationsView)
         setupManualControlOperationsViewConstraints()
+        
+           self.selectOperationsView.addSubview(motorizedControlOperationsView)
+        setupMotorizedControlOperationsView()
+        
+        
+        
     }
     
     override init(frame: CGRect) {
@@ -1330,25 +1678,45 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         setupSelectColorContainerViewSubView()
         setupMountDetailsSubViews()
         setupSelectCordOperationSubViews()
-    
-    /*  self.selectOperationsView.addSubview(selectControlOperationHeaderView)
-        setupSelectControlOperationHeaderViewConstraints()
         
-        self.selectControlOperationHeaderView.addSubview(selectControlOperationLabel)
-        setupSelectControlOperationLabelConstraints()
+        motorizedControlOperationsView.isHidden = true
+        manualControlOperationsView.isHidden = true
+   
         
-         self.selectControlOperationHeaderView.addSubview(selectControlOperationsDetailImageView)
-        setupSelectControlOperationsDetailImageViewConstraints()
+        self.motorizedControlOperationsView.addSubview(remoteControlRadioButton)
+        setupRemoteRadioButtonConstraints()
         
-        self.selectOperationsView.addSubview(manualControlRadioButton)
-        setupManualControlRadioButtonConstraints()
+        self.motorizedControlOperationsView.addSubview(wallSocketControlRadioButton)
+        setupWallSocketControlRadioButtonConstraints()
         
-        self.selectOperationsView.addSubview(automaticControlRadioButton)
-        setupAutomaticControlRadioButtonConstraints()
+        self.motorizedControlOperationsView.addSubview(remoteAndWallSocketControlRadioButton)
+        setupremoteAndWallSocketControlRadioButtonConstraints()
+        
+        
+        self.manualControlOperationsView.addSubview(cordPosition)
+        setupCordPositionLabelConstraints()
+        
+        self.manualControlOperationsView.addSubview(cordHeight)
+        setupcordHeightConstraints()
+        
+        self.manualControlOperationsView.addSubview(leftSideControlRadioButton)
+        setupLeftSideControlRadioButtonRadioButtonConstraints()
+        
+        self.manualControlOperationsView.addSubview(rightSideControlRadioButton)
+        setupRightSideControlRadioButtonConstraints()
+        
+        self.selectOperationsView.addSubview(selectRoomnameHeaderView)
+        setupSelectRoomnameHeaderViewConstraints()
+        
+        self.selectOperationsView.addSubview(selectRoomnameHeaderViewLabel)
+        setupSelectRoomnameHeaderViewLabelConstraints()
+        
+        self.selectOperationsView.addSubview(selectRoomnameHeaderViewLabelDetailImageView)
+        setupSelectRoomnameHeaderViewLabelImageViewConstraints()
+        
         
         self.selectOperationsView.addSubview(roomNameTextField)
         setupRoomNameTextFieldContriants()
-        
         
         self.addSubview(customAttributeHelpViewBaground)
         setupCustomAttributeHelpViewBagroundConstraints()
@@ -1359,8 +1727,19 @@ self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView
         self.customAttributeHelpViewBaground.isHidden = true
         
         self.customAttributeHelpView.doneButton.addTarget(self, action: #selector(dismissCustomAttributeHelpViewBaground), for: .touchUpInside)
- */
- 
+        
+        self.addSubview(cartAndRate)
+        setupcartAndRateConstraints()
+        
+        self.cartAndRate.addSubview(rateLabel)
+        setuprateLabelConstraints()
+        
+        self.cartAndRate.addSubview(rateValueLabel)
+        setupRateValueLabelConstraints()
+
+        
+        self.cartAndRate.addSubview(addToCartButton)
+        setupAddToCartButtonConstraints()
  }
     
     required init?(coder aDecoder: NSCoder) {

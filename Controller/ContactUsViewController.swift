@@ -11,10 +11,14 @@ import UIKit
 class ContactUsViewController: UIViewController {
 
     
-    
+    lazy var contactUsView: ContactUsView = {
+        let view = ContactUsView(frame: self.view.bounds)
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(contactUsView)
 
     }
     

@@ -89,6 +89,8 @@
 		96FEC1C32212FCC1007E7270 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEC1BB2212FCC1007E7270 /* DropDownCell.swift */; };
 		96FEC1C42212FCC1007E7270 /* DropDown+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEC1BC2212FCC1007E7270 /* DropDown+Appearance.swift */; };
 		96FF82D6221983F10078DF4F /* ProductDetailViewExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FF82D5221983F10078DF4F /* ProductDetailViewExtended.swift */; };
+		96FF82FC221C74D50078DF4F /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FF82FB221C74D50078DF4F /* VideoPlayerViewController.swift */; };
+		96FF82FE221C8D370078DF4F /* CustomOptionsJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FF82FD221C8D370078DF4F /* CustomOptionsJSONModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -178,6 +180,8 @@
 		96FEC1BB2212FCC1007E7270 /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
 		96FEC1BC2212FCC1007E7270 /* DropDown+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DropDown+Appearance.swift"; sourceTree = "<group>"; };
 		96FF82D5221983F10078DF4F /* ProductDetailViewExtended.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewExtended.swift; sourceTree = "<group>"; };
+		96FF82FB221C74D50078DF4F /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
+		96FF82FD221C8D370078DF4F /* CustomOptionsJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOptionsJSONModel.swift; sourceTree = "<group>"; };
 		BB02D069D50BC7621B20703A /* Pods-MagentoAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagentoAPI.release.xcconfig"; path = "Pods/Target Support Files/Pods-MagentoAPI/Pods-MagentoAPI.release.xcconfig"; sourceTree = "<group>"; };
 		E8971FC1C9D02DDB49F171E0 /* Pods-MagentoAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagentoAPI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MagentoAPI/Pods-MagentoAPI.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -350,6 +354,7 @@
 		96F07E5D21FCF2B30061622F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				96FF82FB221C74D50078DF4F /* VideoPlayerViewController.swift */,
 				96DF91542216FD91007C8CF4 /* ContactUsViewController.swift */,
 				962BDC37221596C1006D5A8E /* GoogleDirectionsNetworkLayerViewController.swift */,
 				96C5754D221577B0007EAC03 /* VisitShowroomViewController.swift */,
@@ -369,6 +374,7 @@
 		96F07E6321FCF2B30061622F /* Magento_JSONModel */ = {
 			isa = PBXGroup;
 			children = (
+				96FF82FD221C8D370078DF4F /* CustomOptionsJSONModel.swift */,
 				96DF915622172026007C8CF4 /* ShowroomJSONModel.swift */,
 				96DF91502216E61D007C8CF4 /* SloganJSONModel.swift */,
 				962BDC392215B122006D5A8E /* ShowroomDirectionsModel.swift */,
@@ -619,6 +625,7 @@
 				962BDC38221596C1006D5A8E /* GoogleDirectionsNetworkLayerViewController.swift in Sources */,
 				9640059B2201938600D1991A /* CartViewController.swift in Sources */,
 				96FEC1C02212FCC1007E7270 /* DPDUIView+Extension.swift in Sources */,
+				96FF82FC221C74D50078DF4F /* VideoPlayerViewController.swift in Sources */,
 				961D10F32202CF0500A50FB7 /* LaunchScreenViewController.swift in Sources */,
 				96F07E9621FCF2B40061622F /* AddItemToCartJSONModel.swift in Sources */,
 				96F07E8021FCF2B40061622F /* D3ListViewFlowLayout.swift in Sources */,
@@ -647,6 +654,7 @@
 				96DF91512216E61D007C8CF4 /* SloganJSONModel.swift in Sources */,
 				96F07E8921FCF2B40061622F /* AddToCartView.swift in Sources */,
 				96F07E7A21FCF2B40061622F /* D3ListView.swift in Sources */,
+				96FF82FE221C8D370078DF4F /* CustomOptionsJSONModel.swift in Sources */,
 				96F07E9121FCF2B40061622F /* CurrencyInformationJSONModel.swift in Sources */,
 				96F07E8C21FCF2B40061622F /* MainMenuViewController.swift in Sources */,
 				96FEC1C32212FCC1007E7270 /* DropDownCell.swift in Sources */,

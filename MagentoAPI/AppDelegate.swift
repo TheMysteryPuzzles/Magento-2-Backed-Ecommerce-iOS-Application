@@ -12,8 +12,9 @@ import GooglePlaces
 
 /*AIzaSyCBIiQc2riHy0lx0vWzfi6T2yifOoN3FJw*/
 
-var hostName: String = "http://157.230.218.91/magenta"
-var webServerDocumentRootUrl = "http://157.230.218.91/magenta/pub/media/catalog/product"
+var hostName: String = "http://magentasquares.com"
+var shostName: String = "https://magentasquares.com"
+var webServerDocumentRootUrl = "http://magentasquares.com/pub/media/catalog/product"
 
 var adminToken: String?
 var navBarHeight: CGFloat?

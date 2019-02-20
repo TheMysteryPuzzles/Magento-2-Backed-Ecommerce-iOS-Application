@@ -563,6 +563,7 @@ class MainMenuView: UIView {
         let view = UIView()
         view.layer.masksToBounds = true
        view.backgroundColor = #colorLiteral(red: 0.419416666, green: 0.423350811, blue: 0.4357591569, alpha: 1)
+        view.isUserInteractionEnabled = true
        // imageView.image = UIImage(named: "ic_aboutUs")
         view.contentMode = .scaleAspectFit
         /* imageView.layer.shadowColor = UIColor.gray.cgColor
@@ -570,10 +571,16 @@ class MainMenuView: UIView {
          imageView.layer.shadowOffset = CGSize.zero
          imageView.layer.shadowRadius = 6
          imageView.backgroundColor = UIColor.clear*/
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleContactUs)))
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    
+    @objc func handleContactUs(){
+        self.mainViewController?.handleContactUs()
+    }
     
     private func setupAboutUsViewConstraints(){
         NSLayoutConstraint.activate([

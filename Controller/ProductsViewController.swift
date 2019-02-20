@@ -113,8 +113,8 @@ class ProductsViewController: UIViewController {
         navLabel.attributedText = navTitle
         self.navigationItem.titleView = navLabel
     }
+    
     override func viewDidAppear(_ animated: Bool) {
-       
        self.navigationController?.navigationBar.isHidden = false
        productsView.setupProductView()
     }
@@ -125,7 +125,6 @@ class ProductsViewController: UIViewController {
        self.view.backgroundColor = UIColor.white
         self.view.addSubview(productsView)
         getAllMagentoStoreCategories()
-        
     }
 }
 
@@ -176,6 +175,10 @@ extension ProductsViewController: UICollectionViewDelegate{
         let viewController = ProductDetailViewController()
         print("Item: \(indexPath.item)")
         viewController.selectedItem = self.windowCoveringsItems[indexPath.item]
+        
+        print("\(viewController.selectedItem?.sku)")
+        
+       
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

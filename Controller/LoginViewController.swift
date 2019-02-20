@@ -74,6 +74,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             firstName = components.removeFirst()
             lastName = components.joined(separator: " ")
         }
+        
             let params = [
                 "customer":[
                     "email":emailTextField.text!,
@@ -83,18 +84,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 "password": passwordTextField.text!
                 ] as [String : Any]
             
-            var request = URLRequest(url: URL(string: hostName+"/rest/all/V1/customers")!)
+            var request = URLRequest(url: URL(string: "https://magentasquares.com/rest/all/V1/customers")!)
             request.httpMethod = "POST"
             request.httpBody = try! JSONSerialization.data(withJSONObject: params, options: [])
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            // request.addValue("Bearer"+admintoken!, forHTTPHeaderField: "Authorization")
+            request.addValue("Bearer"+adminToken!, forHTTPHeaderField: "Authorization")
             
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
                 print(response!)
                 do {
                     _ = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! Dictionary<String, AnyObject>
-                    self.getCustomerAccessToken()
+                   self.getCustomerAccessToken()
                 } catch {
                     print("\(error)")
                 }
@@ -103,21 +104,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     
     private func getCustomerAccessToken(){
-       self.userName = self.emailTextField.text!
-       self.password = self.passwordTextField.text!
-       let params = ["username":userName!, "password":password!] as Dictionary<String, String>
+       self.userName = emailTextField.text!
+       self.password = passwordTextField.text!
+        print("Username\(userName)")
+         print("Password\(password)")
+       let params = ["username":userName!, "password":password!] as Dictionary<String, Any>
         
-       var request = URLRequest(url: URL(string: hostName+"/index.php/rest/V1/integration/customer/token")!)
+       var request = URLRequest(url: URL(string: hostName+"/rest/all/V1/integration/customer/token")!)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            print(response)
             do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! String
-                print("CustomerToken: "+json)
-                customerToken = json
+                let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+                print("CustomerToken:  \(json)")
+              //  customerToken = json
                 self.getCustomerDetails()
             } catch {
                 print("\(error)")
