@@ -16,7 +16,7 @@ class MainMenuView: UIView {
     
     lazy var logoImageView: UIImageView = {
        let imageView = UIImageView(image: UIImage(named: "ic_logo"))
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
         imageView.layer.masksToBounds = true
         imageView.backgroundColor = UIColor.clear
@@ -38,7 +38,7 @@ class MainMenuView: UIView {
         let label = UILabel()
         label.text = "MAGENTA SQUARE"
         label.textAlignment = .center
-        label.font = UIFont(name: "Cochin-Bold", size: 42)
+        label.font = UIFont(name: "Cochin-Bold", size: 32)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = UIColor.clear
@@ -73,12 +73,15 @@ class MainMenuView: UIView {
     
     @objc private func runTimedCode(){
         self.sloganLabel.slideInFromLeft()
+        
         if sloganCurrentIndex >= slogans.count - 1{
             sloganCurrentIndex = 0
         }else{
             sloganCurrentIndex += 1
         }
-        self.sloganLabel.text = self.slogans[sloganCurrentIndex]
+        if sloganCurrentIndex <= slogans.count - 1 {
+            self.sloganLabel.text = self.slogans[sloganCurrentIndex]
+        }
     }
     
     private func setupSloganLabelConstraints(){
@@ -564,13 +567,7 @@ class MainMenuView: UIView {
         view.layer.masksToBounds = true
        view.backgroundColor = #colorLiteral(red: 0.419416666, green: 0.423350811, blue: 0.4357591569, alpha: 1)
         view.isUserInteractionEnabled = true
-       // imageView.image = UIImage(named: "ic_aboutUs")
         view.contentMode = .scaleAspectFit
-        /* imageView.layer.shadowColor = UIColor.gray.cgColor
-         imageView.layer.shadowOpacity = 1
-         imageView.layer.shadowOffset = CGSize.zero
-         imageView.layer.shadowRadius = 6
-         imageView.backgroundColor = UIColor.clear*/
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleContactUs)))
         
         view.translatesAutoresizingMaskIntoConstraints = false

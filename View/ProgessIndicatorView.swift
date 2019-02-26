@@ -13,7 +13,7 @@ class ProgressIndidcatorView: UIView {
      var indicatorCenter: CGPoint?{
         didSet{
             self.indicator.center = self.indicatorCenter!
-            addBlurEffect()
+            addBlurEffectLocal()
         }
     }
     
@@ -38,7 +38,7 @@ class ProgressIndidcatorView: UIView {
     }()
     
     
-    func addBlurEffect(){
+    @objc func addBlurEffectLocal(){
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = self.bounds

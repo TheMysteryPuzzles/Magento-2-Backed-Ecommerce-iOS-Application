@@ -56,11 +56,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
     private func loginUser(){
         getCustomerAccessToken()
     }
-    
     
     private func registerUser(){
         self.userName = emailTextField.text!
@@ -74,17 +72,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             firstName = components.removeFirst()
             lastName = components.joined(separator: " ")
         }
-        
             let params = [
                 "customer":[
-                    "email":emailTextField.text!,
+                    "email":self.userName!,
                     "firstname":firstName!,
-                    "lastname":lastName!
+                    "lastname": lastName!
                 ],
                 "password": passwordTextField.text!
                 ] as [String : Any]
             
-            var request = URLRequest(url: URL(string: "https://magentasquares.com/rest/all/V1/customers")!)
+            var request = URLRequest(url: URL(string: "http://magentasquares.com/rest/V1/customers")!)
             request.httpMethod = "POST"
             request.httpBody = try! JSONSerialization.data(withJSONObject: params, options: [])
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -94,7 +91,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
                 print(response!)
                 do {
-                    _ = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! Dictionary<String, AnyObject>
+                    let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! Dictionary<String, AnyObject>
+                    print("\(json)")
                    self.getCustomerAccessToken()
                 } catch {
                     print("\(error)")
@@ -104,25 +102,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     
     private func getCustomerAccessToken(){
-       self.userName = emailTextField.text!
-       self.password = passwordTextField.text!
-        print("Username\(userName)")
-         print("Password\(password)")
-       let params = ["username":userName!, "password":password!] as Dictionary<String, Any>
+     
+       let params = ["username":userName!, "password":password!] as Dictionary<String, String>
+        print("Parameter: \(userName!), \(password!)")
         
-       var request = URLRequest(url: URL(string: hostName+"/rest/all/V1/integration/customer/token")!)
+       var request = URLRequest(url: URL(string: hostName+"/rest/V1/integration/customer/token")!)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
-            print(response)
             do {
                 let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
                 print("CustomerToken:  \(json)")
               //  customerToken = json
-                self.getCustomerDetails()
+                //self.getCustomerDetails()
             } catch {
                 print("\(error)")
             }

@@ -10,7 +10,9 @@ import UIKit
 
 class RequestFreeSalesVisitView: UIView{
     
-     var list = ["Panel Blinds", "Roller Blinds", "Royal Blinds"]
+    var vc: RequestFreeVisitViewController?
+    
+    var list = ["Panel Blinds", "Roller Blinds", "Royal Blinds"]
     
     lazy var scheduleVisitView: UIView = {
        let view = UIView()
@@ -221,41 +223,9 @@ class RequestFreeSalesVisitView: UIView{
         NSLayoutConstraint.activate([
             cityTextField.topAnchor.constraint(equalTo: self.cityLabel.topAnchor),
             cityTextField.leadingAnchor.constraint(equalTo: self.cityLabel.trailingAnchor, constant: 5),
-            cityTextField.widthAnchor.constraint(equalTo: self.formContainerView.widthAnchor, multiplier: 0.3),
+            cityTextField.trailingAnchor.constraint(equalTo: self.formContainerView.trailingAnchor, constant: -5),
             cityTextField.heightAnchor.constraint(equalTo: self.formContainerView.heightAnchor, multiplier: 0.08)
         ])
-    }
-    
-
-
-    
-    lazy var stateTextField: PaddingTextField = {
-        let label = PaddingTextField()
-        
-        if isDeviceIPad {
-            label.attributedPlaceholder = NSAttributedString(string: "State",
-                                                             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 28)])
-            label.font = UIFont.boldSystemFont(ofSize: 28)
-        }else{
-            label.attributedPlaceholder = NSAttributedString(string: "State",
-                                                             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)])
-            label.font = UIFont.boldSystemFont(ofSize: 18)
-        }
-        label.textColor = .white
-        label.layer.borderWidth = 2
-        label.layer.cornerRadius = 20
-        label.layer.borderColor = UIColor.white.cgColor
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private func setupStateTextFieldConstraints(){
-        NSLayoutConstraint.activate([
-            stateTextField.topAnchor.constraint(equalTo: self.cityTextField.topAnchor),
-            stateTextField.leadingAnchor.constraint(equalTo: self.cityTextField.trailingAnchor, constant: 5),
-            stateTextField.trailingAnchor.constraint(equalTo: self.formContainerView.trailingAnchor, constant: -5),
-            stateTextField.heightAnchor.constraint(equalTo: self.formContainerView.heightAnchor, multiplier: 0.08)
-            ])
     }
     
     lazy var street1Label: UILabel = {
@@ -283,11 +253,11 @@ class RequestFreeSalesVisitView: UIView{
     lazy var streetTextField: PaddingTextField = {
         let label = PaddingTextField()
         if isDeviceIPad {
-            label.attributedPlaceholder = NSAttributedString(string: "Street Address",
+            label.attributedPlaceholder = NSAttributedString(string: "Apt,Suite,Unit,Bldg (Optional)",
                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 28)])
             label.font = UIFont.boldSystemFont(ofSize: 28)
         }else{
-            label.attributedPlaceholder = NSAttributedString(string: "Street Address",
+            label.attributedPlaceholder = NSAttributedString(string: "Apt,Suite,Unit,Bldg (Optional)",
                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)])
             label.font = UIFont.boldSystemFont(ofSize: 18)
         }
@@ -311,11 +281,11 @@ class RequestFreeSalesVisitView: UIView{
     lazy var street2TextField: PaddingTextField = {
         let label = PaddingTextField()
         if isDeviceIPad {
-            label.attributedPlaceholder = NSAttributedString(string: "Apt,Suite,Unit,Bldg (Optional)",
+            label.attributedPlaceholder = NSAttributedString(string: "Street Address",
                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 28)])
             label.font = UIFont.boldSystemFont(ofSize: 28)
         }else{
-            label.attributedPlaceholder = NSAttributedString(string: "Apt,Suite,Unit,Bldg (Optional)",
+            label.attributedPlaceholder = NSAttributedString(string: "Street Address",
                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)])
             label.font = UIFont.boldSystemFont(ofSize: 18)
         }
@@ -444,12 +414,13 @@ class RequestFreeSalesVisitView: UIView{
     
     lazy var timingLabel: UILabel = {
         let label = UILabel()
-        label.text = "Timing:"
+        label.text = "Date & Timing:"
         if isDeviceIPad {
             label.font = UIFont(name: "Hiragino Mincho ProN", size: 32)
         }else{
             label.font = UIFont(name: "Hiragino Mincho ProN", size: 20)
         }
+        label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -468,11 +439,11 @@ class RequestFreeSalesVisitView: UIView{
     lazy var timingTextField: PaddingTextField = {
         let field = PaddingTextField()
         if isDeviceIPad {
-            field.attributedPlaceholder = NSAttributedString(string: "Enter Day&Timing e.g(Monday,2:00pm)",
+            field.attributedPlaceholder = NSAttributedString(string: "Enter Date & Timing e.g(DD,MM,YYYY,HH:MM am)",
                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 28)])
             field.font = UIFont.boldSystemFont(ofSize: 28)
         }else{
-            field.attributedPlaceholder = NSAttributedString(string: "Enter timing",
+            field.attributedPlaceholder = NSAttributedString(string: "Enter Date & Timing",
                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)])
             field.font = UIFont.boldSystemFont(ofSize: 18)
         }
@@ -504,11 +475,15 @@ class RequestFreeSalesVisitView: UIView{
         }else{
              button.titleLabel?.font = UIFont(name: "BillaBong", size: 32)
         }
-      
+        button.addTarget(self, action: #selector(handleScheduleButton), for: .touchUpInside)
        button.titleLabel?.adjustsFontSizeToFitWidth = true
        button.translatesAutoresizingMaskIntoConstraints = false
        return button
     }()
+    
+    @objc func handleScheduleButton(){
+       vc?.handleScheduleButtonTapped()
+    }
     
     private func setupRequestButonConstraints(){
         
@@ -567,9 +542,6 @@ class RequestFreeSalesVisitView: UIView{
         self.formContainerView.addSubview(cityTextField)
         setupCityTextFieldConstraints()
         
-        self.formContainerView.addSubview(stateTextField)
-        setupStateTextFieldConstraints()
-        
         self.formContainerView.addSubview(phoneLabel)
         setupPhoneLabelConstraints()
         
@@ -620,7 +592,7 @@ class RequestFreeSalesVisitView: UIView{
         ]
         
         chooseProductIntrestedInDropDown.selectionAction = { [weak self] (index, item) in
-            self?.chooseProductIntrestedIn.setTitle(item, for: .normal)
+            self?.chooseProductIntrestedIn.setTitle(item + "  🔽", for: .normal)
         }
     }
     

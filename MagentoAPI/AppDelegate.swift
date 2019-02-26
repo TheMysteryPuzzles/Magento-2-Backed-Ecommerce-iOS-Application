@@ -13,7 +13,7 @@ import GooglePlaces
 /*AIzaSyCBIiQc2riHy0lx0vWzfi6T2yifOoN3FJw*/
 
 var hostName: String = "http://magentasquares.com"
-var shostName: String = "https://magentasquares.com"
+var shostName: String = "http://magentasquares.com"
 var webServerDocumentRootUrl = "http://magentasquares.com/pub/media/catalog/product"
 
 var adminToken: String?

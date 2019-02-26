@@ -10,6 +10,7 @@ import UIKit
 
 class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
    
+    
     var viewModel: CustomAttributesViewModel?
     var delegate: ProductDetailDelegate?
     var selectedMountDetails: MountDetails?
@@ -31,13 +32,13 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     lazy var cartAndRate: UIView = {
        let view = UIView()
        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.gray
+       view.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
        return view
     }()
     
     private func setupcartAndRateConstraints(){
     NSLayoutConstraint.activate([
-        cartAndRate.topAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
+        cartAndRate.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         cartAndRate.leadingAnchor.constraint(equalTo: self.leadingAnchor),
         cartAndRate.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         cartAndRate.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2)
@@ -46,7 +47,9 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     lazy var rateLabel: UILabel = {
        let label = UILabel()
-       label.text = "Rate"
+        label.text = " Rate : "
+        label.textAlignment = .right
+       label.textColor = UIColor.black
        label.font = UIFont.boldSystemFont(ofSize: 28)
        label.adjustsFontSizeToFitWidth = true
        label.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +61,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             rateLabel.leadingAnchor.constraint(equalTo: self.cartAndRate.leadingAnchor, constant: 10),
             rateLabel.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.4),
             rateLabel.heightAnchor.constraint(equalToConstant: 30),
-            rateLabel.topAnchor.constraint(equalTo: self.cartAndRate.topAnchor, constant: 10)
+            rateLabel.topAnchor.constraint(equalTo: self.cartAndRate.topAnchor, constant: 15)
         ])
     }
     
@@ -66,9 +69,10 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     lazy var rateValueLabel: UILabel = {
         let label = UILabel()
         label.text = "$"
+        label.textColor = UIColor.black
         label.font = UIFont.boldSystemFont(ofSize: 28)
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = UIColor.green
+        label.backgroundColor = UIColor.clear
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -76,9 +80,9 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     private func setupRateValueLabelConstraints(){
         NSLayoutConstraint.activate([
             rateValueLabel.leadingAnchor.constraint(equalTo: self.rateLabel.trailingAnchor, constant: 10),
-            rateValueLabel.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.4),
+            rateValueLabel.trailingAnchor.constraint(equalTo: self.cartAndRate.trailingAnchor, constant: -5),
             rateValueLabel.heightAnchor.constraint(equalToConstant: 30),
-            rateValueLabel.topAnchor.constraint(equalTo: self.cartAndRate.topAnchor, constant: 10)
+            rateValueLabel.topAnchor.constraint(equalTo: self.cartAndRate.topAnchor, constant: 15)
             ])
     }
     
@@ -99,10 +103,33 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     private func setupAddToCartButtonConstraints(){
         NSLayoutConstraint.activate([
-            addToCartButton.centerXAnchor.constraint(equalTo: self.cartAndRate.centerXAnchor),
-            addToCartButton.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.4),
+            addToCartButton.leadingAnchor.constraint(equalTo: self.cancelButton.trailingAnchor, constant: 10),
+            addToCartButton.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.45),
             addToCartButton.heightAnchor.constraint(equalToConstant: 30),
-            addToCartButton.topAnchor.constraint(equalTo: self.rateLabel.bottomAnchor, constant: 10)
+            addToCartButton.topAnchor.constraint(equalTo: self.rateLabel.bottomAnchor, constant: 15)
+            ])
+    }
+    
+    lazy var cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Cancel", for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        button.addTarget(self, action: #selector(handleCacelButton), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    @objc func handleCacelButton(){
+        self.productDetailViewController?.cancelButtonTapped()
+    }
+    
+    private func setupcancelButtonConstraints(){
+        NSLayoutConstraint.activate([
+            cancelButton.leadingAnchor.constraint(equalTo: self.cartAndRate.leadingAnchor, constant: 10),
+            cancelButton.widthAnchor.constraint(equalTo: self.cartAndRate.widthAnchor, multiplier: 0.45),
+            cancelButton.heightAnchor.constraint(equalToConstant: 30),
+            cancelButton.topAnchor.constraint(equalTo: self.rateLabel.bottomAnchor, constant: 15)
             ])
     }
     
@@ -113,21 +140,34 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     }
     
     lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: self.frame.minY + 24, width: self.frame.width, height: self.frame.height * 0.8))
-        print("\(self.frame.width)")
+        
+        // CGRect(x: 0, y: self.frame.minY + statusBarHeight + 40, width: self.frame.width, height: self.frame.height * 0.65)
+        let scrollView = UIScrollView(frame: .zero)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.contentSize = CGSize(width: self.frame.width, height: self.frame.height)
         scrollView.backgroundColor = UIColor.clear
         return scrollView
     }()
     
+    private func setupScrollViewConstraints(){
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: self.tagLineLabel.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.cartAndRate.topAnchor)
+            ])
+    }
     
-    func setupBlurView(){
+    
+    func setupBlurView(withTitle: String, withText: String){
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = customAttributeHelpViewBaground.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.customAttributeHelpView.customAttributeName.text = withTitle
+         self.customAttributeHelpView.customAttributeDetail.text = withText
         self.customAttributeHelpViewBaground.addSubview(blurEffectView)
-     self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView)
+        self.customAttributeHelpViewBaground.bringSubviewToFront(customAttributeHelpView)
     }
     
     lazy var customAttributeHelpViewBaground: UIView = {
@@ -160,6 +200,29 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             customAttributeHelpView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 0.25)
         ])
     }
+    
+    lazy var tagLineLabel: UILabel = {
+       let label = UILabel()
+       label.text = "Order Blinds in 5 Easy Steps"
+        label.textAlignment = .center
+        label.font = UIFont(name: "BillaBong", size: 32)
+        label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = #colorLiteral(red: 0.1793720141, green: 0.03571888997, blue: 0.1303770983, alpha: 1)
+        label.textColor = UIColor.white
+        label.translatesAutoresizingMaskIntoConstraints = false
+       return label
+    }()
+    
+    private func setupTagLineLabelConstraints(){
+        NSLayoutConstraint.activate([
+            tagLineLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: statusBarHeight),
+            tagLineLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            tagLineLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            tagLineLabel.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    
     
     let productDetailHeaderView: UIView = {
        let view = UIView()
@@ -224,7 +287,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         label.backgroundColor = UIColor.white
         label.numberOfLines = 0
         label.fitTextToBounds()
-        label.text = "Custom window fashions are an expression of style and individuality. Express yours with our new, free flowing Designer Panel Track Collection I. Not your mother’s vertical blinds, these hip, contemporary-styled wider panels make a powerful design statement that transform sliding glass patio or French doors into stunning architectural features of their own."
+        label.text = "Custom window fashions are an expression of style and individuality. Express yours with our new, free flowing Designer Panel Track Collection I."
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -279,7 +342,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = UIColor.lightGray
+       label.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         return label
     }()
     
@@ -317,7 +380,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = UIColor.lightGray
+       label.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         return label
     }()
     
@@ -362,7 +425,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
-        imageView.backgroundColor = UIColor.lightGray
+        imageView.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -372,15 +435,22 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     lazy var selectSizeImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
-        imageView.backgroundColor = UIColor.lightGray
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectSizeImageViewSelected)))
+       imageView.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
+    @objc func handleSelectSizeImageViewSelected(){
+        self.setupBlurView(withTitle: "How To Measure ", withText: "(1)Use a steel measuring tape (2)Round down to the nearest 1/8' for width (3) Round up to the nearest 1/8' for height")
+        self.customAttributeHelpViewBaground.isHidden = false
+    }
+    
+    
+    
     @objc func handleselectColorDetailImageViewSelected(){
-        self.setupBlurView()
+        self.setupBlurView(withTitle: "Choose Your Color: ", withText: "Choose your favorite fabric from our wide range of fabrics.")
         self.customAttributeHelpViewBaground.isHidden = false
     }
     
@@ -444,7 +514,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     var selectMountDetailsLabel: UILabel = {
         let label = UILabel()
         label.text = " Step 2 - Choose Mount Type"
-        label.backgroundColor = UIColor.lightGray
+         label.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         label.textColor = UIColor.white
         label.textAlignment = .left
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -466,11 +536,17 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
-        imageView.backgroundColor = UIColor.lightGray
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleMountDetailImageViewSelected)))
+        imageView.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    @objc func handleMountDetailImageViewSelected(){
+        self.setupBlurView(withTitle: "Mount Type", withText: "Inside Mount means the window coverings will be mounted and hung on the inside of the window frame, or the ceiling. Not recommended for shallow windowsills. Outside Mount means the window coverings will be mounted and hung outside of the window frame, making it ideal for shallow windowsills or for more complete light blockage by reducing the halo effect.")
+       self.customAttributeHelpViewBaground.isHidden = false
+    }
+    
     
     private func setupSelectMountDetailsDetailImageViewConstraints(){
         NSLayoutConstraint.activate([
@@ -559,7 +635,6 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     }()
     
     @objc func handleWidthInchesDropdown(){
-        print("Selected")
         self.widthInchesDropdown.show()
     }
     
@@ -804,11 +879,19 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     lazy var widthImageView: UIImageView = {
        let imageView = UIImageView(image: UIImage(named: "ic_insideWidth"))
         imageView.backgroundColor = UIColor.clear
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleInsideWindowSelection)))
+        imageView.backgroundColor = UIColor.gray
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    @objc func handleInsideWindowSelection(){
+        widthImageView.backgroundColor = UIColor.gray
+        heightImageView.backgroundColor = UIColor.clear
+    }
     
     private func setupWidthImageViewConstraints(){
         NSLayoutConstraint.activate([
@@ -823,10 +906,17 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         let imageView = UIImageView(image: UIImage(named: "ic_insideHeight"))
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = UIColor.clear
+         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleOutsideWindowSelection)))
+        imageView.isUserInteractionEnabled = true
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    @objc func handleOutsideWindowSelection(){
+        widthImageView.backgroundColor = UIColor.clear
+        heightImageView.backgroundColor = UIColor.gray
+    }
+    
     
     private func setupHeightImageViewConstraints(){
         NSLayoutConstraint.activate([
@@ -862,14 +952,13 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
             ])
     }
     
-    
     private func setupSelectOperationsViewConstraints(){
         NSLayoutConstraint.activate([
             selectOperationsView.topAnchor.constraint(equalTo: self.selectMountDetailsView.bottomAnchor, constant: 5),
             selectOperationsView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             selectOperationsView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            selectOperationsView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
-            ])
+            selectOperationsView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.38)
+        ])
     }
     
     lazy var ManualCordOperationRadioButton: SSRadioButton = {
@@ -942,7 +1031,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     var selectCordOperationLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.lightGray
+        label.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         label.textColor = UIColor.white
         label.text = " Step 4 - Choose Control Option"
         label.textAlignment = .left
@@ -965,11 +1054,17 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         let imageView = UIImageView(image: UIImage(named: "question_Mark"))
         imageView.contentMode = .scaleAspectFit
           imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
-        imageView.backgroundColor = UIColor.lightGray
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectCordOperationDetailImageViewSelected)))
+        imageView.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    @objc func handleSelectCordOperationDetailImageViewSelected(){
+        setupBlurView(withTitle: "Control Operation: ", withText: "You have two control operation options as follows: Manual Control and Morotized Control. Manual Control comes with cords, Motorized Option comes with remote or wall switch")
+        self.customAttributeHelpViewBaground.isHidden = false
+    }
+    
     
     private func setupSelectCordOperationDetailImageViewConstraints(){
         NSLayoutConstraint.activate([
@@ -1026,7 +1121,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         
           imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
-        imageView.backgroundColor = UIColor.lightGray
+        imageView.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -1062,6 +1157,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         self.selectedControlOperation = ControlOperation.manual
         wallSocketControlRadioButton.isSelected = false
         remoteControlRadioButton.isSelected = true
+        remoteAndWallSocketControlRadioButton.isSelected = false
         
         let currentPrice = self.productDetailViewController?.sum
         self.productDetailViewController?.sum += 7000
@@ -1074,6 +1170,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
 
         remoteControlRadioButton.isSelected = false
         wallSocketControlRadioButton.isSelected = true
+        remoteAndWallSocketControlRadioButton.isSelected = false
         
         let currentPrice = self.productDetailViewController?.sum
         self.productDetailViewController?.sum += 7000
@@ -1194,8 +1291,9 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     
     lazy var cordHeight: UITextField = {
        let field = UITextField()
-        field.placeholder = "Cord Height(Inches)"
-        field.backgroundColor = UIColor.lightGray
+       field.attributedPlaceholder = NSAttributedString(string: " Cord Height(Inches)",
+                                                               attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+       field.backgroundColor = UIColor.lightGray
        field.translatesAutoresizingMaskIntoConstraints = false
        return field
     }()
@@ -1214,7 +1312,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     lazy var leftSideControlRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
-        button.addTarget(self, action: #selector(toggleWallSocketControlRadioButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLeftSideRadioButton), for: .touchUpInside)
         button.circleRadius = 8
         button.strokeColor = UIColor.black
         button.backgroundColor = UIColor.clear
@@ -1227,6 +1325,14 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         button.contentHorizontalAlignment = .left
         return button
     }()
+    @objc func handleLeftSideRadioButton(){
+        
+    rightSideControlRadioButton.isSelected = false
+    leftSideControlRadioButton.isSelected = true
+    
+    }
+   
+    
     
     private func setupLeftSideControlRadioButtonRadioButtonConstraints(){
         NSLayoutConstraint.activate([
@@ -1241,7 +1347,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
     lazy var rightSideControlRadioButton: SSRadioButton = {
         let button = SSRadioButton()
         button.isUserInteractionEnabled = true
-        button.addTarget(self, action: #selector(toggleWallSocketControlRadioButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleRightSideRadioButton), for: .touchUpInside)
         button.circleRadius = 8
         button.strokeColor = UIColor.black
         button.backgroundColor = UIColor.clear
@@ -1254,6 +1360,12 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         button.contentHorizontalAlignment = .left
         return button
     }()
+    
+    
+    @objc func handleRightSideRadioButton(){
+        rightSideControlRadioButton.isSelected = true
+        leftSideControlRadioButton.isSelected = false
+    }
     
     private func setupRightSideControlRadioButtonConstraints(){
         NSLayoutConstraint.activate([
@@ -1268,27 +1380,12 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
 
     
     
-    let cancelButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
-        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
-        return button
-    }()
-    
-    private func setupCancelButtonConstraints(){
-        NSLayoutConstraint.activate([
-            cancelButton.topAnchor.constraint(equalTo: self.selectOperationsView.bottomAnchor, constant: 5),
-            cancelButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
-            cancelButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.48),
-            cancelButton.bottomAnchor.constraint(equalTo: self.safeBottomAnchor, constant: -5)
-            ])
-       }
+   
     
     
     
     fileprivate func setupContainerViews() {
+        
         self.scrollView.addSubview(productDetailHeaderView)
         setupProductDetailHeaderViewConstraints()
         
@@ -1528,7 +1625,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = UIColor.lightGray
+       label.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         label.textColor = UIColor.white
         return label
     }()
@@ -1549,7 +1646,7 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleselectColorDetailImageViewSelected)))
-        imageView.backgroundColor = UIColor.lightGray
+        imageView.backgroundColor = #colorLiteral(red: 0.4703475833, green: 0.2535249591, blue: 0.4185587764, alpha: 1)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -1671,7 +1768,16 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         super.init(frame: frame)
         self.backgroundColor = UIColor.white
         
+        self.addSubview(tagLineLabel)
+        setupTagLineLabelConstraints()
+        
+        
+        self.addSubview(cartAndRate)
+        setupcartAndRateConstraints()
+        
         self.addSubview(scrollView)
+        setupScrollViewConstraints()
+        
         setupContainerViews()
         setupProductDetailHeaderViewSubviews()
         
@@ -1728,15 +1834,15 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         
         self.customAttributeHelpView.doneButton.addTarget(self, action: #selector(dismissCustomAttributeHelpViewBaground), for: .touchUpInside)
         
-        self.addSubview(cartAndRate)
-        setupcartAndRateConstraints()
-        
         self.cartAndRate.addSubview(rateLabel)
         setuprateLabelConstraints()
         
         self.cartAndRate.addSubview(rateValueLabel)
         setupRateValueLabelConstraints()
 
+        
+        self.cartAndRate.addSubview(cancelButton)
+        setupcancelButtonConstraints()
         
         self.cartAndRate.addSubview(addToCartButton)
         setupAddToCartButtonConstraints()

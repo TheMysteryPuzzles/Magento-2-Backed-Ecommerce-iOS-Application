@@ -23,9 +23,9 @@ class ProductDetailViewController: UIViewController {
     
     var selectedItem: Item?
     var model: ProductDetailModel?
-    var customOptionsModel:CustomOptionsModel?
+    var customOptionsModel:CustomOptionSkuCustomOptionsModel?
     lazy var colorCodes = [String]()
-    var sum = 0
+    var sum = 0.0
    
     var widthInchesDropdown = [String]()
     var heightInchesDropdown = [String]()
@@ -63,13 +63,19 @@ class ProductDetailViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         self.productDetailView.scrollView.contentSize.height = self.productDetailView.selectOperationsView.frame.maxY //self.productDetailView.roomNameTextField.frame.maxY
         
-        createACartForLoggedInCustomer()
+          self.productDetailView.cartAndRate.addBlurEffect()
+        self.productDetailView.cartAndRate.bringSubviewToFront( self.productDetailView.rateLabel)
+        self.productDetailView.cartAndRate.bringSubviewToFront( self.productDetailView.rateValueLabel)
+       
+        self.productDetailView.cartAndRate.bringSubviewToFront( self.productDetailView.cancelButton)
+        self.productDetailView.cartAndRate.bringSubviewToFront( self.productDetailView.addToCartButton)
     }
     
     private func setupDropDowns(){
 
         for option in  self.customOptionsModel!.options!{
-            if option.optionID == 75 {
+            
+            if option.sortOrder == 3 {
                 for value in option.values! {
                     self.widthInchesDropdown.append(value.title!)
                     print(value.title)
@@ -80,7 +86,7 @@ class ProductDetailViewController: UIViewController {
                 self.productDetailView.widthInchesDropdown.selectionAction = { [weak self] (index, item) in
                     self!.productDetailView.widthTextField.setTitle(item, for: .normal)
             }
-        } else if option.optionID == 76 {
+        } else if option.sortOrder == 4 {
                 for value in option.values! {
                     self.widthInchesDecimalDropdown.append(value.title!)
                     print(value.title)
@@ -91,7 +97,7 @@ class ProductDetailViewController: UIViewController {
                 self.productDetailView.widthInchesDecimalDropdown.selectionAction = { [weak self] (index, item) in
                     self!.productDetailView.widthTextFieldDecimal.setTitle(item, for: .normal)
                 }
-            }else if option.optionID == 77 {
+            }else if option.sortOrder == 6 {
                 for value in option.values! {
                     self.heightInchesDropdown.append(value.title!)
                 }
@@ -101,7 +107,7 @@ class ProductDetailViewController: UIViewController {
                 self.productDetailView.heightInchesDropdown.selectionAction = { [weak self] (index, item) in
                     self!.productDetailView.heightTextField.setTitle(item, for: .normal)
                 }
-            } else if option.optionID == 78 {
+            } else if option.sortOrder == 7 {
                 for value in option.values! {
                     self.heightInchesDecimalDropdown.append(value.title!)
                 }
@@ -119,13 +125,32 @@ class ProductDetailViewController: UIViewController {
 }
     
     private func handlePrices(){
-        self.productDetailView.rateValueLabel.text = "$" + String(self.selectedItem!.price!)
-        self.sum = Int(self.selectedItem!.price!)
+        self.productDetailView.rateValueLabel.text = "AED" + String(self.selectedItem!.price!)
+        self.sum = Double(self.selectedItem!.price!)
     }
     
     
     func handleAddToCart(){
-        createACartForLoggedInCustomer()
+        let alertController = UIAlertController(title: "Item Added", message: "Your selected item along with its customization options has been added to cart", preferredStyle: .alert)
+        
+        // Create OK button
+        let OKAction = UIAlertAction(title: "CheckOut", style: .default) { (action:UIAlertAction!) in
+         
+            let controller = CheckoutViewController()
+            self.present(controller, animated: true, completion: nil)
+            // Code in this block will trigger when OK button tapped.
+            print("Ok button tapped");
+            
+        }
+        alertController.addAction(OKAction)
+        
+        // Create Cancel button
+        let cancelAction = UIAlertAction(title: "Back", style: .cancel) { (action:UIAlertAction!) in
+           alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(cancelAction)
+         self.present(alertController, animated: true, completion:nil)
+        //createACartForLoggedInCustomer()
     }
     
     
@@ -145,7 +170,7 @@ class ProductDetailViewController: UIViewController {
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
             do {
                 let jsonDecoder = JSONDecoder()
-                let responseModel = try jsonDecoder.decode(CustomOptionsModel.self, from: data!)
+                let responseModel = try jsonDecoder.decode(CustomOptionSkuCustomOptionsModel.self, from: data!)
                 self.customOptionsModel = responseModel
                 DispatchQueue.main.async {
                      self.getAllCustomOptions()
@@ -162,16 +187,20 @@ class ProductDetailViewController: UIViewController {
     private func getAllCustomOptions(){
         
         for option in self.customOptionsModel!.options!{
-            if option.title == "Colors:" {
+           
+            
+            
+            if option.title! == "Colors:" {
                 for value in option.values!{
                     self.colorCodes.append(value.title!)
                 }
                 DispatchQueue.main.async {
                       self.productDetailView.selectColorCollectionView.reloadData()
                 }
-                setupDropDowns()
+                
             }
         }
+        setupDropDowns()
     }
     
     
@@ -208,15 +237,19 @@ extension ProductDetailViewController: UICollectionViewDataSource, UICollectionV
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        for cell in collectionView.visibleCells {
+            let cellView = cell as! ColorCollectionViewCell
+            cellView.colorView.backgroundColor = UIColor.clear
+        }
         for option in self.customOptionsModel!.options!{
-            if option.title == "Colors:" {
+            if option.title! == "Colors:" {
                 let price = option.values![indexPath.item].price
                 let finalPrice = sum + price!
-                self.productDetailView.rateValueLabel.text = "$" + "\(finalPrice)"
+                self.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
             }
         }
-       // self.productDetailView.rateValueLabel.text = cel
+      let cell = collectionView.cellForItem(at: indexPath) as! ColorCollectionViewCell
+      cell.colorView.backgroundColor = #colorLiteral(red: 0.8504895568, green: 1, blue: 1, alpha: 1)
     }
     
     
@@ -234,27 +267,24 @@ extension ProductDetailViewController: UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ColorCollectionViewCell
-        
+        if colorCodes[indexPath.item] == "5085" {
+            let url = URL(string: "https://magentasquares.com/pub/media/itoris/files/w/c/wc-12-0013-"+"\(colorCodes[indexPath.item])"+"_100x100.png")
+            print("https://magentasquares.com/pub/media/itoris/files/w/c/wc-12-0013-"+"\(colorCodes[indexPath.item])"+".png")
+            cell.colorView.image = nil
+            if  url != nil{
+                cell.colorView.loadImageUsingCache(withUrl: url!)
+            }
+        }else{
+            
         let url = URL(string: "https://magentasquares.com/pub/media/itoris/files/w/c/wc-12-0013-"+"\(colorCodes[indexPath.item])"+"_100x100.png")
-    
-        if  url != nil{
-           /* DispatchQueue.global(qos: .background).async {
-                URLSession.shared.dataTask(with: url!) { data, response, error in
-                    guard
-                        let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                        let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
-                        let data = data, error == nil,
-                        let image = UIImage(data: data)
-                        else { return }
-                    DispatchQueue.main.async() {
-                        cell.colorView.image = image
-                    }
-                    }.resume()
-            }*/
 
-            cell.colorView.downloadAndSetImage(from: url!)
+         cell.colorView.image = nil
+        if  url != nil{
+            cell.colorView.loadImageUsingCache(withUrl: url!)
         }
+    }
         cell.colorNameLabel.text = colorCodes[indexPath.item]
+       
         return cell
     }
 }

@@ -15,7 +15,7 @@ class MainMenuViewController: UIViewController {
     var slogans = [String]()
     
     override func viewWillAppear(_ animated: Bool) {
-        
+
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
@@ -72,8 +72,6 @@ class MainMenuViewController: UIViewController {
        view.mainViewController = self
        return view
     }()
-    
-   
     
     override func viewDidAppear(_ animated: Bool) {
         
@@ -147,6 +145,7 @@ extension MainMenuViewController {
                 let jsonDecoder = JSONDecoder()
                 let responseModel = try jsonDecoder.decode(Categories.self, from: data!)
                 self.categoriesResponse = responseModel
+                print(responseModel.name)
                 self.getSlogans()
                 self.getAllCategories()
             } catch {
@@ -163,10 +162,11 @@ extension MainMenuViewController {
     private func getAllCategories(){
         print("Category Names :")
         for items in categoriesResponse!.childrenData{
+            print(items.name)
             categories.append(items.name)
         }
         DispatchQueue.main.sync {
-            let text = String(self.categories.last!.dropLast(8))
+            let text = String(self.categories[2].dropLast(8))
             self.mainMenuView.windowCoveringsLabel.text = self.categories.first
             self.mainMenuView.foldingDoorsLabel.text = self.categories[1]
             self.mainMenuView.wirelessSecurityLabel.text = text

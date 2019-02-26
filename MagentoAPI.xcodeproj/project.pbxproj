@@ -42,6 +42,7 @@
 		96DF91532216FD81007C8CF4 /* ContactUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DF91522216FD81007C8CF4 /* ContactUsView.swift */; };
 		96DF91552216FD91007C8CF4 /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DF91542216FD91007C8CF4 /* ContactUsViewController.swift */; };
 		96DF915722172026007C8CF4 /* ShowroomJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DF915622172026007C8CF4 /* ShowroomJSONModel.swift */; };
+		96E504B4221EECE200400D9F /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E504B3221EECE200400D9F /* CheckoutViewController.swift */; };
 		96F07E7A21FCF2B40061622F /* D3ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F07E4A21FCF2B20061622F /* D3ListView.swift */; };
 		96F07E7B21FCF2B40061622F /* SubCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F07E4B21FCF2B20061622F /* SubCollectionViewFlowLayout.swift */; };
 		96F07E7C21FCF2B40061622F /* SubCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F07E4C21FCF2B20061622F /* SubCollectionViewDelegate.swift */; };
@@ -131,6 +132,7 @@
 		96DF91522216FD81007C8CF4 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
 		96DF91542216FD91007C8CF4 /* ContactUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
 		96DF915622172026007C8CF4 /* ShowroomJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowroomJSONModel.swift; sourceTree = "<group>"; };
+		96E504B3221EECE200400D9F /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		96F07E4A21FCF2B20061622F /* D3ListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = D3ListView.swift; sourceTree = "<group>"; };
 		96F07E4B21FCF2B20061622F /* SubCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		96F07E4C21FCF2B20061622F /* SubCollectionViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCollectionViewDelegate.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 		96F07E5D21FCF2B30061622F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				96E504B3221EECE200400D9F /* CheckoutViewController.swift */,
 				96FF82FB221C74D50078DF4F /* VideoPlayerViewController.swift */,
 				96DF91542216FD91007C8CF4 /* ContactUsViewController.swift */,
 				962BDC37221596C1006D5A8E /* GoogleDirectionsNetworkLayerViewController.swift */,
@@ -644,6 +647,7 @@
 				96DF915722172026007C8CF4 /* ShowroomJSONModel.swift in Sources */,
 				96D81E5F22100A8A007FEE1B /* RequestFreeVisitViewController.swift in Sources */,
 				96F07E9E21FCF2B40061622F /* TextAlignmentsHelpers.swift in Sources */,
+				96E504B4221EECE200400D9F /* CheckoutViewController.swift in Sources */,
 				961AE60E220423A50094FC04 /* Ex_ImageView.swift in Sources */,
 				96F07E8721FCF2B40061622F /* ShopOnlineProductCategoriesHeaderView.swift in Sources */,
 				96F07EA021FCF3120061622F /* AutoLayoutHelpers.swift in Sources */,

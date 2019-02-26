@@ -67,47 +67,7 @@ class ConfigurableProductOptionValue: Codable {
 
 
 
-class Option: Codable {
-    let productSku: String?
-    let optionID: Int?
-    let title: Title?
-    let type: TypeEnum?
-    let sortOrder: Int?
-    let isRequire: Bool?
-    let price: Int?
-    let priceType: PriceType?
-    let maxCharacters, imageSizeX, imageSizeY: Int?
-    let values: [OptionValue]?
-    
-    enum CodingKeys: String, CodingKey {
-        case productSku = "product_sku"
-        case optionID = "option_id"
-        case title, type
-        case sortOrder = "sort_order"
-        case isRequire = "is_require"
-        case price
-        case priceType = "price_type"
-        case maxCharacters = "max_characters"
-        case imageSizeX = "image_size_x"
-        case imageSizeY = "image_size_y"
-        case values
-    }
-    
-    init(productSku: String?, optionID: Int?, title: Title?, type: TypeEnum?, sortOrder: Int?, isRequire: Bool?, price: Int?, priceType: PriceType?, maxCharacters: Int?, imageSizeX: Int?, imageSizeY: Int?, values: [OptionValue]?) {
-        self.productSku = productSku
-        self.optionID = optionID
-        self.title = title
-        self.type = type
-        self.sortOrder = sortOrder
-        self.isRequire = isRequire
-        self.price = price
-        self.priceType = priceType
-        self.maxCharacters = maxCharacters
-        self.imageSizeX = imageSizeX
-        self.imageSizeY = imageSizeY
-        self.values = values
-    }
-}
+
 
 enum PriceType: String, Codable {
     case fixed = "fixed"

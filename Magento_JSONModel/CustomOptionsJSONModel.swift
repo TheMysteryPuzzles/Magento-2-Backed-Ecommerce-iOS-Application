@@ -10,18 +10,18 @@
 
 import Foundation
 
-struct CustomOptionsModel: Codable {
+struct CustomOptionSkuCustomOptionsModel: Codable {
     let id: Int?
-    let sku: Sku?
+    let sku: CustomOptionSkuSku?
     let name: String?
     let attributeSetID, price, status, visibility: Int?
     let typeID, createdAt, updatedAt: String?
-    let extensionAttributes: ExtensionAttributes1?
+    let extensionAttributes: CustomOptionSkuExtensionAttributes?
     let productLinks: [JSONAny]?
-    let options: [Option1]?
-    let mediaGalleryEntries: [MediaGalleryEntry]?
+    let options: [CustomOptionSkuOption]?
+    let mediaGalleryEntries: [CustomOptionSkuMediaGalleryEntry]?
     let tierPrices: [JSONAny]?
-    let customAttributes: [CustomAttribute1]?
+    let customAttributes: [CustomOptionSkuCustomAttribute]?
     
     enum CodingKeys: String, CodingKey {
         case id, sku, name
@@ -39,9 +39,9 @@ struct CustomOptionsModel: Codable {
     }
 }
 
-struct CustomAttribute1: Codable {
+struct CustomOptionSkuCustomAttribute: Codable {
     let attributeCode: String?
-    let value: CustomAttributeValue?
+    let value: CustomOptionSkuCustomAttributeValue?
     
     enum CodingKeys: String, CodingKey {
         case attributeCode = "attribute_code"
@@ -49,13 +49,13 @@ struct CustomAttribute1: Codable {
     }
 }
 
-enum CustomAttributeValue: Codable {
+enum CustomOptionSkuCustomAttributeValue: Codable {
     case string(String)
-    case unionArray([ValueValue])
+    case unionArray([CustomOptionSkuValueValue])
     
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        if let x = try? container.decode([ValueValue].self) {
+        if let x = try? container.decode([CustomOptionSkuValueValue].self) {
             self = .unionArray(x)
             return
         }
@@ -63,7 +63,7 @@ enum CustomAttributeValue: Codable {
             self = .string(x)
             return
         }
-        throw DecodingError.typeMismatch(CustomAttributeValue.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for CustomAttributeValue"))
+        throw DecodingError.typeMismatch(CustomOptionSkuCustomAttributeValue.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for CustomOptionSkuCustomAttributeValue"))
     }
     
     func encode(to encoder: Encoder) throws {
@@ -77,7 +77,7 @@ enum CustomAttributeValue: Codable {
     }
 }
 
-enum ValueValue: Codable {
+enum CustomOptionSkuValueValue: Codable {
     case bool(Bool)
     case integer(Int)
     case string(String)
@@ -96,7 +96,7 @@ enum ValueValue: Codable {
             self = .string(x)
             return
         }
-        throw DecodingError.typeMismatch(ValueValue.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for ValueValue"))
+        throw DecodingError.typeMismatch(CustomOptionSkuValueValue.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for CustomOptionSkuValueValue"))
     }
     
     func encode(to encoder: Encoder) throws {
@@ -112,10 +112,10 @@ enum ValueValue: Codable {
     }
 }
 
-struct ExtensionAttributes1: Codable {
+struct CustomOptionSkuExtensionAttributes: Codable {
     let websiteIDS: [Int]?
-    let categoryLinks: [CategoryLink2]?
-    let stockItem: StockItem?
+    let categoryLinks: [CustomOptionSkuCategoryLink]?
+    let stockItem: CustomOptionSkuStockItem?
     
     enum CodingKeys: String, CodingKey {
         case websiteIDS = "website_ids"
@@ -124,7 +124,7 @@ struct ExtensionAttributes1: Codable {
     }
 }
 
-struct CategoryLink2: Codable {
+struct CustomOptionSkuCategoryLink: Codable {
     let position: Int?
     let categoryID: String?
     
@@ -134,7 +134,7 @@ struct CategoryLink2: Codable {
     }
 }
 
-struct StockItem: Codable {
+struct CustomOptionSkuStockItem: Codable {
     let itemID, productID, stockID, qty: Int?
     let isInStock, isQtyDecimal, showDefaultNotificationMessage, useConfigMinQty: Bool?
     let minQty, useConfigMinSaleQty, minSaleQty: Int?
@@ -181,17 +181,32 @@ struct StockItem: Codable {
     }
 }
 
+struct CustomOptionSkuMediaGalleryEntry: Codable {
+    let id: Int?
+    let mediaType: String?
+    let label: JSONNull?
+    let position: Int?
+    let disabled: Bool?
+    let types: [String]?
+    let file: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case mediaType = "media_type"
+        case label, position, disabled, types, file
+    }
+}
 
-struct Option1: Codable {
-    let productSku: Sku?
+struct CustomOptionSkuOption: Codable {
+    let productSku: CustomOptionSkuSku?
     let optionID: Int?
     let title: String?
-    let type: TypeEnum1?
+    let type: CustomOptionSkuType?
     let sortOrder: Int?
     let isRequire: Bool?
-    let values: [ValueClass]?
+    let values: [CustomOptionSkuValueClass]?
     let price: Int?
-    let priceType: PriceType1?
+    let priceType: CustomOptionSkuPriceType?
     let maxCharacters: Int?
     
     enum CodingKeys: String, CodingKey {
@@ -206,24 +221,26 @@ struct Option1: Codable {
     }
 }
 
-enum PriceType1: String, Codable {
+enum CustomOptionSkuPriceType: String, Codable {
     case fixed = "fixed"
+    case percent = "percent"
 }
 
-enum Sku: String, Codable {
+enum CustomOptionSkuSku: String, Codable {
     case wc120013 = "WC-12-0013"
 }
 
-enum TypeEnum1: String, Codable {
+enum CustomOptionSkuType: String, Codable {
     case area = "area"
     case dropDown = "drop_down"
     case radio = "radio"
 }
 
-struct ValueClass: Codable {
+struct CustomOptionSkuValueClass: Codable {
     let title: String?
-    let sortOrder, price: Int?
-    let priceType: PriceType1?
+    let sortOrder: Int?
+    let price: Double?
+    let priceType: CustomOptionSkuPriceType?
     let sku: String?
     let optionTypeID: Int?
     
@@ -236,5 +253,3 @@ struct ValueClass: Codable {
         case optionTypeID = "option_type_id"
     }
 }
-
-
