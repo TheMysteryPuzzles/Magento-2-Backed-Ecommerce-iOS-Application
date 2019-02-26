@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4678E13C055CE46E62594622 /* Pods_MagentoAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 877E8BFF6064747E073F89D8 /* Pods_MagentoAPI.framework */; };
+		960B641B222576A100073CC1 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960B641A222576A100073CC1 /* WebViewController.swift */; };
 		961AE60E220423A50094FC04 /* Ex_ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961AE60D220423A50094FC04 /* Ex_ImageView.swift */; };
 		961AE61022045BB70094FC04 /* Amaranth-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 961AE60F22045BB70094FC04 /* Amaranth-Bold.otf */; };
 		961AE61222045D4C0094FC04 /* Billabong.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 961AE61122045D4B0094FC04 /* Billabong.ttf */; };
@@ -96,6 +97,7 @@
 
 /* Begin PBXFileReference section */
 		877E8BFF6064747E073F89D8 /* Pods_MagentoAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MagentoAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		960B641A222576A100073CC1 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		961AE60D220423A50094FC04 /* Ex_ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ex_ImageView.swift; sourceTree = "<group>"; };
 		961AE60F22045BB70094FC04 /* Amaranth-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amaranth-Bold.otf"; sourceTree = "<group>"; };
 		961AE61122045D4B0094FC04 /* Billabong.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Billabong.ttf; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 		96F07E5D21FCF2B30061622F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				960B641A222576A100073CC1 /* WebViewController.swift */,
 				96E504B3221EECE200400D9F /* CheckoutViewController.swift */,
 				96FF82FB221C74D50078DF4F /* VideoPlayerViewController.swift */,
 				96DF91542216FD91007C8CF4 /* ContactUsViewController.swift */,
@@ -624,6 +627,7 @@
 				96F07E9A21FCF2B40061622F /* ProductDisplayCell.swift in Sources */,
 				96F07E8821FCF2B40061622F /* ProductDetailView.swift in Sources */,
 				964005922201818100D1991A /* Ext_ProductDetailView.swift in Sources */,
+				960B641B222576A100073CC1 /* WebViewController.swift in Sources */,
 				96F07E7D21FCF2B40061622F /* SubCollectionViewDataSource.swift in Sources */,
 				962BDC38221596C1006D5A8E /* GoogleDirectionsNetworkLayerViewController.swift in Sources */,
 				9640059B2201938600D1991A /* CartViewController.swift in Sources */,
