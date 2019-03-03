@@ -11,7 +11,8 @@ import UIKit
 class ProductDetailViewController: UIViewController {
 
     var selectedAttributes: CustomAttributes!
-    
+    var sizeSum = 0.0
+    var baseSizeSum = 0.0
     var cartId: Int?{
         didSet{
             let defaults = UserDefaults.standard
@@ -22,6 +23,7 @@ class ProductDetailViewController: UIViewController {
     var cartInformation: CartInformationJSONModel?
     
     var selectedItem: Item?
+    var basePrice: Double?
     var model: ProductDetailModel?
     var customOptionsModel:CustomOptionSkuCustomOptionsModel?
     lazy var colorCodes = [String]()
@@ -31,6 +33,12 @@ class ProductDetailViewController: UIViewController {
     var heightInchesDropdown = [String]()
     var widthInchesDecimalDropdown = [String]()
     var heightInchesDecimalDropdown = [String]()
+    
+    var width1 = 0.0
+    var width2 = 0.0
+    var height1 = 0.0
+    var height2 = 0.0
+    
     
    /* let widthCmDropdown = DropDown()
     let heightCmDropdown = DropDown()
@@ -77,28 +85,65 @@ class ProductDetailViewController: UIViewController {
             
             if option.sortOrder == 3 {
                 for value in option.values! {
+                    
                     self.widthInchesDropdown.append(value.title!)
-                    print(value.title)
+                   
                 }
                 self.productDetailView.widthInchesDropdown.bottomOffset = CGPoint(x: 0, y: 10)
                 self.productDetailView.widthInchesDropdown.dataSource = self.widthInchesDropdown
                 
                 self.productDetailView.widthInchesDropdown.selectionAction = { [weak self] (index, item) in
                     self!.productDetailView.widthTextField.setTitle(item, for: .normal)
+                    if self?.width1 == 0 {
+                        self?.width1 = Double(option.values![index].price!)
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                    }else{
+                        
+                        self!.sizeSum -= self!.width1
+                        self?.width1 = option.values![index].price!
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                        
+                    }
+                  
             }
         } else if option.sortOrder == 4 {
                 for value in option.values! {
+                   print("\(value.title): \(value.price)")
                     self.widthInchesDecimalDropdown.append(value.title!)
-                    print(value.title)
+                  
                 }
                 self.productDetailView.widthInchesDecimalDropdown.bottomOffset = CGPoint(x: 0, y: 10)
                 self.productDetailView.widthInchesDecimalDropdown.dataSource = self.widthInchesDecimalDropdown
                 
                 self.productDetailView.widthInchesDecimalDropdown.selectionAction = { [weak self] (index, item) in
                     self!.productDetailView.widthTextFieldDecimal.setTitle(item, for: .normal)
+                    if self?.width2 == 0 {
+                        self?.width2 = option.values![index].price!
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                    }else{
+                        
+                        self!.sizeSum -= self!.width2
+                        self?.width2 = option.values![index].price!
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                        
+                    }
+          
                 }
             }else if option.sortOrder == 6 {
                 for value in option.values! {
+                  //  print("\(value.title): \(value.price)")
                     self.heightInchesDropdown.append(value.title!)
                 }
                 self.productDetailView.heightInchesDropdown.bottomOffset = CGPoint(x: 0, y: 10)
@@ -106,9 +151,26 @@ class ProductDetailViewController: UIViewController {
                 
                 self.productDetailView.heightInchesDropdown.selectionAction = { [weak self] (index, item) in
                     self!.productDetailView.heightTextField.setTitle(item, for: .normal)
+                    if self?.height1 == 0 {
+                        self?.height1 = option.values![index].price!
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                    }else{
+                        
+                        self!.sizeSum -= self!.height1
+                        self?.height1 = option.values![index].price!
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                        
+                    }
                 }
             } else if option.sortOrder == 7 {
                 for value in option.values! {
+                    
                     self.heightInchesDecimalDropdown.append(value.title!)
                 }
                 self.productDetailView.heightInchesDecimalDropdown.bottomOffset = CGPoint(x: 0, y: 10)
@@ -116,6 +178,22 @@ class ProductDetailViewController: UIViewController {
                 
                 self.productDetailView.heightInchesDecimalDropdown.selectionAction = { [weak self] (index, item) in
                     self!.productDetailView.heightTextFieldDecimal.setTitle(item, for: .normal)
+                    if self?.height2 == 0 {
+                        self?.height2 = option.values![index].price!
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                    }else{
+                        
+                        self!.sizeSum -= self!.height2
+                        self?.height2 = option.values![index].price!
+                        self?.sizeSum += option.values![index].price!
+                        
+                        let finalPrice = self!.basePrice! + self!.sizeSum
+                        self!.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                        
+                    }
                 }
             }
         
@@ -126,7 +204,8 @@ class ProductDetailViewController: UIViewController {
     
     private func handlePrices(){
         self.productDetailView.rateValueLabel.text = "AED" + String(self.selectedItem!.price!)
-        self.sum = Double(self.selectedItem!.price!)
+        self.sum = 0
+        self.basePrice = 0
     }
     
     
@@ -228,8 +307,7 @@ class ProductDetailViewController: UIViewController {
         self.view.addSubview(productDetailView)
         self.handlePrices()
     }
-    
-}
+  }
 }
 
 
@@ -246,6 +324,7 @@ extension ProductDetailViewController: UICollectionViewDataSource, UICollectionV
                 let price = option.values![indexPath.item].price
                 let finalPrice = sum + price!
                 self.productDetailView.rateValueLabel.text = "AED " + "\(finalPrice)"
+                self.basePrice = price!
             }
         }
       let cell = collectionView.cellForItem(at: indexPath) as! ColorCollectionViewCell

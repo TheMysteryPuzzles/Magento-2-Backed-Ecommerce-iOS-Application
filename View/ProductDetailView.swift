@@ -815,9 +815,8 @@ class ProductDetailView: UIView, SSRadioButtonControllerDelegate {
         return field
     }()
     @objc func handleHightDropDown(){
-        
         self.heightInchesDropdown.show()
-        }
+    }
     
     private func setupHeightTextFieldConstraints(){
         NSLayoutConstraint.activate([
